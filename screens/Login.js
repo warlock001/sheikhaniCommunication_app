@@ -8,13 +8,13 @@ import {
   Alert,
   KeyboardAvoidingView,
   TouchableOpacity,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { TextInput } from "react-native-paper";
-import TextField from "../component/inputField";
-import axios from "axios";
-import EnvelopeClosed from "../images/EnvelopeClosed.png";
-import { CommonActions } from "@react-navigation/native";
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { TextInput } from 'react-native-paper';
+import TextField from '../component/inputField';
+import axios from 'axios';
+import EnvelopeClosed from '../images/EnvelopeClosed.png';
+import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
 const REACT_APP_BASE_URL = "http://192.168.0.104:3001";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,7 +29,7 @@ export default function SignIn({ navigation }) {
 
   getMyStringValue = async () => {
     try {
-      id = await AsyncStorage.getItem("@id");
+      id = await AsyncStorage.getItem('@id');
       console.log(`${id} id hai`);
       navigate(id);
     } catch (e) {
@@ -57,56 +57,55 @@ export default function SignIn({ navigation }) {
     setLoader(true);
     axios({
       timeout: 20000,
-      method: "POST",
+      method: 'POST',
       url: `${REACT_APP_BASE_URL}/login`,
       data: {
         email: email,
         password: password,
       },
     })
-      .then(async (res) => {
+      .then(async res => {
         console.log(res.data);
-        await AsyncStorage.setItem("@id", res.data._id);
-        await AsyncStorage.setItem("@jwt", res.data.token);
-        await AsyncStorage.setItem("@role", res.data.role);
-        await AsyncStorage.setItem("@department", res.data.department);
-        await AsyncStorage.setItem("@username", res.data.firstName);
-        const value = await AsyncStorage.getItem("@username");
+        await AsyncStorage.setItem('@id', res.data._id);
+        await AsyncStorage.setItem('@jwt', res.data.token);
+        await AsyncStorage.setItem('@role', res.data.role);
+        await AsyncStorage.setItem('@department', res.data.department);
+        await AsyncStorage.setItem('@username', res.data.firstName);
+        const value = await AsyncStorage.getItem('@username');
         console.log(value);
-        console.log("second");
+        console.log('second');
         // console.log(res.data.firstName)
         setLoader(false);
-        if (res.data.role == "employee") {
-          navigation.navigate("Home");
+        if (res.data.role == 'employee') {
+          navigation.navigate('Home');
         } else {
-          navigation.navigate("RescueCenter");
+          navigation.navigate('RescueCenter');
         }
       })
-      .catch((er) => {
+      .catch(er => {
         setLoader(false);
         console.log(er.response.data);
 
         Alert.alert(
-          "Failed",
+          'Failed',
           `${er.response.data.message
             ? er.response.data.message
-            : "Something went wrong"
+            : 'Something went wrong'
           }`,
-          [{ text: "OK", onPress: () => console.log("OK Pressed") }]
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
         );
       });
   }
 
   return (
-    <View style={{ height: "100%" }}>
+    <View style={{ height: '100%' }}>
       {!loader ? (
-        <View style={{ height: "100%" }}>
+        <View style={{ height: '100%' }}>
           <ImageBackground
-            source={require("../images/onboarding1.png")}
-            style={{ width: "100%", height: 250 }}
-          >
+            source={require('../images/onboarding1.png')}
+            style={{ width: '100%', height: 250 }}>
             <LinearGradient
-              colors={["#CF333900", "#000000"]}
+              colors={['#CF333900', '#000000']}
               style={styles.gradientStyle}
               start={{ x: 0.5, y: 0.5 }}
               end={{ x: 0.5, y: 1.5 }}
@@ -124,12 +123,13 @@ export default function SignIn({ navigation }) {
             </View>
           </ImageBackground>
           <ScrollView style={styles.bottomSection}>
-            <View style={{ height: "100%", padding: 24, justifyContent: "center" }}>
+            <View
+              style={{ height: '100%', padding: 24, justifyContent: 'center' }}>
               <View style={{ paddingBottom: 20 }}>
                 <TextField
                   style={{ marginBottom: 5 }}
                   label="Email Address"
-                  onChangeText={(text) => setEmail(text)}
+                  onChangeText={text => setEmail(text)}
                   left={
                     <TextInput.Icon
                       name={() => (
@@ -142,7 +142,7 @@ export default function SignIn({ navigation }) {
                     />
                   }
                 />
-                <TouchableOpacity style={{ alignSelf: "flex-end" }}>
+                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
                   <Text style={styles.forgotButtonStyle}>Forgot Email ID?</Text>
                 </TouchableOpacity>
               </View>
@@ -151,7 +151,7 @@ export default function SignIn({ navigation }) {
                   style={{ marginBottom: 5 }}
                   label="Password"
                   secureTextEntry={showPassword ? false : true}
-                  onChangeText={(text) => {
+                  onChangeText={text => {
                     setPassword(text);
                   }}
                   left={
@@ -160,7 +160,7 @@ export default function SignIn({ navigation }) {
                         <Image
                           resizeMode="contain"
                           style={{ width: 25 }}
-                          source={require("../images/password_icon.png")}
+                          source={require('../images/password_icon.png')}
                         />
                       )}
                     />
@@ -171,8 +171,7 @@ export default function SignIn({ navigation }) {
                         <TouchableOpacity
                           onPress={() => {
                             setShowPassword(!showPassword);
-                          }}
-                        >
+                          }}>
                           <Image
                             resizeMode="contain"
                             style={{ width: 25 }}
@@ -183,7 +182,7 @@ export default function SignIn({ navigation }) {
                     />
                   }
                 />
-                <TouchableOpacity style={{ alignSelf: "flex-end" }}>
+                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
                   <Text style={styles.forgotButtonStyle}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
@@ -194,26 +193,33 @@ export default function SignIn({ navigation }) {
                   if (email !== null && password !== null) {
                     signIn();
                   }
-                }}
-              >
+                }}>
                 <Text
-                  style={{ textAlign: "center", fontSize: 20, color: "#FFF" }}
-                >
+                  style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
                   Sign In
                 </Text>
               </TouchableOpacity>
-              <View style={{ width: "100%", justifyContent: "center" }}>
-
-
+              <View style={{ width: '100%', justifyContent: 'center' }}>
                 <View
                   style={{
                     marginTop: 25,
                     alignSelf: 'center',
                     justifyContent: 'center',
-
                   }}>
-                  <Image style={{ width: 150, height: 150, alignSelf: "center" }} source={require('../images/sheikhani.png')} />
-                  <Text style={{ marginTop: 20, fontSize: 24, fontWeight: "600", color: "#000" }}>Sheikhani Communication</Text>
+                  <Image
+                    style={{ width: 150, height: 150, alignSelf: 'center' }}
+                    source={require('../images/sheikhani.png')}
+                  />
+                  <Text
+                    style={{
+                      marginTop: 20,
+                      fontSize: 24,
+                      fontWeight: '600',
+                      color: '#000',
+                      fontFamily: 'TitilliumWeb-Regular',
+                    }}>
+                    Sheikhani Communication
+                  </Text>
                 </View>
               </View>
             </View>
@@ -222,12 +228,11 @@ export default function SignIn({ navigation }) {
       ) : (
         <View
           style={{
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-          }}
-        >
-          <Image source={require("../images/Loading.png")} />
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+          }}>
+          <Image source={require('../images/Loading.png')} />
         </View>
       )}
     </View>
@@ -239,32 +244,32 @@ const styles = StyleSheet.create({
     height: 250,
     padding: 24,
     flexGrow: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
-  textStyle: { fontSize: 35, fontWeight: "bold", color: "#FFF" },
-  textStyle2: { fontSize: 16, fontWeight: "400", color: "#FFF" },
+  textStyle: { fontSize: 35, fontWeight: 'bold', color: '#FFF' },
+  textStyle2: { fontSize: 16, fontWeight: '400', color: '#FFF' },
   bottomSection: {
     flexGrow: 1,
-    backgroundColor: "#f1f1f1",
-    height: "100%",
-    width: "100%",
+    backgroundColor: '#f1f1f1',
+    height: '100%',
+    width: '100%',
   },
   gradientStyle: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
   forgotButtonStyle: {
     fontSize: 10,
-    fontWeight: "500",
-    color: "#777777",
+    fontWeight: '500',
+    color: '#777777',
   },
   signInButton: {
-    width: "100%",
-    alignSelf: "center",
+    width: '100%',
+    alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: "#1F2067",
+    backgroundColor: '#1F2067',
     marginBottom: 15,
   },
 });

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, StyleSheet } from "react-native";
+import React, {useEffect, useState} from 'react';
+import {View, Image, StyleSheet} from 'react-native';
 
-const SplashScreenComponent = ({ onSplashEnd }) => {
+const SplashScreenComponent = ({onSplashEnd}) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       // Signal that the splash screen should be hidden
       onSplashEnd();
-    }, 4000); // 3 seconds
+    }, 3500); // 3 seconds
 
     // Cleanup function to clear the timeout in case component unmounts
     return () => clearTimeout(timeout);
@@ -15,7 +15,7 @@ const SplashScreenComponent = ({ onSplashEnd }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/splash.gif")} // Replace with your GIF file path
+        source={require('../assets/splash.gif')} // Replace with your GIF file path
         style={styles.image}
       />
     </View>
@@ -25,14 +25,14 @@ const SplashScreenComponent = ({ onSplashEnd }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
   image: {
-    resizeMode: "contain",
-    width: "80%",
-    height: "80%",
+    resizeMode: 'contain',
+    width: '80%',
+    height: '80%',
   },
 });
 

@@ -6,19 +6,19 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useRef } from 'react';
-import LinearGradient from "react-native-linear-gradient";
+import React, {useEffect, useRef} from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
-const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
+const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
-export default function OnBoarding({ navigation }) {
+export default function OnBoarding({navigation}) {
   const swiper = useRef(null);
 
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{height: '100%'}}>
       <Swiper
         ref={swiper}
-        style={{ height: '100%' }}
+        style={{height: '100%'}}
         loop={false}
         dot={
           <View
@@ -47,58 +47,79 @@ export default function OnBoarding({ navigation }) {
             }}
           />
         }>
-
         <View>
-
           <ImageBackground
             source={require('../images/onboarding1.png')}
-            style={{ width: '100%', height: '100%' }}>
+            style={{width: '100%', height: '100%'}}>
             <LinearGradient
               colors={['#00000000', '#000000']}
               style={styles.gradientStyle}
-              start={{ x: 0.5, y: 0.2 }}
-              end={{ x: 0.5, y: 0.8 }}
+              start={{x: 0.5, y: 0.2}}
+              end={{x: 0.5, y: 0.8}}
             />
             <View style={styles.sectionContainer}>
-              <Text style={{ fontFamily: "Roboto", color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
-              <View style={{
-                color: '#000',
-                flex: 1,
-                alignItems: 'center',
-                flexDirection: "column",
-                justifyContent: 'flex-end',
-                width: '100%',
-                height: '100%',
-                // padding: 24,
-              }}>
-                <Text style={styles.subTitleStyle}>Get started in only a couple minutes</Text>
-                <Text style={styles.titleStyle}>SIGN IN TO ACCESS YOUR ACCOUNT</Text>
+              <Text
+                style={{
+                  fontFamily: 'Roboto',
+                  color: '#fff',
+                  fontSize: 26,
+                  fontFamily: 'Pacifico-Regular',
+                }}>
+                Sheikhani Group Communication
+              </Text>
+              <View
+                style={{
+                  color: '#000',
+                  flex: 1,
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                  height: '100%',
+                  // padding: 24,
+                }}>
+                <Text style={styles.subTitleStyle}>
+                  Get started in only a couple minutes
+                </Text>
+                <Text style={styles.titleStyle}>
+                  SIGN IN TO ACCESS YOUR ACCOUNT
+                </Text>
               </View>
             </View>
           </ImageBackground>
         </View>
         <View>
           <ImageBackground
+            resizeMode={'cover'}
             source={require('../images/onboarding2.png')}
-            style={{ width: '100%', height: '100%', resizeMode: 'cover' }}>
+            style={{width: '100%', height: '100%', resizeMode: 'cover'}}>
             <LinearGradient
               colors={['#00000000', '#000000']}
               style={styles.gradientStyle}
-              start={{ x: 0.5, y: 0.2 }}
-              end={{ x: 0.5, y: 1 }}
+              start={{x: 0.5, y: 0.2}}
+              end={{x: 0.5, y: 1}}
             />
             <View style={styles.sectionContainer}>
-              <Text style={{ color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
-              <View style={{
-                color: '#000',
-                flex: 1,
-                alignItems: 'center',
-                flexDirection: "column",
-                justifyContent: 'flex-end',
-                width: '100%',
-                height: '100%',
-                // padding: 24,
-              }}>
+              <Text
+                style={{
+                  fontFamily: 'Roboto',
+                  color: '#fff',
+                  fontSize: 26,
+                  fontFamily: 'Pacifico-Regular',
+                }}>
+                Sheikhani Group Communication
+              </Text>
+              <View
+                style={{
+                  color: '#000',
+                  flex: 1,
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                  height: '100%',
+                  // padding: 24,
+                }}>
                 <Text style={styles.titleStyle}>CONNECT</Text>
                 <Text style={styles.titleStyle}>WITH YOUR</Text>
                 <Text style={styles.titleStyle}>WORKSPACE</Text>
@@ -108,26 +129,36 @@ export default function OnBoarding({ navigation }) {
         </View>
         <View>
           <ImageBackground
+            resizeMode={'cover'}
             source={require('../images/onboarding3.png')}
-            style={{ width: '100%', height: '100%' }}>
+            style={{width: '100%', height: '100%'}}>
             <LinearGradient
               colors={['#CF333900', '#CF3339']}
               style={styles.gradientStyle}
-              start={{ x: 0.5, y: 0.2 }}
-              end={{ x: 0.5, y: 1 }}
+              start={{x: 0.5, y: 0.2}}
+              end={{x: 0.5, y: 1}}
             />
             <View style={styles.sectionContainer}>
-              <Text style={{ color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
-              <View style={{
-                color: '#000',
-                flex: 1,
-                alignItems: 'center',
-                flexDirection: "column",
-                justifyContent: 'flex-end',
-                width: '100%',
-                height: '100%',
-                // padding: 24,
-              }}>
+              <Text
+                style={{
+                  fontFamily: 'Roboto',
+                  color: '#fff',
+                  fontSize: 26,
+                  fontFamily: 'Pacifico-Regular',
+                }}>
+                Sheikhani Group Communication
+              </Text>
+              <View
+                style={{
+                  color: '#000',
+                  flex: 1,
+                  alignItems: 'center',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  width: '100%',
+                  height: '100%',
+                  // padding: 24,
+                }}>
                 <Text style={styles.titleStyle}>CHAT</Text>
                 <Text style={styles.titleStyle}>WITH YOUR</Text>
                 <Text style={styles.titleStyle}>COLLEAGUES</Text>
@@ -135,30 +166,26 @@ export default function OnBoarding({ navigation }) {
             </View>
           </ImageBackground>
         </View>
-      </Swiper >
+      </Swiper>
       <TouchableOpacity
         style={styles.buttonStyle}
         onPress={() => {
-
           navigation.navigate('Login');
-
         }}>
-        <Text style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
+        <Text style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
           Login
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.SignupButtonStyle}
         onPress={() => {
-
           navigation.navigate('Login');
-
         }}>
-        <Text style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
+        <Text style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
           Create Account
         </Text>
       </TouchableOpacity>
-    </View >
+    </View>
   );
 }
 
@@ -167,7 +194,7 @@ const styles = StyleSheet.create({
     color: '#000',
     flex: 1,
     alignItems: 'center',
-    flexDirection: "column",
+    flexDirection: 'column',
     justifyContent: 'space-between',
     width: '100%',
     height: '100%',

@@ -2,6 +2,10 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Pacifico-Regular.ttf",
+      "sha1": "baca1fca7fe74b61cb33aa0da48ec1a3a77bcf49"
+    },
+    {
       "path": "assets/fonts/Roboto-Black.ttf",
       "sha1": "3f8e401d808f6ce84b542266726514ac8be73171"
     },
@@ -48,6 +52,18 @@
     {
       "path": "assets/fonts/Roboto-ThinItalic.ttf",
       "sha1": "cc79d5a23bd0ec08b1d99f5390bf33cacc3082f4"
+    },
+    {
+      "path": "assets/fonts/TitilliumWeb-Bold.ttf",
+      "sha1": "1de05d92173edf1cf44696d3c8a5842ebbf1e75f"
+    },
+    {
+      "path": "assets/fonts/TitilliumWeb-Regular.ttf",
+      "sha1": "c1d91bd86751bd0a186ac0323dcf47de4d0c0981"
+    },
+    {
+      "path": "assets/fonts/TitilliumWeb-SemiBold.ttf",
+      "sha1": "3ec2a03e4f87634460200b350ba7fdb8cc37934f"
     }
   ]
 }
