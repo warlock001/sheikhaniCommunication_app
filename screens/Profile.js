@@ -75,10 +75,10 @@ const Profile = () => {
           }}>
           <Text
             style={{
-              fontFamily: 'Roboto',
+              fontFamily: 'Pacifico-Regular',
               marginTop: 30,
               fontSize: 30,
-              fontWeight: '800',
+              fontWeight: '600',
               color: '#fff',
             }}>
             Sheikhani Communication
@@ -88,7 +88,7 @@ const Profile = () => {
             style={{
               width: '33%',
               height: '26.4%',
-              marginTop: '20.5%',
+              marginTop: '16.5%',
             }}>
             <Pressable onPress={toggleModal}>
               <Image
@@ -124,8 +124,10 @@ const Profile = () => {
               //adasdfad
               textAlign: 'center',
               fontFamily: 'Roboto',
-              fontSize: 23,
+              fontSize: 24,
               color: '#000',
+              fontWeight: '600',
+              fontFamily: 'TitilliumWeb-Regular',
             }}>
             {profileUsername}
           </Text>
