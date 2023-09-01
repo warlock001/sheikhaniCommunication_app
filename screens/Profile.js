@@ -113,6 +113,7 @@ const Profile = () => {
           <Text
             style={{
               marginTop: 18,
+              //adasdf
               textAlign: 'center',
               fontFamily: 'Roboto',
               fontSize: 23,
