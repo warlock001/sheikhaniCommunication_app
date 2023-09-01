@@ -153,7 +153,7 @@ function HomeTabs() {
       <Tab.Screen
         name="My Account"
         component={Profile}
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );

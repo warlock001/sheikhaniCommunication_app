@@ -47,7 +47,9 @@ export default function OnBoarding({ navigation }) {
             }}
           />
         }>
+
         <View>
+
           <ImageBackground
             source={require('../images/onboarding1.png')}
             style={{ width: '100%', height: '100%' }}>
@@ -58,9 +60,20 @@ export default function OnBoarding({ navigation }) {
               end={{ x: 0.5, y: 0.8 }}
             />
             <View style={styles.sectionContainer}>
-              <Text style={styles.subTitleStyle}>Get started in only a couple minutes</Text>
-              <Text style={styles.titleStyle}>Sign Up And Create An Account in 2 minutes</Text>
-
+              <Text style={{ fontFamily: "Roboto", color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
+              <View style={{
+                color: '#000',
+                flex: 1,
+                alignItems: 'center',
+                flexDirection: "column",
+                justifyContent: 'flex-end',
+                width: '100%',
+                height: '100%',
+                // padding: 24,
+              }}>
+                <Text style={styles.subTitleStyle}>Get started in only a couple minutes</Text>
+                <Text style={styles.titleStyle}>SIGN IN TO ACCESS YOUR ACCOUNT</Text>
+              </View>
             </View>
           </ImageBackground>
         </View>
@@ -75,9 +88,21 @@ export default function OnBoarding({ navigation }) {
               end={{ x: 0.5, y: 1 }}
             />
             <View style={styles.sectionContainer}>
-              <Text style={styles.titleStyle}>Adpot Now!</Text>
-              <Text style={styles.titleStyle}>And Find Youself</Text>
-              <Text style={styles.titleStyle}>A New Friend</Text>
+              <Text style={{ color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
+              <View style={{
+                color: '#000',
+                flex: 1,
+                alignItems: 'center',
+                flexDirection: "column",
+                justifyContent: 'flex-end',
+                width: '100%',
+                height: '100%',
+                // padding: 24,
+              }}>
+                <Text style={styles.titleStyle}>CONNECT</Text>
+                <Text style={styles.titleStyle}>WITH YOUR</Text>
+                <Text style={styles.titleStyle}>WORKSPACE</Text>
+              </View>
             </View>
           </ImageBackground>
         </View>
@@ -92,9 +117,21 @@ export default function OnBoarding({ navigation }) {
               end={{ x: 0.5, y: 1 }}
             />
             <View style={styles.sectionContainer}>
-              <Text style={styles.titleStyle}>Get Access To</Text>
-              <Text style={styles.titleStyle}>The Best Vet</Text>
-              <Text style={styles.titleStyle}>In Your Area</Text>
+              <Text style={{ color: "#fff", fontSize: 30, fontWeight: "800" }}>Sheikhani Communication</Text>
+              <View style={{
+                color: '#000',
+                flex: 1,
+                alignItems: 'center',
+                flexDirection: "column",
+                justifyContent: 'flex-end',
+                width: '100%',
+                height: '100%',
+                // padding: 24,
+              }}>
+                <Text style={styles.titleStyle}>CHAT</Text>
+                <Text style={styles.titleStyle}>WITH YOUR</Text>
+                <Text style={styles.titleStyle}>COLLEAGUES</Text>
+              </View>
             </View>
           </ImageBackground>
         </View>
@@ -130,7 +167,8 @@ const styles = StyleSheet.create({
     color: '#000',
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "column",
+    justifyContent: 'space-between',
     width: '100%',
     height: '100%',
     padding: 24,

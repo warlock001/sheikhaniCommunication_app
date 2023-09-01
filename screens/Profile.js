@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   FlatList,
   Image,
+  ScrollView,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native"; // Import the navigation hook
@@ -69,11 +70,13 @@ const Profile = () => {
             alignItems: "center",
           }}
         >
+          <Text style={{ fontFamily: "Roboto", marginTop: 30, fontSize: 30, fontWeight: "600", color: "#fff" }}>Sheikhani Communication</Text>
+
           <View
             style={{
               width: "33%",
               height: "23%",
-              marginTop: 150,
+              marginTop: "18%",
             }}
           >
             <Image
@@ -207,7 +210,7 @@ const Profile = () => {
                   alignItems: "center",
                   paddingVertical: 14,
                   flexDirection: "row",
-                  marginTop: "30%",
+                  marginTop: "10%",
                   backgroundColor: "#FAE6E7",
                   borderRadius: 5,
                 }}

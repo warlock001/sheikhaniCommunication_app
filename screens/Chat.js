@@ -55,8 +55,8 @@ export default function Chat({ navigation }) {
         <Image
           resizeMode="cover"
           style={[styles.mavatar, { marginTop: "auto" }]}
-          source={require("../images/myaccount.png")}
-          width={5}
+          source={require("../images/ProfileDemo.jpg")}
+          width={30}
         />
         <Text style={{ color: '#000', fontSize: 18, fontWeight: "bold" }}>{props.title}</Text>
       </View>
@@ -123,6 +123,8 @@ export default function Chat({ navigation }) {
     <TouchableWithoutFeedback accessible={false}>
       <SafeAreaView style={styles.chatscreen}>
         <View>
+          <Text style={{ textAlign: "center", fontSize: 24, textDecorationLine: "underline", marginBottom: 10, fontWeight: "600", color: "#000" }}>Sheikhani Communication</Text>
+
           <Text style={styles.pageHeading}>All Chats</Text>
           <Text style={styles.pageSubHeading}>
             You can check your recent & new chats here

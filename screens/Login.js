@@ -124,7 +124,7 @@ export default function SignIn({ navigation }) {
             </View>
           </ImageBackground>
           <ScrollView style={styles.bottomSection}>
-            <View style={{ height: "100%", padding: 24 }}>
+            <View style={{ height: "100%", padding: 24, justifyContent: "center" }}>
               <View style={{ paddingBottom: 20 }}>
                 <TextField
                   style={{ marginBottom: 5 }}
@@ -202,16 +202,18 @@ export default function SignIn({ navigation }) {
                   Sign In
                 </Text>
               </TouchableOpacity>
-              <View style={{ width: "100%", height: 50 }}>
+              <View style={{ width: "100%", justifyContent: "center" }}>
+
+
                 <View
                   style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
+                    marginTop: 25,
+                    alignSelf: 'center',
+                    justifyContent: 'center',
 
-
+                  }}>
+                  <Image style={{ width: 150, height: 150, alignSelf: "center" }} source={require('../images/sheikhani.png')} />
+                  <Text style={{ marginTop: 20, fontSize: 24, fontWeight: "600", color: "#000" }}>Sheikhani Communication</Text>
                 </View>
               </View>
             </View>

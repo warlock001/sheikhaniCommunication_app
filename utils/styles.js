@@ -165,7 +165,8 @@ export const styles = StyleSheet.create({
   mavatar: {
     marginRight: 15,
     width: 40,
-    height: 40
+    height: 40,
+    borderRadius: 50,
   },
   mavatar2: {
     marginLeft: 5,
