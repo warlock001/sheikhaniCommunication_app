@@ -26,7 +26,7 @@ import { TextInput } from "react-native-paper";
 import TextField from "../component/inputField";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
-export default function Chat({ navigation }) {
+export default function DirectMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -37,7 +37,7 @@ export default function Chat({ navigation }) {
   const [department, setDepartment] = useState("");
 
   const handleNavigation = (id, name) => {
-    navigation.navigate("Messaging", {
+    navigation.navigate("DirectMessages", {
       id: id,
       name: name,
     });
@@ -50,6 +50,8 @@ export default function Chat({ navigation }) {
       }}
     >
       <View style={style.item}>
+
+
         <Image
           resizeMode="cover"
           style={[styles.mavatar, { marginTop: "auto" }]}
@@ -123,7 +125,7 @@ export default function Chat({ navigation }) {
         <View>
           <Text style={{ textAlign: "center", fontSize: 24, textDecorationLine: "underline", marginBottom: 10, fontWeight: "600", color: "#000" }}>Sheikhani Communication</Text>
 
-          <Text style={styles.pageHeading}>All Chats</Text>
+          <Text style={styles.pageHeading}>All DMs</Text>
           <Text style={styles.pageSubHeading}>
             You can check your recent & new chats here
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}

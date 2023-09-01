@@ -25,7 +25,7 @@ const Home = () => {
 
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch("http://52.53.197.201:4000/api")
+      fetch("http://192.168.0.104:4000/api")
         .then((res) => res.json())
         .then((data) => setRooms(data))
         .catch((err) => console.error(err));

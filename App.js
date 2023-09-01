@@ -35,6 +35,8 @@ import Profile from "./screens/Profile";
 import Announcements from "./screens/Announcements";
 import SplashScreen from "react-native-splash-screen";
 import SplashScreenComponent from "./component/SplashScreenComponent";
+import DirectMessages from "./screens/DirectMessagesScreen";
+import DirectMessagesScreen from "./screens/DirectMessagesScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -147,7 +149,7 @@ function HomeTabs() {
       {/* <Tab.Screen name="Groups" component={Chat} /> */}
       <Tab.Screen
         name="Chats"
-        component={Chat}
+        component={DirectMessagesScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen
@@ -263,6 +265,11 @@ export default function App() {
           <Stack.Screen
             name="AccountSettings"
             component={AccountSettings}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="DirectMessages"
+            component={DirectMessages}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>
