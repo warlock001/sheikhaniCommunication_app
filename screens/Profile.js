@@ -14,7 +14,7 @@ import Modal from '../component/Modal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
 import {styles} from '../utils/styles';
-
+import ImageModal from '../component/ImageModal';
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -47,6 +47,12 @@ const Profile = () => {
   };
 
   getUsername();
+
+  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   return (
     <SafeAreaView
@@ -84,15 +90,17 @@ const Profile = () => {
               height: '26.4%',
               marginTop: '20.5%',
             }}>
-            <Image
-              resizeMode="contain"
-              style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: 100,
-              }}
-              source={require('../images/ProfileDemo.jpg')}
-            />
+            <Pressable onPress={toggleModal}>
+              <Image
+                resizeMode="contain"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: 100,
+                }}
+                source={require('../images/ProfileDemo.jpg')}
+              />
+            </Pressable>
             <Pressable //
               style={{
                 position: 'absolute',
@@ -113,7 +121,7 @@ const Profile = () => {
           <Text
             style={{
               marginTop: 18,
-              //adasdf
+              //adasdfad
               textAlign: 'center',
               fontFamily: 'Roboto',
               fontSize: 23,
@@ -240,6 +248,11 @@ const Profile = () => {
           </View>
         </View>
       </View>
+      <ImageModal
+        visible={isModalVisible}
+        profileImage={require('../images/ProfileDemo.jpg')} // Pass the profile image to the modal
+        onClose={toggleModal}
+      />
     </SafeAreaView>
   );
 };
