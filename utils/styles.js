@@ -157,7 +157,7 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
   },
   mmessage: {
-    maxWidth: '50%',
+    maxWidth: '80%',
     backgroundColor: '#E9E9F0',
     paddingHorizontal: 15,
     paddingTop: 15,
