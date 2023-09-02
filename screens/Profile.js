@@ -113,6 +113,7 @@ const Profile = () => {
                 borderRadius: 100,
               }}>
               <Image
+                id="editprofile"
                 resizeMode="contain"
                 source={require('../images/EditProfile.png')}
               />
