@@ -77,18 +77,18 @@ const Profile = () => {
             style={{
               fontFamily: 'Pacifico-Regular',
               marginTop: 30,
-              fontSize: 30,
+              fontSize: 24,
               fontWeight: '600',
               color: '#fff',
             }}>
-            Sheikhani Communication
+            Sheikhani Group Communication
           </Text>
 
           <View
             style={{
               width: '33%',
               height: '26.4%',
-              marginTop: '16.5%',
+              marginTop: '19%',
             }}>
             <Pressable onPress={toggleModal}>
               <Image

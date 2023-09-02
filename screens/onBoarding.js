@@ -5,6 +5,7 @@ import {
   Dimensions,
   View,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -88,11 +89,11 @@ export default function OnBoarding({navigation}) {
             </View>
           </ImageBackground>
         </View>
-        <View>
+        <View style={{display: 'flex'}}>
           <ImageBackground
             resizeMode={'cover'}
             source={require('../images/onboarding2.png')}
-            style={{width: '100%', height: '100%', resizeMode: 'cover'}}>
+            style={{width: '100%', height: '100%'}}>
             <LinearGradient
               colors={['#00000000', '#000000']}
               style={styles.gradientStyle}

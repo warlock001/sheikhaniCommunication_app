@@ -216,9 +216,9 @@ export default function SignIn({ navigation }) {
                       fontSize: 24,
                       fontWeight: '600',
                       color: '#000',
-                      fontFamily: 'TitilliumWeb-Regular',
+                      fontFamily: 'Pacifico-Regular',
                     }}>
-                    Sheikhani Communication
+                    Sheikhani Group Communication
                   </Text>
                 </View>
               </View>
@@ -246,8 +246,18 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-end',
   },
-  textStyle: { fontSize: 35, fontWeight: 'bold', color: '#FFF' },
-  textStyle2: { fontSize: 16, fontWeight: '400', color: '#FFF' },
+  textStyle: {
+    fontSize: 35,
+    // fontWeight: 'bold',
+    color: '#FFF',
+    fontFamily: 'TitilliumWeb-SemiBold',
+  },
+  textStyle2: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#FFF',
+    fontFamily: 'TitilliumWeb-Regular',
+  },
   bottomSection: {
     flexGrow: 1,
     backgroundColor: '#f1f1f1',

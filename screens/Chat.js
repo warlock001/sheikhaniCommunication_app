@@ -130,7 +130,7 @@ export default function Chat({ navigation }) {
               color: '#000',
               fontFamily: 'Pacifico-Regular',
             }}>
-            Sheikhani Communication
+            Sheikhani Group Communication
           </Text>
 
           <Text style={styles.pageHeading}>All Chats</Text>
