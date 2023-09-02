@@ -37,6 +37,7 @@ import SplashScreen from "react-native-splash-screen";
 import SplashScreenComponent from "./component/SplashScreenComponent";
 import DirectMessages from "./screens/DirectMessagesScreen";
 import DirectMessagesScreen from "./screens/DirectMessagesScreen";
+import DirectMessaging from "./screens/DirectMessaging";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -269,7 +270,7 @@ export default function App() {
           />
           <Stack.Screen
             name="DirectMessages"
-            component={DirectMessages}
+            component={DirectMessaging}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>

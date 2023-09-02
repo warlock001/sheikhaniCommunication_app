@@ -21,6 +21,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [roomId, setRoomId] = useState("");
 
   const getUsername = async () => {
     try {
@@ -45,68 +46,40 @@ const DirectMessaging = ({ route, navigation }) => {
         ? `0${new Date().getMinutes()}`
         : `${new Date().getMinutes()}`;
 
-    if (user && message) {
-      socket.emit("newMessage", {
-        message,
-        room_id: id,
-        user,
-        timestamp: { hour, mins },
-      });
-      textInputRef.clear(); // Clear the TextInput field
-    } else {
-      // console.log("first")
-    }
+
+
+    setMessage('')
+
   };
 
+  const createRoomId = (id, myId) => {
+    if (id > myId) {
+      return id + myId
+    } else {
+      return myId + id
+    }
+  }
+
   useLayoutEffect(() => {
-    async function findRoom() {
+    async function setup() {
       navigation.setOptions({ title: name });
       getUsername();
       const sender = await AsyncStorage.getItem("@username");
-      let roomMessages = await AsyncStorage.getItem("@roomMessages");
-      roomMessages = JSON.parse(roomMessages);
+      const myId = await AsyncStorage.getItem("@id");
+
+      const roomid = createRoomId(id, myId)
+      setRoomId(roomId)
       let data = {
-        id: id,
-        name: name,
-        sender: sender,
-        roomMessages: roomMessages,
-      };
+        roomid: roomid
+      }
+      socket.emit('join_room', data)
 
-      socket.emit("findRoom", data);
-      socket.on("foundRoom", async (roomChats) => {
-        if (roomChats.length !== 0) {
-          setChatMessages(roomChats);
-          await AsyncStorage.setItem(
-            "@roomMessages",
-            JSON.stringify(roomChats)
-          );
-
-          // console.log("four")
-        } else {
-          // console.log("five")
-          let roomMessages = await AsyncStorage.getItem("@roomMessages");
-          roomMessages = JSON.parse(roomMessages);
-          // console.log(roomMessages)
-          setChatMessages(roomMessages ? roomMessages : []);
-        }
-      });
     }
-    findRoom();
+    setup();
   }, []);
 
   useEffect(() => {
-    socket.on("foundRoom", async (roomChats) => {
-      if (roomChats.length !== 0) {
-        // console.log("first")
-        setChatMessages(roomChats);
-        await AsyncStorage.setItem("@roomMessages", JSON.stringify(roomChats));
-      } else {
-        let roomMessages = await AsyncStorage.getItem("@roomMessages");
-        roomMessages = JSON.parse(roomMessages);
-        // console.log("roomMessages : " + roomMessages)
-        setChatMessages(roomMessages ? roomMessages : []);
-      }
-    });
+
   }, [socket]);
 
   return (
@@ -138,6 +111,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
       <View style={styles.messaginginputContainer}>
         <TextInput
+          value={message}
           ref={(inputRef) => {
             textInputRef = inputRef;
           }}
@@ -164,4 +138,4 @@ const DirectMessaging = ({ route, navigation }) => {
   );
 };
 
-export default Messaging;
+export default DirectMessaging;
