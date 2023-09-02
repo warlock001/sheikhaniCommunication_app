@@ -98,6 +98,7 @@ export const styles = StyleSheet.create({
     // borderColor: "#1F1F1F",
     padding: 10,
     flex: 1,
+    maxHeight: 110,
     color: '#000',
     backgroundColor: '#EFEFEF',
     marginRight: 10,

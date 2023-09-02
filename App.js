@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -10,60 +10,60 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Modal,
-} from "react-native";
+} from 'react-native';
 //👇🏻 app screens
-import Login from "./screens/Login";
-import Messaging from "./screens/Messaging";
-import Chat from "./screens/Chat";
-import OnBoarding from "./screens/onBoarding";
-import AccountSettings from "./screens/AccountSettings";
+import Login from './screens/Login';
+import Messaging from './screens/Messaging';
+import Chat from './screens/Chat';
+import OnBoarding from './screens/onBoarding';
+import AccountSettings from './screens/AccountSettings';
+import AnnouncementPreview from './screens/AnnouncementPreview';
 
 //👇🏻 React Navigation configurations
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 //👇🏻 React libraries
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { styles } from "./utils/styles";
-import Home from "./screens/Home";
-import Profile from "./screens/Profile";
-import Announcements from "./screens/Announcements";
-import SplashScreen from "react-native-splash-screen";
-import SplashScreenComponent from "./component/SplashScreenComponent";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {styles} from './utils/styles';
+import Home from './screens/Home';
+import Profile from './screens/Profile';
+import Announcements from './screens/Announcements';
+import SplashScreen from 'react-native-splash-screen';
+import SplashScreenComponent from './component/SplashScreenComponent';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({state, descriptors, navigation}) {
   console.log(descriptors);
   return (
     <View
       style={{
-        flexDirection: "row",
+        flexDirection: 'row',
         height: 70,
-        alignItems: "center",
-        justifyContent: "space-evenly",
-      }}
-    >
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+      }}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-              ? options.title
-              : route.name;
+            ? options.title
+            : route.name;
 
         const isFocused = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
-            type: "tabPress",
+            type: 'tabPress',
             target: route.key,
           });
 
@@ -74,7 +74,7 @@ function MyTabBar({ state, descriptors, navigation }) {
 
         const onLongPress = () => {
           navigation.emit({
-            type: "tabLongPress",
+            type: 'tabLongPress',
             target: route.key,
           });
         };
@@ -82,48 +82,46 @@ function MyTabBar({ state, descriptors, navigation }) {
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
+            accessibilityState={isFocused ? {selected: true} : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-          >
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             {isFocused ? (
               <Image
                 resizeMode="contain"
-                style={{ width: 25 }}
+                style={{width: 25}}
                 source={
-                  label == "Workspace"
-                    ? require("./images/workspace.png")
-                    : label == "Groups"
-                      ? require("./images/groups.png")
-                      : label == "Chats"
-                        ? require("./images/chats.png")
-                        : require("./images/account_circle.png")
+                  label == 'Workspace'
+                    ? require('./images/workspace.png')
+                    : label == 'Groups'
+                    ? require('./images/groups.png')
+                    : label == 'Chats'
+                    ? require('./images/chats.png')
+                    : require('./images/account_circle.png')
                 }
               />
             ) : (
               <Image
                 resizeMode="contain"
-                style={{ width: 25 }}
+                style={{width: 25}}
                 source={
-                  label == "Workspace"
-                    ? require("./images/workspace_inactive.png")
-                    : label == "Groups"
-                      ? require("./images/groups_inactive.png")
-                      : label == "Chats"
-                        ? require("./images/chats_inactive.png")
-                        : require("./images/myaccount_inactive.png")
+                  label == 'Workspace'
+                    ? require('./images/workspace_inactive.png')
+                    : label == 'Groups'
+                    ? require('./images/groups_inactive.png')
+                    : label == 'Chats'
+                    ? require('./images/chats_inactive.png')
+                    : require('./images/myaccount_inactive.png')
                 }
               />
             )}
             <Text
               style={[
                 style.bottonTabText,
-                { color: isFocused ? "#003A9A" : "#222" },
-              ]}
-            >
+                {color: isFocused ? '#003A9A' : '#222'},
+              ]}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -136,24 +134,23 @@ function MyTabBar({ state, descriptors, navigation }) {
 function HomeTabs() {
   return (
     <Tab.Navigator
-      options={{ headerShown: false }}
-      tabBar={(props) => <MyTabBar {...props} />}
-    >
+      options={{headerShown: false}}
+      tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen
         name="Workspace"
         component={Chat}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       {/* <Tab.Screen name="Groups" component={Chat} /> */}
       <Tab.Screen
         name="Chats"
         component={Chat}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
       <Tab.Screen
         name="My Account"
         component={Profile}
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
       />
     </Tab.Navigator>
   );
@@ -166,8 +163,8 @@ export default function App() {
 
   useEffect(() => {
     func = async () => {
-      const jwt = await AsyncStorage.getItem("@jwt");
-      const role = await AsyncStorage.getItem("@role");
+      const jwt = await AsyncStorage.getItem('@jwt');
+      const role = await AsyncStorage.getItem('@role');
       if (jwt !== null) {
         setLoggedIn(true);
         setUserRole(role);
@@ -186,7 +183,7 @@ export default function App() {
         await SplashScreen.preventAutoHideAsync();
 
         // Simulate some loading time before displaying the main app
-        await new Promise((resolve) => setTimeout(resolve, 3000)); // 3 seconds
+        await new Promise(resolve => setTimeout(resolve, 3000)); // 3 seconds
 
         // Hide the splash screen and display the main app
         SplashScreen.hideAsync();
@@ -195,31 +192,31 @@ export default function App() {
     prepareApp();
   }, [appInit]); // Run this effect when appInit changes
 
-  function HomeStack({ route, navigation }) {
-    const { shouldRedirect, UserRole } = route.params;
+  function HomeStack({route, navigation}) {
+    const {shouldRedirect, UserRole} = route.params;
     useEffect(() => {
       console.log(UserRole);
       if (shouldRedirect === true) {
-        navigation.navigate({ name: "OnBoarding1", merge: true });
+        navigation.navigate({name: 'OnBoarding1', merge: true});
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{ name: "OnBoarding1" }],
-          })
+            routes: [{name: 'OnBoarding1'}],
+          }),
         );
-      } else if (UserRole == "rescuer") {
+      } else if (UserRole == 'rescuer') {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{ name: "RescueCenter" }],
-          })
+            routes: [{name: 'RescueCenter'}],
+          }),
         );
-      } else if (UserRole == "client") {
+      } else if (UserRole == 'client') {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{ name: "Home" }],
-          })
+            routes: [{name: 'Home'}],
+          }),
         );
       }
     }, [shouldRedirect]);
@@ -238,39 +235,44 @@ export default function App() {
           <Stack.Screen
             name="OnBoarding"
             component={OnBoarding}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="Home"
             component={HomeTabs}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="Messaging"
             component={Messaging}
-            options={{ headerShown: true }}
+            options={{headerShown: true}}
           />
           <Stack.Screen
             name="Announcements"
             component={Announcements}
-            options={{ headerShown: true }}
+            options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="AnnouncementPreview"
+            component={AnnouncementPreview}
+            options={{headerShown: false}}
           />
           <Stack.Screen
             name="AccountSettings"
             component={AccountSettings}
-            options={{ headerShown: true }}
+            options={{headerShown: true}}
           />
         </Stack.Navigator>
       ) : (
         <SplashScreenComponent
           name="Splash"
           component={SplashScreenComponent}
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           onSplashEnd={handleSplashEnd}
         />
       )}
@@ -281,64 +283,64 @@ export default function App() {
 const style = StyleSheet.create({
   bottonTabText: {
     fontSize: 12,
-    fontWeight: "500",
-    textAlign: "center",
+    fontWeight: '500',
+    textAlign: 'center',
     marginTop: 10,
-    color: "#003A9A",
+    color: '#003A9A',
   },
   sectionContainer: {
-    color: "#000",
+    color: '#000',
     flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-end",
-    width: "100%",
-    height: "100%",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    width: '100%',
+    height: '100%',
     padding: 24,
 
     paddingBottom: 215,
   },
   gradientStyle: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
   subTitleStyle: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 16,
-    fontWeight: "400",
-    textAlign: "left",
-    width: "100%",
-    textAlign: "center",
+    fontWeight: '400',
+    textAlign: 'left',
+    width: '100%',
+    textAlign: 'center',
   },
   titleStyle: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 36,
-    fontWeight: "bold",
-    textAlign: "left",
-    width: "100%",
-    textAlign: "center",
+    fontWeight: 'bold',
+    textAlign: 'left',
+    width: '100%',
+    textAlign: 'center',
   },
   SignupButtonStyle: {
-    width: "90%",
-    alignSelf: "center",
+    width: '90%',
+    alignSelf: 'center',
     padding: 10,
     borderRadius: 25,
-    backgroundColor: "#1F2067",
+    backgroundColor: '#1F2067',
     marginTop: 26,
     marginBottom: 40,
     bottom: 65,
-    position: "absolute",
+    position: 'absolute',
   },
 
   buttonStyle: {
-    width: "90%",
-    alignSelf: "center",
+    width: '90%',
+    alignSelf: 'center',
     padding: 10,
     borderRadius: 25,
-    backgroundColor: "#191919",
+    backgroundColor: '#191919',
     marginTop: 26,
     marginBottom: 40,
     bottom: 0,
-    position: "absolute",
+    position: 'absolute',
   },
 });
