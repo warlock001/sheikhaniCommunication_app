@@ -98,6 +98,7 @@ export const styles = StyleSheet.create({
     // borderColor: "#1F1F1F",
     padding: 10,
     flex: 1,
+    maxHeight: 110,
     color: '#000',
     backgroundColor: '#EFEFEF',
     marginRight: 10,
@@ -157,7 +158,7 @@ export const styles = StyleSheet.create({
     marginBottom: 15,
   },
   mmessage: {
-    maxWidth: '50%',
+    maxWidth: '80%',
     backgroundColor: '#E9E9F0',
     paddingHorizontal: 15,
     paddingTop: 15,
