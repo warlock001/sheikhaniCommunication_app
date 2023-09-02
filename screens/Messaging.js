@@ -52,7 +52,7 @@ const Messaging = ({ route, navigation }) => {
         user,
         timestamp: { hour, mins },
       });
-      textInputRef.clear(); // Clear the TextInput field
+      setMessage('')
     } else {
       // console.log("first")
     }
@@ -138,6 +138,7 @@ const Messaging = ({ route, navigation }) => {
 
       <View style={styles.messaginginputContainer}>
         <TextInput
+          value={message}
           ref={(inputRef) => {
             textInputRef = inputRef;
           }}

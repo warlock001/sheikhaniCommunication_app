@@ -269,7 +269,7 @@ export default function App() {
             options={{ headerShown: true }}
           />
           <Stack.Screen
-            name="DirectMessages"
+            name="DirectMessaging"
             component={DirectMessaging}
             options={{ headerShown: true }}
           />

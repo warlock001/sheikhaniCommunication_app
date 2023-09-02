@@ -19,7 +19,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Modal from "../component/Modal";
-import ChatComponent from "../component/ChatComponent";
+import ChatComponent from "../component/DirectChatComponent";
 import socket from "../utils/socket";
 import { styles } from "../utils/styles";
 import { TextInput } from "react-native-paper";
@@ -37,7 +37,7 @@ export default function DirectMessagesScreen({ navigation }) {
   const [department, setDepartment] = useState("");
 
   const handleNavigation = (id, name) => {
-    navigation.navigate("DirectMessages", {
+    navigation.navigate("DirectMessaging", {
       id: id,
       name: name,
     });
