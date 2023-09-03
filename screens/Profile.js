@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   ScrollView,
+  PermissionsAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
@@ -15,6 +16,8 @@ import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
 import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 import axios from 'axios';
 const Profile = () => {
   const navigation = useNavigation();
@@ -71,13 +74,97 @@ const Profile = () => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
           );
-          console.log(res.data);
         });
     }
-    console.log('ye rahi dp', {profilepictureURL});
 
     getProfilePictureURL();
   }, []);
+
+  const [image, setImage] = useState('');
+
+  const chooseImage = async () => {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    }
+
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, async response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        setImageName(response.assets[0].uri);
+        setImage({
+          uri: response.assets[0].uri,
+          name: `${new Date()}_profilePicture.jpg`,
+          type: mime.getType(response.assets[0].uri),
+        });
+      }
+    });
+  };
+
+  const [pickermodalVisible, setpickerModalVisible] = useState(false);
+
+  async function sendData() {
+    console.log({
+      petType: petType,
+      breed: breed,
+      age: age,
+      color: color,
+      petDescription: petDescription,
+      phone: phone,
+      dialCode: dialCode,
+    });
+
+    if (!image) {
+      Alert.alert('', 'Please select an Image to upload.', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    } else {
+      id = await AsyncStorage.getItem('@id');
+      const form = new FormData();
+      form.append('image', image);
+
+      form.append('id', id);
+      axios({
+        method: 'POST',
+        url: `http://192.168.100.26:3001/profilepicture`,
+        data: form,
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'multipart/form-data', // add this
+        },
+      })
+        .then(res => {
+          console.log(res.message);
+          setpickerModalVisible(true);
+        })
+        .catch(err => {
+          console.log(err);
+          Alert.alert('', 'Unknown Error Occured', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ]);
+        });
+    }
+  }
 
   return (
     <SafeAreaView
@@ -126,7 +213,10 @@ const Profile = () => {
                 source={{uri: profilepictureURL}}
               />
             </Pressable>
-            <Pressable //
+            <Pressable
+              onPress={async () => {
+                await chooseImage();
+              }}
               style={{
                 position: 'absolute',
                 bottom: 0,
