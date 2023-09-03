@@ -69,8 +69,10 @@ export default function SignIn({ navigation }) {
         await AsyncStorage.setItem('@id', res.data._id);
         await AsyncStorage.setItem('@jwt', res.data.token);
         await AsyncStorage.setItem('@role', res.data.role);
+        await AsyncStorage.setItem('@email', res.data.email);
         await AsyncStorage.setItem('@department', res.data.department);
         await AsyncStorage.setItem('@username', res.data.firstName);
+        await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
         const value = await AsyncStorage.getItem('@username');
         console.log(value);
         console.log('second');

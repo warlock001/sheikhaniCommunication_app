@@ -15,6 +15,7 @@ import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
 import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
+import axios from 'axios';
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -33,13 +34,18 @@ const Profile = () => {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [profileUsername, setUser] = useState('');
+  const [profileEmail, setEmail] = useState('');
 
   const getUsername = async () => {
     try {
       const profileUsername = await AsyncStorage.getItem('@username');
+      const profileEmail = await AsyncStorage.getItem('@email');
       console.log(profileUsername);
       if (profileUsername !== null) {
         setUser(profileUsername);
+      }
+      if (profileEmail !== null) {
+        setEmail(profileEmail);
       }
     } catch (e) {
       console.error('Error while loading username!');
@@ -53,6 +59,25 @@ const Profile = () => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+
+  const [profilepictureURL, setprofilepictureURL] = useState('');
+
+  useEffect(() => {
+    async function getProfilePictureURL() {
+      const profilepicture = await AsyncStorage.getItem('@profilepicture');
+      axios
+        .get(`http://192.168.100.98:3001/files/${profilepicture}/true`)
+        .then(res => {
+          setprofilepictureURL(
+            `data:${res.headers['content-type']};base64,${res.data}`,
+          );
+          console.log(res.data);
+        });
+    }
+    console.log('ye rahi dp', {profilepictureURL});
+
+    getProfilePictureURL();
+  }, []);
 
   return (
     <SafeAreaView
@@ -98,7 +123,7 @@ const Profile = () => {
                   height: '100%',
                   borderRadius: 100,
                 }}
-                source={require('../images/ProfileDemo.jpg')}
+                source={{uri: profilepictureURL}}
               />
             </Pressable>
             <Pressable //
@@ -113,6 +138,7 @@ const Profile = () => {
                 borderRadius: 100,
               }}>
               <Image
+                id="editprofile"
                 resizeMode="contain"
                 source={require('../images/EditProfile.png')}
               />
@@ -132,7 +158,7 @@ const Profile = () => {
             {profileUsername}
           </Text>
           <Text style={{fontSize: 16, marginBottom: 45, color: '#8F8F8F'}}>
-            brucenelson@yourcompany.com
+            {profileEmail}
           </Text>
           <View
             style={{

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -11,13 +11,13 @@ import {
   Alert,
   KeyboardAvoidingView,
   TouchableOpacity,
-} from "react-native";
-import Modal from "../component/Modal";
-import { TextInput } from "react-native-paper";
-import TextField from "../component/inputField";
-import ChatComponent from "../component/ChatComponent";
-import socket from "../utils/socket";
-import { styles } from "../utils/styles";
+} from 'react-native';
+import Modal from '../component/Modal';
+import { TextInput } from 'react-native-paper';
+import TextField from '../component/inputField';
+import ChatComponent from '../component/ChatComponent';
+import socket from '../utils/socket';
+import { styles } from '../utils/styles';
 
 const Home = () => {
   const [visible, setVisible] = useState(false);
@@ -34,7 +34,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("roomsList", (rooms) => {
+    socket.on('roomsList', rooms => {
       setRooms(rooms);
     });
   }, [socket]);
@@ -56,14 +56,14 @@ const Home = () => {
         <Text style={styles.pageHeading}>Welcome to your workspace</Text>
         <Text style={styles.pageSubHeading}>
           Chats moved to workspace are snoozed after your work hours.
-          <Text style={{ fontWeight: "600" }}>Manage work hours</Text>
+          <Text style={{ fontWeight: '600' }}>Manage work hours</Text>
         </Text>
       </View>
       <View style={{ marginTop: 13 }}>
         <TextField
           style={{ marginBottom: 5 }}
           label="Search by name"
-          onChangeText={(text) => {
+          onChangeText={text => {
             setPassword(text);
           }}
           right={
@@ -72,12 +72,11 @@ const Home = () => {
                 <TouchableOpacity
                   onPress={() => {
                     setShowPassword(!showPassword);
-                  }}
-                >
+                  }}>
                   <Image
                     resizeMode="contain"
                     style={{ width: 25 }}
-                    source={require("../images/filter.png")}
+                    source={require('../images/filter.png')}
                   />
                 </TouchableOpacity>
               )}
@@ -91,7 +90,7 @@ const Home = () => {
           <FlatList
             data={rooms}
             renderItem={({ item }) => <ChatComponent item={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
           />
         ) : (
           <View style={styles.chatemptyContainer}>
@@ -100,7 +99,7 @@ const Home = () => {
           </View>
         )}
       </View>
-      {visible ? <Modal setVisible={setVisible} /> : ""}
+      {visible ? <Modal setVisible={setVisible} /> : ''}
     </SafeAreaView>
   );
 };
