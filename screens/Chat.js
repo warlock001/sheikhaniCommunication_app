@@ -143,8 +143,8 @@ export default function Chat({navigation}) {
                 fontFamily: 'Pacifico-Regular',
               }}>
               {username},
-            </Text>
-            You can check your recent & new chats here
+            </Text>{' '}
+            Check your recent & new chats here
           </Text>
           {/* <Text style={styles.pageSubHeading}>
             <Text style={{ fontWeight: "600" }}>Manage work hours</Text>
