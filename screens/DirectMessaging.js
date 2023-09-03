@@ -9,12 +9,11 @@ import {
   Pressable,
 } from "react-native";
 import socket from "../utils/socket";
-import MessageComponent from "../component/MessageComponent";
+import DirectMessageComponent from "../component/DirectMessageComponent";
 import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import DirectMessagesScreen from "./DirectMessagesScreen";
-import DirectMessageComponent from "../component/DirectMessageComponent";
+import DirectChatComponent from "../component/DirectChatComponent";
 
 let flatlistRef;
 let textInputRef; // Define the ref
@@ -56,7 +55,7 @@ const DirectMessaging = ({ route, navigation }) => {
         : `${new Date().getMinutes()}`;
 
     const myId = await AsyncStorage.getItem("@id");
-    axios.post('http://192.168.0.104:3001/saveMessage', {
+    axios.post('http://192.168.100.26:3001/saveMessage', {
       senderid: myId,
       message: message,
       roomid: roomId,
@@ -118,7 +117,7 @@ const DirectMessaging = ({ route, navigation }) => {
         const myId = await AsyncStorage.getItem("@id");
         let roomid = createRoomId(id, myId)
         console.log("fetching messages for room id -", roomid)
-        await axios.get(`http://192.168.0.104:3001/getMessage?roomid=${roomid}`).then(res => {
+        await axios.get(`http://192.168.100.26:3001/getMessage?roomid=${roomid}`).then(res => {
           setChatMessages(res.data.messages)
 
         }).catch(err => {
@@ -157,7 +156,7 @@ const DirectMessaging = ({ route, navigation }) => {
             }}
             data={chatMessages}
             renderItem={({ item }) => (
-              <DirectMessageComponent item={item} user={user} />
+              <DirectChatComponent item={item} user={user} />
             )}
             keyExtractor={(item) => item._id}
             onContentSizeChange={() =>

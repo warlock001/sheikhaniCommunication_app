@@ -3,13 +3,13 @@ import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const ChatComponent = ({ item, username }) => {
+const DirectChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   console.log("item : " + JSON.stringify(item));
 
   useLayoutEffect(() => {
-    setMessages(item.messages[item.messages.length - 1]);
+    // setMessages(item.messages[item.messages.length - 1]);
     console.log("item : " + JSON.stringify(item));
     async function getUserName() { }
     getUserName();
@@ -58,4 +58,4 @@ const ChatComponent = ({ item, username }) => {
   );
 };
 
-export default ChatComponent;
+export default DirectChatComponent;

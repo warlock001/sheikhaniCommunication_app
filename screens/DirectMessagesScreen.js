@@ -63,28 +63,6 @@ export default function DirectMessagesScreen({ navigation }) {
     </TouchableOpacity>
   );
 
-
-
-  useFocusEffect(
-    React.useCallback(() => {
-      socket.on("roomsList", async (rooms) => {
-        setRooms(rooms);
-        console.log("socket rooms : " + JSON.stringify(rooms));
-        await AsyncStorage.setItem("@rooms", JSON.stringify(rooms));
-      });
-    })
-  );
-
-  useEffect(() => {
-    async function getRooms() {
-      let rooms = await AsyncStorage.getItem("@rooms");
-      rooms = JSON.parse(rooms);
-      console.log("rooms :" + JSON.stringify(rooms));
-      setRooms(rooms ? rooms : []);
-    }
-    getRooms();
-  }, []);
-
   useEffect(() => {
     async function getValue() {
       const value = await AsyncStorage.getItem("@department");
@@ -100,13 +78,41 @@ export default function DirectMessagesScreen({ navigation }) {
     getValue();
   });
 
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getChats() {
+        const id = await AsyncStorage.getItem("@id");
+        axios.get(`http://192.168.100.26:3001/recentChats?id=${id}`).then(results => {
+          console.log(results.data.recentChats[0].chats)
+          setRooms(results.data.recentChats[0].chats ? results.data.recentChats[0].chats : [])
+
+        })
+
+      }
+
+      getChats()
+    }, [])
+  )
+
+  // useEffect(() => {
+  //   async function getRooms() {
+  //     let rooms = await AsyncStorage.getItem("@rooms");
+  //     rooms = JSON.parse(rooms);
+  //     console.log("rooms :" + JSON.stringify(rooms));
+  //     setRooms(rooms ? rooms : []);
+  //   }
+  //   getRooms();
+  // }, []);
+
+
+
   useEffect(() => {
     async function getUsers() {
       const department = await AsyncStorage.getItem("@department");
       const id = await AsyncStorage.getItem("@id");
       axios
         .get(
-          `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`
+          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`
         )
         .then((res) => {
           // console.log(res.data.user)
@@ -117,7 +123,7 @@ export default function DirectMessagesScreen({ navigation }) {
     getUsers();
   }, [search]);
 
-  const handleCreateGroup = () => setVisible(true);
+
 
   return (
     <TouchableWithoutFeedback accessible={false}>
@@ -191,7 +197,7 @@ export default function DirectMessagesScreen({ navigation }) {
             { display: searchedUsersVisible ? "none" : "flex" },
           ]}
         >
-          {rooms.length > 0 ? (
+          {rooms ? (
             <FlatList
               extraData={rooms}
               data={rooms}
