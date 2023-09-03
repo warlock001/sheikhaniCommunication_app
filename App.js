@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -25,22 +25,25 @@ import {
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 //👇🏻 React libraries
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {styles} from './utils/styles';
-import Home from './screens/Home';
-import Profile from './screens/Profile';
-import Announcements from './screens/Announcements';
-import SplashScreen from 'react-native-splash-screen';
-import SplashScreenComponent from './component/SplashScreenComponent';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./utils/styles";
+import Home from "./screens/Home";
+import Profile from "./screens/Profile";
+import Announcements from "./screens/Announcements";
+import SplashScreen from "react-native-splash-screen";
+import SplashScreenComponent from "./component/SplashScreenComponent";
+import DirectMessages from "./screens/DirectMessagesScreen";
+import DirectMessagesScreen from "./screens/DirectMessagesScreen";
+import DirectMessaging from "./screens/DirectMessaging";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function MyTabBar({state, descriptors, navigation}) {
+function MyTabBar({ state, descriptors, navigation }) {
   console.log(descriptors);
   return (
     <View
@@ -51,13 +54,13 @@ function MyTabBar({state, descriptors, navigation}) {
         justifyContent: 'space-evenly',
       }}>
       {state.routes.map((route, index) => {
-        const {options} = descriptors[route.key];
+        const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-            ? options.title
-            : route.name;
+              ? options.title
+              : route.name;
 
         const isFocused = state.index === index;
 
@@ -82,45 +85,45 @@ function MyTabBar({state, descriptors, navigation}) {
         return (
           <TouchableOpacity
             accessibilityRole="button"
-            accessibilityState={isFocused ? {selected: true} : {}}
+            accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             {isFocused ? (
               <Image
                 resizeMode="contain"
-                style={{width: 25}}
+                style={{ width: 25 }}
                 source={
                   label == 'Workspace'
                     ? require('./images/workspace.png')
                     : label == 'Groups'
-                    ? require('./images/groups.png')
-                    : label == 'Chats'
-                    ? require('./images/chats.png')
-                    : require('./images/account_circle.png')
+                      ? require('./images/groups.png')
+                      : label == 'Chats'
+                        ? require('./images/chats.png')
+                        : require('./images/account_circle.png')
                 }
               />
             ) : (
               <Image
                 resizeMode="contain"
-                style={{width: 25}}
+                style={{ width: 25 }}
                 source={
                   label == 'Workspace'
                     ? require('./images/workspace_inactive.png')
                     : label == 'Groups'
-                    ? require('./images/groups_inactive.png')
-                    : label == 'Chats'
-                    ? require('./images/chats_inactive.png')
-                    : require('./images/myaccount_inactive.png')
+                      ? require('./images/groups_inactive.png')
+                      : label == 'Chats'
+                        ? require('./images/chats_inactive.png')
+                        : require('./images/myaccount_inactive.png')
                 }
               />
             )}
             <Text
               style={[
                 style.bottonTabText,
-                {color: isFocused ? '#003A9A' : '#222'},
+                { color: isFocused ? '#003A9A' : '#222' },
               ]}>
               {label}
             </Text>
@@ -134,23 +137,23 @@ function MyTabBar({state, descriptors, navigation}) {
 function HomeTabs() {
   return (
     <Tab.Navigator
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen
         name="Workspace"
         component={Chat}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       {/* <Tab.Screen name="Groups" component={Chat} /> */}
       <Tab.Screen
         name="Chats"
-        component={Chat}
-        options={{headerShown: false}}
+        component={DirectMessagesScreen}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="My Account"
         component={Profile}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Tab.Navigator>
   );
@@ -192,30 +195,30 @@ export default function App() {
     prepareApp();
   }, [appInit]); // Run this effect when appInit changes
 
-  function HomeStack({route, navigation}) {
-    const {shouldRedirect, UserRole} = route.params;
+  function HomeStack({ route, navigation }) {
+    const { shouldRedirect, UserRole } = route.params;
     useEffect(() => {
       console.log(UserRole);
       if (shouldRedirect === true) {
-        navigation.navigate({name: 'OnBoarding1', merge: true});
+        navigation.navigate({ name: 'OnBoarding1', merge: true });
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{name: 'OnBoarding1'}],
+            routes: [{ name: 'OnBoarding1' }],
           }),
         );
       } else if (UserRole == 'rescuer') {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{name: 'RescueCenter'}],
+            routes: [{ name: 'RescueCenter' }],
           }),
         );
       } else if (UserRole == 'client') {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{name: 'Home'}],
+            routes: [{ name: 'Home' }],
           }),
         );
       }
@@ -235,44 +238,49 @@ export default function App() {
           <Stack.Screen
             name="OnBoarding"
             component={OnBoarding}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Login"
             component={Login}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Home"
             component={HomeTabs}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Messaging"
             component={Messaging}
-            options={{headerShown: true}}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="Announcements"
             component={Announcements}
-            options={{headerShown: true}}
+            options={{ headerShown: true }}
           />
           <Stack.Screen
             name="AnnouncementPreview"
             component={AnnouncementPreview}
-            options={{headerShown: false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="AccountSettings"
             component={AccountSettings}
-            options={{headerShown: true}}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="DirectMessaging"
+            component={DirectMessaging}
+            options={{ headerShown: true }}
           />
         </Stack.Navigator>
       ) : (
         <SplashScreenComponent
           name="Splash"
           component={SplashScreenComponent}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           onSplashEnd={handleSplashEnd}
         />
       )}

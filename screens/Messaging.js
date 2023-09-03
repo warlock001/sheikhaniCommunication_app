@@ -1,16 +1,16 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {View, TextInput, Image, Text, FlatList, Pressable} from 'react-native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { View, TextInput, Image, Text, FlatList, Pressable } from 'react-native';
 import socket from '../utils/socket';
 import MessageComponent from '../component/MessageComponent';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const Messaging = ({route, navigation}) => {
+const Messaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
-  const {name, id} = route.params;
+  const { name, id } = route.params;
 
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -43,9 +43,9 @@ const Messaging = ({route, navigation}) => {
         message,
         room_id: id,
         user,
-        timestamp: {hour, mins},
+        timestamp: { hour, mins },
       });
-      textInputRef.clear(); // Clear the TextInput field
+      setMessage('')
     } else {
       // console.log("first")
     }
@@ -53,7 +53,7 @@ const Messaging = ({route, navigation}) => {
 
   useLayoutEffect(() => {
     async function findRoom() {
-      navigation.setOptions({title: name});
+      navigation.setOptions({ title: name });
       getUsername();
       const sender = await AsyncStorage.getItem('@username');
       let roomMessages = await AsyncStorage.getItem('@roomMessages');
@@ -107,7 +107,7 @@ const Messaging = ({route, navigation}) => {
       <View
         style={[
           styles.messagingscreen,
-          {paddingVertical: 15, paddingHorizontal: 10},
+          { paddingVertical: 15, paddingHorizontal: 10 },
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -115,12 +115,12 @@ const Messaging = ({route, navigation}) => {
               flatlistRef = ref;
             }}
             data={chatMessages}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <MessageComponent item={item} user={user} />
             )}
             keyExtractor={item => item.id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({animated: false})
+              flatlistRef.scrollToEnd({ animated: false })
             }
           />
         ) : (
@@ -131,6 +131,7 @@ const Messaging = ({route, navigation}) => {
       <View style={styles.messaginginputContainer}>
         <TextInput
           multiline={true}
+          value={message}
           ref={inputRef => {
             textInputRef = inputRef;
           }}
@@ -145,7 +146,7 @@ const Messaging = ({route, navigation}) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{width: 30, height: 30, marginRight: 5}}
+              style={{ width: 30, height: 30, marginRight: 5 }}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
