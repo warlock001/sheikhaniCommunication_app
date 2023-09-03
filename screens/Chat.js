@@ -135,9 +135,20 @@ export default function Chat({navigation}) {
 
           <Text style={styles.pageHeading}>All Chats</Text>
           <Text style={styles.pageSubHeading}>
+            Hello{' '}
+            <Text
+              style={{
+                fontSize: 16,
+                color: '#000',
+                fontFamily: 'Pacifico-Regular',
+              }}>
+              {username},
+            </Text>
             You can check your recent & new chats here
-            {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
+          {/* <Text style={styles.pageSubHeading}>
+            <Text style={{ fontWeight: "600" }}>Manage work hours</Text>
+          </Text> */}
         </View>
         <View style={{marginTop: 13}}>
           <KeyboardAvoidingView>
