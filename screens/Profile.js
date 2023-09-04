@@ -17,8 +17,8 @@ import socket from '../utils/socket';
 import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
 import {launchImageLibrary} from 'react-native-image-picker';
-
 import axios from 'axios';
+
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -69,10 +69,14 @@ const Profile = () => {
     async function getProfilePictureURL() {
       const profilepicture = await AsyncStorage.getItem('@profilepicture');
       axios
-        .get(`http://192.168.100.98:3001/files/${profilepicture}/true`)
+        .get(`http://192.168.0.103:3001/files/${profilepicture}/true`)
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
+            console.log(
+              'hello it is the profile pciture here',
+              profilepictureURL,
+            ),
           );
         });
     }
@@ -368,7 +372,7 @@ const Profile = () => {
       </View>
       <ImageModal
         visible={isModalVisible}
-        profileImage={require('../images/ProfileDemo.jpg')} // Pass the profile image to the modal
+        profileImage={{uri: profilepictureURL}} // Pass the profile image to the modal
         onClose={toggleModal}
       />
     </SafeAreaView>
