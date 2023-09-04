@@ -1,12 +1,23 @@
 import { View, Text, Image } from "react-native";
-import React from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
 export default function DirectMessageComponent({ item, user }) {
-  const myId = AsyncStorage.getItem("@id");
-  const status = item.senderid == myId;
+
+  const [status, setStatus] = useState('');
   const date = new Date(item.createdAt);
 
+  useLayoutEffect(() => {
+    async function getStatus() {
+      const myId = await AsyncStorage.getItem("@id");
+      console.log(myId)
+      console.log(item.senderid == myId)
+      setStatus(item.senderid !== myId)
+    }
+
+    getStatus()
+  }, [])
   const hour =
     date.getHours() < 10
       ? `0${date.getHours()}`
@@ -87,18 +98,39 @@ export default function DirectMessageComponent({ item, user }) {
           {status ? (
             ""
           ) : (
-            <Image
-              resizeMode="cover"
-              style={{
-                width: 30,
-                height: 30,
-                marginTop: 'auto'
-              }}
-              source={require("../images/myaccount.png")}
-            />
+            <View style={{ marginTop: 'auto', alignItems: 'center' }}>
+              {item.seen ?
+                <Image
+                  resizeMode="contain"
+                  style={{
+                    display: 'flex',
+                    marginTop: 'auto'
+                  }}
+                  source={require("../images/seen.png")}
+                />
+                : <Image
+                  resizeMode="contain"
+                  style={{
+                    display: 'flex',
+                    marginTop: 'auto'
+                  }}
+                  source={require("../images/delivered.png")}
+                />
+              }
+              <Image
+                resizeMode="cover"
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginTop: 'auto'
+                }}
+                source={require("../images/myaccount.png")}
+              />
+
+            </View>
           )}
         </View>
       </View>
-    </View>
+    </View >
   );
 }
