@@ -32,9 +32,6 @@ const DirectMessaging = ({ route, navigation }) => {
   const getUsername = async () => {
     try {
       const value = await AsyncStorage.getItem("@username");
-      console.log("second")
-      console.log(value);
-
       if (value !== null) {
         setUser(value);
       }
@@ -59,7 +56,7 @@ const DirectMessaging = ({ route, navigation }) => {
       senderid: myId,
       message: message,
       roomid: roomId,
-      recieverid: id
+      recieverid: id,
     }).then(res => {
       console.log("message send - ", res.data)
       let data = {
@@ -70,6 +67,7 @@ const DirectMessaging = ({ route, navigation }) => {
           message: message,
           roomid: roomId,
           recieverid: id,
+          seen: false,
           createdAt: new Date(),
           updatedAt: new Date()
         }
@@ -92,7 +90,6 @@ const DirectMessaging = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     async function setup() {
-      console.log("first")
       navigation.setOptions({ title: name });
       getUsername();
 
@@ -129,13 +126,39 @@ const DirectMessaging = ({ route, navigation }) => {
     }, [])
   )
 
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function readReceipt() {
+        const myId = await AsyncStorage.getItem("@id");
+        let roomid = createRoomId(id, myId)
+        console.log("Updating Read Receipts -", roomid + " recipient", id)
+        let data = {
+          roomid: roomid,
+          recipient: id,
+          id: myId
+        }
+        socket.emit('read_receipt', data)
+
+      }
+
+      readReceipt()
+    }, [])
+  )
+
   useEffect(() => {
     async function listen() {
       console.log("listining to incoming messages")
       socket.on('receive_message', async (data) => {
         console.log("message recieved - ", data.message.message)
         setChatMessages(chatMessages => [...chatMessages, data.message]);
-        console.log([...chatMessages, data.message])
+      })
+
+      socket.on('update_read_receipt', async data => {
+        let temp = chatMessages;
+        temp.forEach((item, index) => {
+          temp[index].seen = true
+        })
       })
     }
     listen()
@@ -156,7 +179,7 @@ const DirectMessaging = ({ route, navigation }) => {
             }}
             data={chatMessages}
             renderItem={({ item }) => (
-              <DirectChatComponent item={item} user={user} />
+              <DirectMessageComponent item={item} user={user} />
             )}
             keyExtractor={(item) => item._id}
             onContentSizeChange={() =>

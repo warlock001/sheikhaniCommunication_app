@@ -19,13 +19,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Modal from "../component/Modal";
-import ChatComponent from "../component/DirectChatComponent";
+import DirectChatComponent from "../component/DirectChatComponent";
 import socket from "../utils/socket";
 import { styles } from "../utils/styles";
 import { TextInput } from "react-native-paper";
 import TextField from "../component/inputField";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-
+import MessageComponent from "../component/MessageComponent";
 export default function DirectMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -43,25 +43,42 @@ export default function DirectMessagesScreen({ navigation }) {
     });
   };
 
-  const Item = ({ props }) => (
-    <TouchableOpacity
-      onPress={() => {
-        handleNavigation(props.id, props.title);
-      }}
-    >
-      <View style={style.item}>
+  function Item({ props }) {
+    const [image, setImage] = useState(false);
 
+    useLayoutEffect(() => {
+      async function getImage() {
+        axios.get(`http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`).then(image => {
+          setImage(`data:${image.headers['content-type']};base64,${image.data}`)
+        }).catch(err => {
+          console.log(err)
+        })
+      }
 
-        <Image
-          resizeMode="cover"
-          style={[styles.mavatar, { marginTop: "auto" }]}
-          source={require("../images/ProfileDemo.jpg")}
-          width={30}
-        />
-        <Text style={{ color: '#000', fontSize: 18, fontWeight: "bold" }}>{props.title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+      getImage()
+    })
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          handleNavigation(props.id, props.title);
+        }}
+      >
+        <View style={style.item}>
+
+          {image ?
+            <Image
+              resizeMode="cover"
+              style={[styles.mavatar, { marginTop: "auto" }]}
+              source={{ uri: image }}
+              width={30}
+            />
+            : ''
+          }
+          <Text style={{ color: '#000', fontSize: 18, fontWeight: "bold" }}>{props.title}</Text>
+        </View>
+      </TouchableOpacity>)
+  }
+  ;
 
   useEffect(() => {
     async function getValue() {
@@ -82,10 +99,8 @@ export default function DirectMessagesScreen({ navigation }) {
     React.useCallback(() => {
       async function getChats() {
         const id = await AsyncStorage.getItem("@id");
-        axios.get(`http://192.168.100.26:3001/recentChats?id=${id}`).then(results => {
-          console.log(results.data.recentChats[0].chats)
-          setRooms(results.data.recentChats[0].chats ? results.data.recentChats[0].chats : [])
-
+        await axios.get(`http://192.168.100.26:3001/recentChats?id=${id}`).then(results => {
+          setRooms(results.data.recentChats[0].chats)
         })
 
       }
@@ -98,7 +113,7 @@ export default function DirectMessagesScreen({ navigation }) {
   //   async function getRooms() {
   //     let rooms = await AsyncStorage.getItem("@rooms");
   //     rooms = JSON.parse(rooms);
-  //     console.log("rooms :" + JSON.stringify(rooms));
+  //     console.log("rooms :" + JSON.stringify(rooms));setSearchedUsers
   //     setRooms(rooms ? rooms : []);
   //   }
   //   getRooms();
@@ -115,7 +130,6 @@ export default function DirectMessagesScreen({ navigation }) {
           `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`
         )
         .then((res) => {
-          // console.log(res.data.user)
           setSearchedUsers(res.data.user);
         });
     }
@@ -184,7 +198,7 @@ export default function DirectMessagesScreen({ navigation }) {
               showsVerticalScrollIndicator={true}
               data={searchedUsers}
               renderItem={({ item }) => (
-                <Item props={{ title: item.firstName, id: item._id }} />
+                <Item props={{ title: item.firstName, id: item._id, profilePicture: item.profilePicture }} />
               )}
               keyExtractor={(item) => item._id}
             />
@@ -197,14 +211,14 @@ export default function DirectMessagesScreen({ navigation }) {
             { display: searchedUsersVisible ? "none" : "flex" },
           ]}
         >
-          {rooms ? (
+          {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
               extraData={rooms}
               data={rooms}
               renderItem={({ item }) => (
-                <ChatComponent item={item} username={username} />
+                <DirectChatComponent item={item} username={username} />
               )}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.user}
             />
           ) : (
             <View style={styles.chatemptyContainer}>

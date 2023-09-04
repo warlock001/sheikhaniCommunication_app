@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,13 +10,13 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
 import Modal from '../component/Modal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import ImageModal from '../component/ImageModal';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import axios from 'axios';
 const Profile = () => {
@@ -69,7 +69,7 @@ const Profile = () => {
     async function getProfilePictureURL() {
       const profilepicture = await AsyncStorage.getItem('@profilepicture');
       axios
-        .get(`http://192.168.100.98:3001/files/${profilepicture}/true`)
+        .get(`http://192.168.100.26:3001/files/${profilepicture}/true`)
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
@@ -136,7 +136,7 @@ const Profile = () => {
 
     if (!image) {
       Alert.alert('', 'Please select an Image to upload.', [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
     } else {
       id = await AsyncStorage.getItem('@id');
@@ -160,7 +160,7 @@ const Profile = () => {
         .catch(err => {
           console.log(err);
           Alert.alert('', 'Unknown Error Occured', [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
           ]);
         });
     }
@@ -210,7 +210,7 @@ const Profile = () => {
                   height: '100%',
                   borderRadius: 100,
                 }}
-                source={{uri: profilepictureURL}}
+                source={{ uri: profilepictureURL }}
               />
             </Pressable>
             <Pressable
@@ -247,7 +247,7 @@ const Profile = () => {
             }}>
             {profileUsername}
           </Text>
-          <Text style={{fontSize: 16, marginBottom: 45, color: '#8F8F8F'}}>
+          <Text style={{ fontSize: 16, marginBottom: 45, color: '#8F8F8F' }}>
             {profileEmail}
           </Text>
           <View
@@ -277,7 +277,7 @@ const Profile = () => {
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 25, height: 25, marginLeft: 5}}
+                  style={{ width: 25, height: 25, marginLeft: 5 }}
                   source={require('../images/settings.png')}
                 />
                 <Text
@@ -292,7 +292,7 @@ const Profile = () => {
               </View>
               <Image
                 resizeMode="contain"
-                style={{width: 16, height: 16, marginRight: 5}}
+                style={{ width: 16, height: 16, marginRight: 5 }}
                 source={require('../images/chevron_right.png')}
               />
             </Pressable>
@@ -316,7 +316,7 @@ const Profile = () => {
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 25, height: 25, marginLeft: 5}}
+                  style={{ width: 25, height: 25, marginLeft: 5 }}
                   source={require('../images/bookmark.png')}
                 />
                 <Text
@@ -331,7 +331,7 @@ const Profile = () => {
               </View>
               <Image
                 resizeMode="contain"
-                style={{width: 16, height: 16, marginRight: 5}}
+                style={{ width: 16, height: 16, marginRight: 5 }}
                 source={require('../images/chevron_right.png')}
               />
             </Pressable>
@@ -349,7 +349,7 @@ const Profile = () => {
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 25, height: 25}}
+                  style={{ width: 25, height: 25 }}
                   source={require('../images/logout.png')}
                 />
                 <Text
