@@ -146,7 +146,7 @@ const Profile = () => {
       form.append('id', id);
       axios({
         method: 'POST',
-        url: `http://192.168.100.26:3001/profilepicture`,
+        url: `http://192.168.0.103:3001/profilepicture`,
         data: form,
         headers: {
           accept: 'application/json',

@@ -1,6 +1,6 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import axios from "axios";
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import axios from 'axios';
 import {
   ImageBackground,
   StyleSheet,
@@ -31,13 +31,13 @@ export default function DirectMessagesScreen({ navigation }) {
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(false);
-  const [search, setSearch] = useState("");
-  const [username, setUsername] = useState("");
+  const [search, setSearch] = useState('');
+  const [username, setUsername] = useState('');
 
-  const [department, setDepartment] = useState("");
+  const [department, setDepartment] = useState('');
 
   const handleNavigation = (id, name) => {
-    navigation.navigate("DirectMessaging", {
+    navigation.navigate('DirectMessaging', {
       id: id,
       name: name,
     });
@@ -82,12 +82,12 @@ export default function DirectMessagesScreen({ navigation }) {
 
   useEffect(() => {
     async function getValue() {
-      const value = await AsyncStorage.getItem("@department");
+      const value = await AsyncStorage.getItem('@department');
       if (value) {
         setDepartment(value);
       }
 
-      const user = await AsyncStorage.getItem("@username");
+      const user = await AsyncStorage.getItem('@username');
       if (user) {
         setUsername(user);
       }
@@ -105,9 +105,9 @@ export default function DirectMessagesScreen({ navigation }) {
 
       }
 
-      getChats()
-    }, [])
-  )
+      getChats();
+    }, []),
+  );
 
   // useEffect(() => {
   //   async function getRooms() {
@@ -119,15 +119,13 @@ export default function DirectMessagesScreen({ navigation }) {
   //   getRooms();
   // }, []);
 
-
-
   useEffect(() => {
     async function getUsers() {
-      const department = await AsyncStorage.getItem("@department");
-      const id = await AsyncStorage.getItem("@id");
+      const department = await AsyncStorage.getItem('@department');
+      const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`
+          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then((res) => {
           setSearchedUsers(res.data.user);
@@ -137,13 +135,21 @@ export default function DirectMessagesScreen({ navigation }) {
     getUsers();
   }, [search]);
 
-
-
   return (
     <TouchableWithoutFeedback accessible={false}>
       <SafeAreaView style={styles.chatscreen}>
         <View>
-          <Text style={{ textAlign: "center", fontSize: 24, textDecorationLine: "underline", marginBottom: 10, fontWeight: "600", color: "#000" }}>Sheikhani Communication</Text>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 24,
+              textDecorationLine: 'underline',
+              marginBottom: 10,
+              fontWeight: '600',
+              color: '#000',
+            }}>
+            Sheikhani Communication
+          </Text>
 
           <Text style={styles.pageHeading}>All DMs</Text>
           <Text style={styles.pageSubHeading}>
@@ -160,7 +166,7 @@ export default function DirectMessagesScreen({ navigation }) {
               onBlur={() => setSearchedUsersVisible(false)}
               style={{ marginBottom: 5, color: '#000' }}
               label="Search by name"
-              onChangeText={(text) => {
+              onChangeText={text => {
                 setSearch(text);
               }}
               right={
@@ -171,14 +177,14 @@ export default function DirectMessagesScreen({ navigation }) {
                         <Image
                           resizeMode="contain"
                           style={{ width: 25 }}
-                          source={require("../images/close.png")}
+                          source={require('../images/close.png')}
                         />
                       </Pressable>
                     ) : (
                       <Image
                         resizeMode="contain"
                         style={{ width: 25 }}
-                        source={require("../images/search.png")}
+                        source={require('../images/search.png')}
                       />
                     )
                   }
@@ -189,9 +195,8 @@ export default function DirectMessagesScreen({ navigation }) {
           <View
             style={[
               styles.optionBox,
-              { display: searchedUsersVisible ? "flex" : "none" },
-            ]}
-          >
+              { display: searchedUsersVisible ? 'flex' : 'none' },
+            ]}>
             {/* <Text style={{ marginBottom: 10 }}>Search Users</Text> */}
             <FlatList
               keyboardShouldPersistTaps="handled"
@@ -200,7 +205,7 @@ export default function DirectMessagesScreen({ navigation }) {
               renderItem={({ item }) => (
                 <Item props={{ title: item.firstName, id: item._id, profilePicture: item.profilePicture }} />
               )}
-              keyExtractor={(item) => item._id}
+              keyExtractor={item => item._id}
             />
           </View>
         </View>
@@ -226,16 +231,16 @@ export default function DirectMessagesScreen({ navigation }) {
             </View>
           )}
         </View>
-        {visible ? <Modal setVisible={setVisible} /> : ""}
+        {visible ? <Modal setVisible={setVisible} /> : ''}
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 }
 const style = StyleSheet.create({
   item: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 16,
     paddingLeft: 5,
   },

@@ -1,33 +1,23 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import {
-  View,
-  TextInput,
-  Image,
-  Text,
-  FlatList,
-  Pressable,
-} from "react-native";
-import socket from "../utils/socket";
-import DirectMessageComponent from "../component/DirectMessageComponent";
-import { styles } from "../utils/styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import DirectChatComponent from "../component/DirectChatComponent";
+import { View, TextInput, Image, Text, FlatList, Pressable } from 'react-native';
+import socket from '../utils/socket';
+import DirectMessageComponent from '../component/DirectMessageComponent';
+import { styles } from '../utils/styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import DirectChatComponent from '../component/DirectChatComponent';
 
 let flatlistRef;
 let textInputRef; // Define the ref
 
 const DirectMessaging = ({ route, navigation }) => {
-
-
-
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState('');
   const { name, id } = route.params;
 
   const [chatMessages, setChatMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [roomId, setRoomId] = useState("");
+  const [message, setMessage] = useState('');
+  const [roomId, setRoomId] = useState('');
 
   const getUsername = async () => {
     try {
@@ -36,7 +26,7 @@ const DirectMessaging = ({ route, navigation }) => {
         setUser(value);
       }
     } catch (e) {
-      console.error("Error while loading username!");
+      console.error('Error while loading username!');
     }
   };
 
@@ -82,28 +72,25 @@ const DirectMessaging = ({ route, navigation }) => {
 
   const createRoomId = (id, myId) => {
     if (id > myId) {
-      return id + myId
+      return id + myId;
     } else {
-      return myId + id
+      return myId + id;
     }
-  }
+  };
 
   useLayoutEffect(() => {
     async function setup() {
       navigation.setOptions({ title: name });
       getUsername();
 
-      const myId = await AsyncStorage.getItem("@id");
+      const myId = await AsyncStorage.getItem('@id');
 
-      const roomid = createRoomId(id, myId)
-      setRoomId(roomid)
+      const roomid = createRoomId(id, myId);
+      setRoomId(roomid);
       let data = {
-        roomid: roomid
-      }
-      socket.emit('join_room', data)
-
-
-
+        roomid: roomid,
+      };
+      socket.emit('join_room', data);
     }
     setup();
   }, []);
@@ -148,9 +135,9 @@ const DirectMessaging = ({ route, navigation }) => {
 
   useEffect(() => {
     async function listen() {
-      console.log("listining to incoming messages")
-      socket.on('receive_message', async (data) => {
-        console.log("message recieved - ", data.message.message)
+      console.log('listining to incoming messages');
+      socket.on('receive_message', async data => {
+        console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
       })
 
@@ -161,56 +148,54 @@ const DirectMessaging = ({ route, navigation }) => {
         })
       })
     }
-    listen()
-  }, [socket])
+    listen();
+  }, [socket]);
   return (
     <View style={styles.messagingscreen}>
       <View
         style={[
           styles.messagingscreen,
           { paddingVertical: 15, paddingHorizontal: 10 },
-        ]}
-      >
+        ]}>
         {chatMessages[0] ? (
           <FlatList
             extraData={chatMessages}
-            ref={(ref) => {
+            ref={ref => {
               flatlistRef = ref;
             }}
             data={chatMessages}
             renderItem={({ item }) => (
               <DirectMessageComponent item={item} user={user} />
             )}
-            keyExtractor={(item) => item._id}
+            keyExtractor={item => item._id}
             onContentSizeChange={() =>
               flatlistRef.scrollToEnd({ animated: false })
             }
           />
         ) : (
-          ""
+          ''
         )}
       </View>
 
       <View style={styles.messaginginputContainer}>
         <TextInput
           value={message}
-          ref={(inputRef) => {
+          ref={inputRef => {
             textInputRef = inputRef;
           }}
           style={styles.messaginginput}
-          onChangeText={(value) => setMessage(value)}
+          onChangeText={value => setMessage(value)}
           placeholder="Write Message..."
           placeholderTextColor="#000"
         />
         <Pressable
           //   style={styles.messagingbuttonContainer}
-          onPress={handleNewMessage}
-        >
+          onPress={handleNewMessage}>
           <View>
             <Image
               resizeMode="contain"
               style={{ width: 30, height: 30, marginRight: 5 }}
-              source={require("../images/send.png")}
+              source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
           </View>
