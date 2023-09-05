@@ -37,7 +37,7 @@ const AnnouncementPreview = () => {
   const getUsername = async () => {
     try {
       const profileUsername = await AsyncStorage.getItem('@username');
-      console.log(profileUsername);
+      // console.log(profileUsername);
       if (profileUsername !== null) {
         setUser(profileUsername);
       }

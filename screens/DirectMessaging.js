@@ -21,7 +21,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
   const getUsername = async () => {
     try {
-      const value = await AsyncStorage.getItem("@username");
+      const value = await AsyncStorage.getItem('@username');
       if (value !== null) {
         setUser(value);
       }
@@ -118,21 +118,20 @@ const DirectMessaging = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       async function readReceipt() {
-        const myId = await AsyncStorage.getItem("@id");
-        let roomid = createRoomId(id, myId)
-        console.log("Updating Read Receipts -", roomid + " recipient", id)
+        const myId = await AsyncStorage.getItem('@id');
+        let roomid = createRoomId(id, myId);
+        console.log('Updating Read Receipts -', roomid + ' recipient', id);
         let data = {
           roomid: roomid,
           recipient: id,
-          id: myId
-        }
-        socket.emit('read_receipt', data)
-
+          id: myId,
+        };
+        socket.emit('read_receipt', data);
       }
 
-      readReceipt()
-    }, [])
-  )
+      readReceipt();
+    }, []),
+  );
 
   useEffect(() => {
     async function listen() {

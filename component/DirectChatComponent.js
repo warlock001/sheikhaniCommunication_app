@@ -1,9 +1,9 @@
-import { View, Image, Text, Pressable } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { styles } from "../utils/styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { View, Image, Text, Pressable } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from '../utils/styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 const DirectChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
@@ -20,8 +20,8 @@ const DirectChatComponent = ({ item, username }) => {
       : `${new Date(item.time).getMinutes()}`;
 
   useLayoutEffect(() => {
-
     async function getUserName() {
+      setMessages(item.lastMessage);
 
       setMessages(item.lastMessage)
 
@@ -37,7 +37,7 @@ const DirectChatComponent = ({ item, username }) => {
   }, []);
 
   const handleNavigation = () => {
-    navigation.navigate("DirectMessaging", {
+    navigation.navigate('DirectMessaging', {
       id: item.user,
       name: name,
     });
@@ -45,13 +45,12 @@ const DirectChatComponent = ({ item, username }) => {
 
   return (
     <Pressable style={styles.cchat} onPress={handleNavigation}>
-
       <View style={{ width: 65, height: 65, marginRight: 15 }}>
         <Image
           resizeMode="cover"
           style={{
-            width: "100%",
-            height: "100%",
+            width: '100%',
+            height: '100%',
             borderRadius: 100,
           }}
           source={{ uri: image }}
@@ -59,31 +58,45 @@ const DirectChatComponent = ({ item, username }) => {
       </View>
       <View style={styles.crightContainer}>
         <View>
-          <Text style={styles.cusername}>
-            {name}
-          </Text>
+          <Text style={styles.cusername}>{name}</Text>
 
           <Text style={styles.cmessage}>
-            {item.lastMessage ? JSON.stringify(item.lastMessage).length > 30 ? item.lastMessage.substring(0, 25) + "..." : item.lastMessage : "Tap to start chatting"}
+            {item.lastMessage
+              ? JSON.stringify(item.lastMessage).length > 30
+                ? item.lastMessage.substring(0, 25) + '...'
+                : item.lastMessage
+              : 'Tap to start chatting'}
           </Text>
         </View>
         <View>
           <Text style={styles.ctime}>
-            {hour && mins ? hour + ":" + mins : 'now'}
+            {hour && mins ? hour + ':' + mins : 'now'}
           </Text>
-          {
-            item.newMessages !== 0 ?
-              <View style={{ marginTop: 'auto', marginLeft: 'auto', display: 'flex', backgroundColor: '#003A9A', width: 25, height: 25, borderRadius: 50, padding: 2, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ textAlign: 'center', color: '#fff', }}>
-                  {item.newMessages}
-                </Text>
-              </View>
-              : ''
-          }
+          {item.newMessages !== 0 ? (
+            <View
+              style={{
+                marginTop: 'auto',
+                marginLeft: 'auto',
+                display: 'flex',
+                backgroundColor: '#003A9A',
+                width: 25,
+                height: 25,
+                borderRadius: 50,
+                padding: 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text style={{ textAlign: 'center', color: '#fff' }}>
+                {item.newMessages}
+              </Text>
+            </View>
+          ) : (
+            ''
+          )}
         </View>
       </View>
     </Pressable>
-  )
+  );
 };
 
 export default DirectChatComponent;

@@ -16,16 +16,16 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Modal from "../component/Modal";
-import DirectChatComponent from "../component/DirectChatComponent";
-import socket from "../utils/socket";
-import { styles } from "../utils/styles";
-import { TextInput } from "react-native-paper";
-import TextField from "../component/inputField";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
-import MessageComponent from "../component/MessageComponent";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Modal from '../component/Modal';
+import DirectChatComponent from '../component/DirectChatComponent';
+import socket from '../utils/socket';
+import { styles } from '../utils/styles';
+import { TextInput } from 'react-native-paper';
+import TextField from '../component/inputField';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import MessageComponent from '../component/MessageComponent';
 export default function DirectMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -55,31 +55,31 @@ export default function DirectMessagesScreen({ navigation }) {
         })
       }
 
-      getImage()
-    })
+      getImage();
+    });
     return (
       <TouchableOpacity
         onPress={() => {
           handleNavigation(props.id, props.title);
-        }}
-      >
+        }}>
         <View style={style.item}>
-
-          {image ?
+          {image ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: "auto" }]}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
               source={{ uri: image }}
               width={30}
             />
-            : ''
-          }
-          <Text style={{ color: '#000', fontSize: 18, fontWeight: "bold" }}>{props.title}</Text>
+          ) : (
+            ''
+          )}
+          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+            {props.title}
+          </Text>
         </View>
-      </TouchableOpacity>)
+      </TouchableOpacity>
+    );
   }
-  ;
-
   useEffect(() => {
     async function getValue() {
       const value = await AsyncStorage.getItem('@department');
@@ -127,7 +127,7 @@ export default function DirectMessagesScreen({ navigation }) {
         .get(
           `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`,
         )
-        .then((res) => {
+        .then(res => {
           setSearchedUsers(res.data.user);
         });
     }
@@ -203,7 +203,13 @@ export default function DirectMessagesScreen({ navigation }) {
               showsVerticalScrollIndicator={true}
               data={searchedUsers}
               renderItem={({ item }) => (
-                <Item props={{ title: item.firstName, id: item._id, profilePicture: item.profilePicture }} />
+                <Item
+                  props={{
+                    title: item.firstName,
+                    id: item._id,
+                    profilePicture: item.profilePicture,
+                  }}
+                />
               )}
               keyExtractor={item => item._id}
             />
@@ -213,9 +219,8 @@ export default function DirectMessagesScreen({ navigation }) {
         <View
           style={[
             styles.chatlistContainer,
-            { display: searchedUsersVisible ? "none" : "flex" },
-          ]}
-        >
+            { display: searchedUsersVisible ? 'none' : 'flex' },
+          ]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
               extraData={rooms}
@@ -223,7 +228,7 @@ export default function DirectMessagesScreen({ navigation }) {
               renderItem={({ item }) => (
                 <DirectChatComponent item={item} username={username} />
               )}
-              keyExtractor={(item) => item.user}
+              keyExtractor={item => item.user}
             />
           ) : (
             <View style={styles.chatemptyContainer}>
