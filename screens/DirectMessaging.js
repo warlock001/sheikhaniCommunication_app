@@ -14,7 +14,7 @@ let textInputRef; // Define the ref
 const DirectMessaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
   const { name, id } = route.params;
-
+  const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [roomId, setRoomId] = useState('');
@@ -42,7 +42,7 @@ const DirectMessaging = ({ route, navigation }) => {
         : `${new Date().getMinutes()}`;
 
     const myId = await AsyncStorage.getItem("@id");
-    axios.post('http://192.168.100.26:3001/saveMessage', {
+    axios.post('http://192.168.0.104:3001/saveMessage', {
       senderid: myId,
       message: message,
       roomid: roomId,
@@ -91,6 +91,7 @@ const DirectMessaging = ({ route, navigation }) => {
         roomid: roomid,
       };
       socket.emit('join_room', data);
+      // socket.emit('leave_room', data);
     }
     setup();
   }, []);
@@ -101,7 +102,7 @@ const DirectMessaging = ({ route, navigation }) => {
         const myId = await AsyncStorage.getItem("@id");
         let roomid = createRoomId(id, myId)
         console.log("fetching messages for room id -", roomid)
-        await axios.get(`http://192.168.100.26:3001/getMessage?roomid=${roomid}`).then(res => {
+        await axios.get(`http://192.168.0.104:3001/getMessage?roomid=${roomid}`).then(res => {
           setChatMessages(res.data.messages)
 
         }).catch(err => {
@@ -110,7 +111,7 @@ const DirectMessaging = ({ route, navigation }) => {
       }
 
       fetchMessages()
-    }, [])
+    }, [shouldUpdate])
   )
 
 
@@ -139,13 +140,32 @@ const DirectMessaging = ({ route, navigation }) => {
       socket.on('receive_message', async data => {
         console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
+
+        async function readReceipt() {
+          const myId = await AsyncStorage.getItem("@id");
+          let roomid = createRoomId(id, myId)
+          console.log("Updating Read Receipts -", roomid + " recipient", id)
+          let data = {
+            roomid: roomid,
+            recipient: id,
+            id: myId
+          }
+          socket.emit('read_receipt', data)
+
+        }
+
+        readReceipt()
       })
 
       socket.on('update_read_receipt', async data => {
-        let temp = chatMessages;
-        temp.forEach((item, index) => {
-          temp[index].seen = true
-        })
+        console.log("Chat messages -> ", chatMessages)
+        // let temp = chatMessages;
+        // temp.forEach((item, index) => {
+        //   temp[index].seen = true
+        // })
+        // console.log("Temp messages -> ", temp)
+        // setChatMessages(temp)
+        setShouldUpdate(!shouldUpdate)
       })
     }
     listen();

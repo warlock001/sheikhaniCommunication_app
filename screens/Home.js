@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -13,11 +13,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Modal from '../component/Modal';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 
 const Home = () => {
   const [visible, setVisible] = useState(false);
@@ -25,7 +25,7 @@ const Home = () => {
 
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch('http://192.168.0.103:4000/api')
+      fetch('http://192.168.0.104:4000/api')
         .then(res => res.json())
         .then(data => setRooms(data))
         .catch(err => console.error(err));
@@ -56,12 +56,12 @@ const Home = () => {
         <Text style={styles.pageHeading}>Welcome to your workspace</Text>
         <Text style={styles.pageSubHeading}>
           Chats moved to workspace are snoozed after your work hours.
-          <Text style={{fontWeight: '600'}}>Manage work hours</Text>
+          <Text style={{ fontWeight: '600' }}>Manage work hours</Text>
         </Text>
       </View>
-      <View style={{marginTop: 13}}>
+      <View style={{ marginTop: 13 }}>
         <TextField
-          style={{marginBottom: 5}}
+          style={{ marginBottom: 5 }}
           label="Search by name"
           onChangeText={text => {
             setPassword(text);
@@ -75,7 +75,7 @@ const Home = () => {
                   }}>
                   <Image
                     resizeMode="contain"
-                    style={{width: 25}}
+                    style={{ width: 25 }}
                     source={require('../images/filter.png')}
                   />
                 </TouchableOpacity>
@@ -89,7 +89,7 @@ const Home = () => {
         {rooms.length > 0 ? (
           <FlatList
             data={rooms}
-            renderItem={({item}) => <ChatComponent item={item} />}
+            renderItem={({ item }) => <ChatComponent item={item} />}
             keyExtractor={item => item.id}
           />
         ) : (

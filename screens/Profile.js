@@ -38,6 +38,7 @@ const Profile = () => {
   const [rooms, setRooms] = useState([]);
   const [profileUsername, setUser] = useState('');
   const [profileEmail, setEmail] = useState('');
+  const [shouldUpdate, setShouldUpdate] = useState(false);
 
   const getUsername = async () => {
     try {
@@ -69,7 +70,7 @@ const Profile = () => {
     async function getProfilePictureURL() {
       const profilepicture = await AsyncStorage.getItem('@profilepicture');
       axios
-        .get(`http://192.168.100.26:3001/files/${profilepicture}/true`)
+        .get(`http://192.168.0.104:3001/files/${profilepicture}/true`)
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
@@ -78,7 +79,7 @@ const Profile = () => {
     }
 
     getProfilePictureURL();
-  }, []);
+  }, [shouldUpdate]);
 
   const [image, setImage] = useState('');
 
@@ -146,7 +147,7 @@ const Profile = () => {
       form.append('id', id);
       axios({
         method: 'POST',
-        url: `http://192.168.0.103:3001/profilepicture`,
+        url: `http://192.168.0.104:3001/profilepicture`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -156,6 +157,7 @@ const Profile = () => {
         .then(res => {
           console.log(res.message);
           setpickerModalVisible(true);
+          setShouldUpdate(!shouldUpdate)
         })
         .catch(err => {
           console.log(err);
@@ -368,7 +370,7 @@ const Profile = () => {
       </View>
       <ImageModal
         visible={isModalVisible}
-        profileImage={require('../images/ProfileDemo.jpg')} // Pass the profile image to the modal
+        profileImage={{ uri: profilepictureURL }}
         onClose={toggleModal}
       />
     </SafeAreaView>
