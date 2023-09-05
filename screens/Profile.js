@@ -143,7 +143,7 @@ const Profile = () => {
 
       axios({
         method: 'POST',
-        url: `http://192.168.0.103:3001/profilePicture`,
+        url: `http://192.168.0.103:3001/profilepicture`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -151,7 +151,7 @@ const Profile = () => {
         },
       })
         .then(res => {
-          console.log('This is working');
+          console.log('This is working'); //nope
           console.log(res.message);
           setpickerModalVisible(true);
         })
@@ -161,7 +161,7 @@ const Profile = () => {
             console.log('Server Error:', error.response.data);
           } else if (error.request) {
             // The request was made but no response was received
-            console.log('Network Error:', error.request);
+            console.log('Network Error:', error.request); // This the error
           } else {
             // Something else happened while setting up the request
             console.log('Error:', error.message);
