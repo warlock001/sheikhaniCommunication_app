@@ -165,6 +165,7 @@ const Profile = () => {
           } else {
             // Something else happened while setting up the request
             console.log('Error:', error.message);
+            console.log('Error');
           }
 
           // You can display an error message to the user here
