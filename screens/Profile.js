@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
@@ -18,6 +19,8 @@ import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
 import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
+import ImageSelectModal from '../component/ImageSelectModal';
+const mime = require('mime');
 
 const Profile = () => {
   const navigation = useNavigation();
@@ -43,7 +46,9 @@ const Profile = () => {
     try {
       const profileUsername = await AsyncStorage.getItem('@username');
       const profileEmail = await AsyncStorage.getItem('@email');
-      console.log(profileUsername);
+      const id = await AsyncStorage.getItem('@id');
+
+      // console.log(profileUsername);
       if (profileUsername !== null) {
         setUser(profileUsername);
       }
@@ -73,11 +78,8 @@ const Profile = () => {
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
-            console.log(
-              'hello it is the profile pciture here',
-              profilepictureURL,
-            ),
           );
+          // console.log('Display Picture:', profilepictureURL);
         });
     }
 
@@ -85,6 +87,7 @@ const Profile = () => {
   }, []);
 
   const [image, setImage] = useState('');
+  const [imageName, setImageName] = useState('Choose an image');
 
   const chooseImage = async () => {
     if (Platform.OS === 'android') {
@@ -128,47 +131,55 @@ const Profile = () => {
   const [pickermodalVisible, setpickerModalVisible] = useState(false);
 
   async function sendData() {
-    console.log({
-      petType: petType,
-      breed: breed,
-      age: age,
-      color: color,
-      petDescription: petDescription,
-      phone: phone,
-      dialCode: dialCode,
-    });
-
     if (!image) {
       Alert.alert('', 'Please select an Image to upload.', [
         {text: 'OK', onPress: () => console.log('OK Pressed')},
       ]);
     } else {
-      id = await AsyncStorage.getItem('@id');
+      const id = await AsyncStorage.getItem('@id');
       const form = new FormData();
       form.append('image', image);
-
       form.append('id', id);
+
       axios({
         method: 'POST',
-        url: `http://192.168.0.103:3001/profilepicture`,
+        url: `http://192.168.0.103:3001/profilePicture`,
         data: form,
         headers: {
           accept: 'application/json',
-          'Content-Type': 'multipart/form-data', // add this
+          'Content-Type': 'multipart/form-data',
         },
       })
         .then(res => {
+          console.log('This is working');
           console.log(res.message);
           setpickerModalVisible(true);
         })
-        .catch(err => {
-          console.log(err);
-          Alert.alert('', 'Unknown Error Occured', [
+        .catch(error => {
+          if (error.response) {
+            // The request was made and the server responded with an error status code
+            console.log('Server Error:', error.response.data);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('Network Error:', error.request);
+          } else {
+            // Something else happened while setting up the request
+            console.log('Error:', error.message);
+          }
+
+          // You can display an error message to the user here
+          Alert.alert('', 'Unknown Error Occurred', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
         });
     }
   }
+
+  const [isEditModalVisible, setEditModalVisible] = useState(false); // State to control edit modal visibility
+
+  const toggleEditModal = () => {
+    setEditModalVisible(!isEditModalVisible);
+  };
 
   return (
     <SafeAreaView
@@ -218,9 +229,7 @@ const Profile = () => {
               />
             </Pressable>
             <Pressable
-              onPress={async () => {
-                await chooseImage();
-              }}
+              onPress={toggleEditModal} // Open the edit modal
               style={{
                 position: 'absolute',
                 bottom: 0,
@@ -237,6 +246,13 @@ const Profile = () => {
                 source={require('../images/EditProfile.png')}
               />
             </Pressable>
+            <ImageSelectModal
+              visible={isEditModalVisible}
+              onClose={toggleEditModal}
+              chooseImage={async () => await chooseImage()}
+              sendData={async () => await sendData()}
+              image={image}
+            />
           </View>
           <Text
             style={{
@@ -300,7 +316,6 @@ const Profile = () => {
                 source={require('../images/chevron_right.png')}
               />
             </Pressable>
-            {/* ------To uncomment when we build the Announcements section-------- */}
             <Pressable
               onPress={() => navigation.navigate('Announcements')}
               style={{

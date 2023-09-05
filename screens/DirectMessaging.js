@@ -1,9 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { View, TextInput, Image, Text, FlatList, Pressable } from 'react-native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+import {View, TextInput, Image, Text, FlatList, Pressable} from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
@@ -11,9 +11,9 @@ import DirectChatComponent from '../component/DirectChatComponent';
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const DirectMessaging = ({ route, navigation }) => {
+const DirectMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
 
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -21,7 +21,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
   const getUsername = async () => {
     try {
-      const value = await AsyncStorage.getItem("@username");
+      const value = await AsyncStorage.getItem('@username');
       if (value !== null) {
         setUser(value);
       }
@@ -41,33 +41,36 @@ const DirectMessaging = ({ route, navigation }) => {
         ? `0${new Date().getMinutes()}`
         : `${new Date().getMinutes()}`;
 
-    const myId = await AsyncStorage.getItem("@id");
-    axios.post('http://192.168.100.26:3001/saveMessage', {
-      senderid: myId,
-      message: message,
-      roomid: roomId,
-      recieverid: id,
-    }).then(res => {
-      console.log("message send - ", res.data)
-      let data = {
-        roomId: roomId,
-        message: {
-          _id: res.data.id,
-          senderid: myId,
-          message: message,
-          roomid: roomId,
-          recieverid: id,
-          seen: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      }
-      socket.emit('send_message', data)
-      setMessage('')
-    }).catch(err => {
-      console.log("error in sending message - ", err)
-      setMessage('')
-    })
+    const myId = await AsyncStorage.getItem('@id');
+    axios
+      .post('http://192.168.0.103:3001/saveMessage', {
+        senderid: myId,
+        message: message,
+        roomid: roomId,
+        recieverid: id,
+      })
+      .then(res => {
+        console.log('message send - ', res.data);
+        let data = {
+          roomId: roomId,
+          message: {
+            _id: res.data.id,
+            senderid: myId,
+            message: message,
+            roomid: roomId,
+            recieverid: id,
+            seen: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        };
+        socket.emit('send_message', data);
+        setMessage('');
+      })
+      .catch(err => {
+        console.log('error in sending message - ', err);
+        setMessage('');
+      });
   };
 
   const createRoomId = (id, myId) => {
@@ -80,7 +83,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     async function setup() {
-      navigation.setOptions({ title: name });
+      navigation.setOptions({title: name});
       getUsername();
 
       const myId = await AsyncStorage.getItem('@id');
@@ -98,40 +101,40 @@ const DirectMessaging = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       async function fetchMessages() {
-        const myId = await AsyncStorage.getItem("@id");
-        let roomid = createRoomId(id, myId)
-        console.log("fetching messages for room id -", roomid)
-        await axios.get(`http://192.168.100.26:3001/getMessage?roomid=${roomid}`).then(res => {
-          setChatMessages(res.data.messages)
-
-        }).catch(err => {
-          console.log("error fetching old messages -", err)
-        })
+        const myId = await AsyncStorage.getItem('@id');
+        let roomid = createRoomId(id, myId);
+        console.log('fetching messages for room id -', roomid);
+        await axios
+          .get(`http://192.168.0.103:3001/getMessage?roomid=${roomid}`)
+          .then(res => {
+            setChatMessages(res.data.messages);
+          })
+          .catch(err => {
+            console.log('error fetching old messages -', err);
+          });
       }
 
-      fetchMessages()
-    }, [])
-  )
-
+      fetchMessages();
+    }, []),
+  );
 
   useFocusEffect(
     React.useCallback(() => {
       async function readReceipt() {
-        const myId = await AsyncStorage.getItem("@id");
-        let roomid = createRoomId(id, myId)
-        console.log("Updating Read Receipts -", roomid + " recipient", id)
+        const myId = await AsyncStorage.getItem('@id');
+        let roomid = createRoomId(id, myId);
+        console.log('Updating Read Receipts -', roomid + ' recipient', id);
         let data = {
           roomid: roomid,
           recipient: id,
-          id: myId
-        }
-        socket.emit('read_receipt', data)
-
+          id: myId,
+        };
+        socket.emit('read_receipt', data);
       }
 
-      readReceipt()
-    }, [])
-  )
+      readReceipt();
+    }, []),
+  );
 
   useEffect(() => {
     async function listen() {
@@ -139,14 +142,14 @@ const DirectMessaging = ({ route, navigation }) => {
       socket.on('receive_message', async data => {
         console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
-      })
+      });
 
       socket.on('update_read_receipt', async data => {
         let temp = chatMessages;
         temp.forEach((item, index) => {
-          temp[index].seen = true
-        })
-      })
+          temp[index].seen = true;
+        });
+      });
     }
     listen();
   }, [socket]);
@@ -155,7 +158,7 @@ const DirectMessaging = ({ route, navigation }) => {
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -164,12 +167,12 @@ const DirectMessaging = ({ route, navigation }) => {
               flatlistRef = ref;
             }}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <DirectMessageComponent item={item} user={user} />
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
@@ -194,7 +197,7 @@ const DirectMessaging = ({ route, navigation }) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{ width: 30, height: 30, marginRight: 5 }}
+              style={{width: 30, height: 30, marginRight: 5}}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
