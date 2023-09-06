@@ -123,12 +123,6 @@ export default function DirectMessagesScreen({navigation}) {
           .then(results => {
             setRooms(results.data.recentChats[0].chats);
           });
-        const id = await AsyncStorage.getItem('@id');
-        await axios
-          .get(`http://192.168.0.100:3001/recentChats?id=${id}`)
-          .then(results => {
-            setRooms(results.data.recentChats[0].chats);
-          });
       }
 
       getChats();
