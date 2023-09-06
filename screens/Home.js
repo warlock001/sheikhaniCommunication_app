@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import Modal from '../component/Modal';
+import Modal from '../component/GroupCreatingModal';
 import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import ChatComponent from '../component/ChatComponent';

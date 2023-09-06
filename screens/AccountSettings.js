@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,12 +13,12 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
-import Modal from '../component/Modal';
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
-import {TextInput} from 'react-native-paper';
+import { styles } from '../utils/styles';
+import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 const Profile = () => {
   const navigation = useNavigation();
@@ -114,7 +114,7 @@ const Profile = () => {
       }}>
       <KeyboardAvoidingView>
         <ScrollView>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <Text
               style={{
                 fontSize: 18,
@@ -134,7 +134,7 @@ const Profile = () => {
             </Text>
             {editingPersonalDetails ? (
               <View>
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -149,7 +149,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{marginLeft: 30}}>
+                    style={{ marginLeft: 30 }}>
                     <Text
                       style={{
                         color: '#000',
@@ -172,21 +172,21 @@ const Profile = () => {
                       <TextField
                         label="First Name"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={firstName}
                         onChangeText={setFirstName}
                       />
                       <TextField
                         label="Last Name"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={lastName}
                         onChangeText={setLastName}
                       />
                       <TextField
                         label="Designation"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={designation}
                         onChangeText={setDesignation}
                       />
@@ -279,7 +279,7 @@ const Profile = () => {
                         }}>
                         <Image
                           resizeMode="contain"
-                          style={{width: 25, height: 25}}
+                          style={{ width: 25, height: 25 }}
                           source={require('../images/check.png')}
                         />
                         <Text
@@ -308,7 +308,7 @@ const Profile = () => {
                         }}>
                         <Image
                           resizeMode="contain"
-                          style={{width: 25, height: 25}}
+                          style={{ width: 25, height: 25 }}
                           source={require('../images/EditProfile3.png')}
                         />
                         <Text
@@ -327,7 +327,7 @@ const Profile = () => {
               </View>
             ) : (
               <View>
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -338,7 +338,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{marginLeft: 30}}>
+                    style={{ marginLeft: 30 }}>
                     <Text
                       style={{
                         borderBottomWidth: 3,
@@ -388,7 +388,7 @@ const Profile = () => {
                       Use at least one capital letter in the combination
                     </Text>
                     <TextField
-                      style={{marginBottom: 10}}
+                      style={{ marginBottom: 10 }}
                       label="Current Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showCurrentPassword ? false : true}
@@ -402,7 +402,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{width: 25}}
+                                style={{ width: 25 }}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -411,7 +411,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{marginBottom: 10}}
+                      style={{ marginBottom: 10 }}
                       label="New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword ? false : true}
@@ -425,7 +425,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{width: 25}}
+                                style={{ width: 25 }}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -434,7 +434,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{marginBottom: 5}}
+                      style={{ marginBottom: 5 }}
                       label="Retype New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword2 ? false : true}
@@ -448,7 +448,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{width: 25}}
+                                style={{ width: 25 }}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -476,7 +476,7 @@ const Profile = () => {
                       }}>
                       <Image
                         resizeMode="contain"
-                        style={{width: 25, height: 25}}
+                        style={{ width: 25, height: 25 }}
                         source={require('../images/check.png')}
                       />
                       <Text

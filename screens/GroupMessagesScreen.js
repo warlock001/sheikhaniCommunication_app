@@ -1,5 +1,5 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
 import {
   ImageBackground,
@@ -19,14 +19,14 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from '../component/GroupCreatingModal';
-import ChatComponent from '../component/ChatComponent';
+import DirectChatComponent from '../component/DirectChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
-import {TextInput} from 'react-native-paper';
+import { styles } from '../utils/styles';
+import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
-import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
-
-export default function Chat({navigation}) {
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import MessageComponent from '../component/MessageComponent';
+export default function DirectMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -37,51 +37,49 @@ export default function Chat({navigation}) {
   const [department, setDepartment] = useState('');
 
   const handleNavigation = (id, name) => {
-    navigation.navigate('Messaging', {
+    navigation.navigate('DirectMessaging', {
       id: id,
       name: name,
     });
   };
 
-  const Item = ({props}) => (
-    <TouchableOpacity
-      onPress={() => {
-        handleNavigation(props.id, props.title);
-      }}>
-      <View style={style.item}>
-        <Image
-          resizeMode="cover"
-          style={[styles.mavatar, {marginTop: 'auto'}]}
-          source={require('../images/ProfileDemo.jpg')}
-          width={30}
-        />
-        <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
-          {props.title}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
+  function Item({ props }) {
+    const [image, setImage] = useState(false);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      socket.on('roomsList', async rooms => {
-        setRooms(rooms);
-        console.log('socket rooms : ' + JSON.stringify(rooms));
-        await AsyncStorage.setItem('@rooms', JSON.stringify(rooms));
-      });
-    }),
-  );
+    useLayoutEffect(() => {
+      async function getImage() {
+        axios.get(`http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`).then(image => {
+          setImage(`data:${image.headers['content-type']};base64,${image.data}`)
+        }).catch(err => {
+          console.log(err)
+        })
+      }
 
-  useEffect(() => {
-    async function getRooms() {
-      let rooms = await AsyncStorage.getItem('@rooms');
-      rooms = JSON.parse(rooms);
-      console.log('rooms :' + JSON.stringify(rooms));
-      setRooms(rooms ? rooms : []);
-    }
-    getRooms();
-  }, []);
-
+      getImage();
+    });
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          handleNavigation(props.id, props.title);
+        }}>
+        <View style={style.item}>
+          {image ? (
+            <Image
+              resizeMode="cover"
+              style={[styles.mavatar, { marginTop: 'auto' }]}
+              source={{ uri: image }}
+              width={30}
+            />
+          ) : (
+            ''
+          )}
+          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+            {props.title}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
   useEffect(() => {
     async function getValue() {
       const value = await AsyncStorage.getItem('@department');
@@ -97,6 +95,30 @@ export default function Chat({navigation}) {
     getValue();
   });
 
+  useFocusEffect(
+    React.useCallback(() => {
+      async function getChats() {
+        const id = await AsyncStorage.getItem("@id");
+        await axios.get(`http://192.168.0.100:3001/recentChats?id=${id}`).then(results => {
+          setRooms(results.data.recentChats[0].chats)
+        })
+
+      }
+
+      getChats();
+    }, []),
+  );
+
+  // useEffect(() => {
+  //   async function getRooms() {
+  //     let rooms = await AsyncStorage.getItem("@rooms");
+  //     rooms = JSON.parse(rooms);
+  //     console.log("rooms :" + JSON.stringify(rooms));setSearchedUsers
+  //     setRooms(rooms ? rooms : []);
+  //   }
+  //   getRooms();
+  // }, []);
+
   useEffect(() => {
     async function getUsers() {
       const department = await AsyncStorage.getItem('@department');
@@ -106,15 +128,12 @@ export default function Chat({navigation}) {
           `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
-          // console.log(res.data.user)
           setSearchedUsers(res.data.user);
         });
     }
 
     getUsers();
   }, [search]);
-
-  const handleCreateGroup = () => setVisible(true);
 
   return (
     <TouchableWithoutFeedback accessible={false}>
@@ -124,40 +143,28 @@ export default function Chat({navigation}) {
             style={{
               textAlign: 'center',
               fontSize: 24,
-              // textDecorationLine: 'underline',
+              textDecorationLine: 'underline',
               marginBottom: 10,
               fontWeight: '600',
               color: '#000',
-              fontFamily: 'Pacifico-Regular',
             }}>
-            Sheikhani Group Communication
+            Sheikhani Communication
           </Text>
 
-          <Text style={styles.pageHeading}>All Chats</Text>
+          <Text style={styles.pageHeading}>All DMs</Text>
           <Text style={styles.pageSubHeading}>
-            Hello{' '}
-            <Text
-              style={{
-                fontSize: 16,
-                color: '#000',
-                fontFamily: 'Pacifico-Regular',
-              }}>
-              {username},
-            </Text>{' '}
-            Your snoozed chats will be shown here.
+            You can check your recent & new chats here
+            {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
-          {/* <Text style={styles.pageSubHeading}>
-            <Text style={{ fontWeight: "600" }}>Manage work hours</Text>
-          </Text> */}
         </View>
-        <View style={{marginTop: 13}}>
+        <View style={{ marginTop: 13 }}>
           <KeyboardAvoidingView>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);
               }}
               onBlur={() => setSearchedUsersVisible(false)}
-              style={{marginBottom: 5, color: '#000'}}
+              style={{ marginBottom: 5, color: '#000' }}
               label="Search by name"
               onChangeText={text => {
                 setSearch(text);
@@ -169,14 +176,14 @@ export default function Chat({navigation}) {
                       <Pressable onPress={Keyboard.dismiss}>
                         <Image
                           resizeMode="contain"
-                          style={{width: 25}}
+                          style={{ width: 25 }}
                           source={require('../images/close.png')}
                         />
                       </Pressable>
                     ) : (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/search.png')}
                       />
                     )
@@ -188,15 +195,21 @@ export default function Chat({navigation}) {
           <View
             style={[
               styles.optionBox,
-              {display: searchedUsersVisible ? 'flex' : 'none'},
+              { display: searchedUsersVisible ? 'flex' : 'none' },
             ]}>
             {/* <Text style={{ marginBottom: 10 }}>Search Users</Text> */}
             <FlatList
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={true}
               data={searchedUsers}
-              renderItem={({item}) => (
-                <Item props={{title: item.firstName, id: item._id}} />
+              renderItem={({ item }) => (
+                <Item
+                  props={{
+                    title: item.firstName,
+                    id: item._id,
+                    profilePicture: item.profilePicture,
+                  }}
+                />
               )}
               keyExtractor={item => item._id}
             />
@@ -206,16 +219,16 @@ export default function Chat({navigation}) {
         <View
           style={[
             styles.chatlistContainer,
-            {display: searchedUsersVisible ? 'none' : 'flex'},
+            { display: searchedUsersVisible ? 'none' : 'flex' },
           ]}>
-          {rooms.length > 0 ? (
+          {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
               extraData={rooms}
               data={rooms}
-              renderItem={({item}) => (
-                <ChatComponent item={item} username={username} />
+              renderItem={({ item }) => (
+                <DirectChatComponent item={item} username={username} />
               )}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.user}
             />
           ) : (
             <View style={styles.chatemptyContainer}>
