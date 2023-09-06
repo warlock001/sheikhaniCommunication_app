@@ -185,7 +185,7 @@ const Profile = () => {
           }
 
           // You can display an error message to the user here
-          Alert.alert('', 'This feature will be available in next update!', [
+          Alert.alert('', 'An unknown error occured.', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
           ]);
         });
