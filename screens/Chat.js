@@ -18,7 +18,7 @@ import {
   Keyboard,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modal from '../component/Modal';
+import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
 import { styles } from '../utils/styles';
@@ -103,7 +103,7 @@ export default function Chat({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           // console.log(res.data.user)
@@ -144,7 +144,7 @@ export default function Chat({ navigation }) {
               }}>
               {username},
             </Text>{' '}
-            Check your recent & new chats here
+            Your snoozed chats will be shown here.
           </Text>
           {/* <Text style={styles.pageSubHeading}>
             <Text style={{ fontWeight: "600" }}>Manage work hours</Text>

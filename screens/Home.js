@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import Modal from '../component/Modal';
+import Modal from '../component/GroupCreatingModal';
 import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 import ChatComponent from '../component/ChatComponent';
@@ -25,7 +25,7 @@ const Home = () => {
 
   useLayoutEffect(() => {
     function fetchGroups() {
-      fetch('http://192.168.0.104:4000/api')
+      fetch('http://192.168.0.100:4000/api')
         .then(res => res.json())
         .then(data => setRooms(data))
         .catch(err => console.error(err));

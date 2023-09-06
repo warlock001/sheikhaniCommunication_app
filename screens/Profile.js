@@ -9,17 +9,18 @@ import {
   ScrollView,
   PermissionsAndroid,
   Alert,
+  Modal
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
-import Modal from '../component/Modal';
+// import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
 import { styles } from '../utils/styles';
 import ImageModal from '../component/ImageModal';
 import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
-import ImageSelectModal from '../component/ImageSelectModal';
+// import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
 
 const Profile = () => {
@@ -75,7 +76,7 @@ const Profile = () => {
     async function getProfilePictureURL() {
       const profilepicture = await AsyncStorage.getItem('@profilepicture');
       axios
-        .get(`http://192.168.0.104:3001/files/${profilepicture}/true`)
+        .get(`http://192.168.0.100:3001/files/${profilepicture}/true`)
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
@@ -140,11 +141,15 @@ const Profile = () => {
       const id = await AsyncStorage.getItem('@id');
       const form = new FormData();
       form.append('image', image);
-      form.append('id', id);
+      form.append('image', {
+        uri: image.uri,
+        name: `${new Date()}_profilePicture.jpg`,
+        type: mime.getType(image.uri),
+      });
 
       axios({
         method: 'POST',
-        url: `http://192.168.0.104:3001/profilepicture`,
+        url: `http://192.168.0.100:3001/profilepicture`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -153,7 +158,7 @@ const Profile = () => {
       })
         .then(res => {
           console.log('This is working'); //nope
-          console.log(res.message);
+          console.log("response: ", res.message);
           setpickerModalVisible(true);
           setShouldUpdate(!shouldUpdate)
         })
@@ -163,14 +168,14 @@ const Profile = () => {
             console.log('Server Error:', error.response.data);
           } else if (error.request) {
             // The request was made but no response was received
-            console.log('Network Error:', error.request); // This the error
+            console.log('Network Error:', error.response.data); // This the error
           } else {
             // Something else happened while setting up the request
             console.log('Error:', error.message);
           }
 
           // You can display an error message to the user here
-          Alert.alert('', 'Unknown Error Occurred', [
+          Alert.alert('', 'This feature will be available in next update!', [
             { text: 'OK', onPress: () => console.log('OK Pressed') },
           ]);
         });
@@ -248,13 +253,134 @@ const Profile = () => {
                 source={require('../images/EditProfile.png')}
               />
             </Pressable>
-            <ImageSelectModal
-              visible={isEditModalVisible}
+            <Modal visible={isEditModalVisible}
               onClose={toggleEditModal}
               chooseImage={async () => await chooseImage()}
               sendData={async () => await sendData()}
-              image={image}
-            />
+              image={image} animationType="slide">
+              <View
+                style={{
+                  padding: '5%',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                  height: '100%',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    marginBottom: '10%',
+                    fontWeight: '600',
+                    color: '#fff',
+                    fontFamily: 'Pacifico-Regular',
+                    textAlign: 'center',
+                  }}>
+                  Sheikhani Group Communication
+                </Text>
+                {/* <Text
+          style={{
+            fontSize: 20,
+            fontWeight: '600',
+            marginBottom: '10%',
+            color: '#000',
+            textAlign: 'center',
+          }}>
+          Please select your Profile Picture
+        </Text> */}
+                {/* Add a preview of the selected image here */}
+                {image ? (
+                  <Image
+                    resizeMode="contain"
+                    style={{
+                      width: 150,
+                      height: 150,
+                      borderRadius: 200,
+                      resizeMode: 'contain',
+                    }}
+                    source={image.uri ? ({ uri: image.uri }) : ("")}
+                  />
+                ) : (
+                  <Text
+                    style={{
+                      textAlignVertical: 'center',
+                      textAlign: 'center',
+                      borderWidth: 1,
+                      borderStyle: 'dashed',
+                      borderColor: '#000',
+                      width: 150,
+                      height: 150,
+                      borderRadius: 200,
+                    }}>
+                    Please select a picture for preview
+                  </Text>
+                )}
+
+                {/* Button to choose an image */}
+                <Pressable onPress={chooseImage}>
+                  <Text
+                    style={{
+                      paddingVertical: '5%',
+                      textAlign: 'center',
+                      paddingHorizontal: '10%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      marginTop: '10%',
+                      backgroundColor: '#1F2067',
+                      borderRadius: 10,
+                      color: '#FFF',
+                      fontSize: 16,
+                      fontWeight: '500',
+                      marginLeft: 10,
+                    }}>
+                    Select Profile Picture
+                  </Text>
+                </Pressable>
+
+                {/* Button to upload the selected image */}
+                <Pressable onPress={sendData}>
+                  <Text
+                    style={{
+                      paddingVertical: '5%',
+                      textAlign: 'center',
+                      paddingHorizontal: '10%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      marginTop: '10%',
+                      backgroundColor: '#00BD57',
+                      borderRadius: 10,
+                      color: '#000',
+                      fontSize: 16,
+                      fontWeight: '500',
+                      marginLeft: 10,
+                    }}>
+                    Upload Profile Picture
+                  </Text>
+                </Pressable>
+
+                {/* Button to close the modal */}
+                <Pressable onPress={toggleEditModal}>
+                  <Text
+                    style={{
+                      paddingVertical: '5%',
+                      textAlign: 'center',
+                      paddingHorizontal: '10%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                      marginTop: '40%',
+                      backgroundColor: '#FAE6E7',
+                      borderRadius: 10,
+                      color: 'red',
+                      fontSize: 16,
+                      fontWeight: '500',
+                      marginLeft: 10,
+                    }}>
+                    Close
+                  </Text>
+                </Pressable>
+              </View>
+            </Modal>
           </View>
           <Text
             style={{

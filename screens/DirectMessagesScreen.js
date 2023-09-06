@@ -18,7 +18,7 @@ import {
   Keyboard,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Modal from '../component/Modal';
+import Modal from '../component/GroupCreatingModal';
 import DirectChatComponent from '../component/DirectChatComponent';
 import socket from '../utils/socket';
 import { styles } from '../utils/styles';
@@ -48,7 +48,7 @@ export default function DirectMessagesScreen({ navigation }) {
 
     useLayoutEffect(() => {
       async function getImage() {
-        axios.get(`http://192.168.0.104:3001/files/${props.profilePicture[0]}/true`).then(image => {
+        axios.get(`http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`).then(image => {
           setImage(`data:${image.headers['content-type']};base64,${image.data}`)
         }).catch(err => {
           console.log(err)
@@ -99,7 +99,7 @@ export default function DirectMessagesScreen({ navigation }) {
     React.useCallback(() => {
       async function getChats() {
         const id = await AsyncStorage.getItem("@id");
-        await axios.get(`http://192.168.0.104:3001/recentChats?id=${id}`).then(results => {
+        await axios.get(`http://192.168.0.100:3001/recentChats?id=${id}`).then(results => {
           setRooms(results.data.recentChats[0].chats)
         })
 
@@ -125,7 +125,7 @@ export default function DirectMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);

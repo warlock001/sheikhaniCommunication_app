@@ -25,9 +25,9 @@ const DirectChatComponent = ({ item, username }) => {
 
       setMessages(item.lastMessage)
 
-      axios.get(`http://192.168.0.104:3001/user?id=${item.user}`).then(result => {
+      axios.get(`http://192.168.0.100:3001/user?id=${item.user}`).then(result => {
         setName(result.data.user.firstName + ' ' + result.data.user.lastName)
-        axios.get(`http://192.168.0.104:3001/files/${result.data.user.profilePicture[0]}/true`).then(image => {
+        axios.get(`http://192.168.0.100:3001/files/${result.data.user.profilePicture[0]}/true`).then(image => {
           setImage(`data:${image.headers['content-type']};base64,${image.data}`)
 
         })

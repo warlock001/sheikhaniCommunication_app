@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,12 +13,12 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
-import Modal from '../component/Modal';
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
-import {TextInput} from 'react-native-paper';
+import { styles } from '../utils/styles';
+import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 const Announcements = () => {
   const navigation = useNavigation();
@@ -114,7 +114,7 @@ const Announcements = () => {
       }}>
       <KeyboardAvoidingView>
         <ScrollView>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <Text
               style={{
                 fontSize: 14,
@@ -132,6 +132,8 @@ const Announcements = () => {
                 marginBottom: 20,
                 padding: 16,
                 borderRadius: 10,
+                borderColor: "#123abc",
+                borderWidth: 2,
               }}>
               <Pressable
                 onPress={() => navigation.navigate('AnnouncementPreview')}>
@@ -145,18 +147,18 @@ const Announcements = () => {
                   Company Wide Notice
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </Pressable>
-              <View style={{position: 'absolute', right: '5%', top: '60%'}}>
+              <View style={{ position: 'absolute', right: '5%', top: '60%' }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
@@ -180,18 +182,18 @@ const Announcements = () => {
                   Developments 2.13.2
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </View>
-              <View style={{position: 'absolute', right: '5%', top: '60%'}}>
+              <View style={{ position: 'absolute', right: '5%', top: '60%' }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
@@ -215,19 +217,19 @@ const Announcements = () => {
                   New HR Policy
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </View>
 
-              <View style={{position: 'absolute', right: '5%', top: '60%'}}>
+              <View style={{ position: 'absolute', right: '5%', top: '60%' }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
@@ -240,7 +242,7 @@ const Announcements = () => {
                 padding: 16,
                 borderRadius: 10,
               }}>
-              <View style={{width: '95%'}}>
+              <View style={{ width: '95%' }}>
                 <Text
                   style={{
                     marginBottom: 5,
@@ -252,11 +254,11 @@ const Announcements = () => {
                   Analysis Announcement
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </View>
@@ -269,7 +271,7 @@ const Announcements = () => {
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
@@ -295,18 +297,18 @@ const Announcements = () => {
                   communicate through this Application only.
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </View>
-              <View style={{position: 'absolute', right: '5%', top: '60%'}}>
+              <View style={{ position: 'absolute', right: '5%', top: '60%' }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
@@ -330,18 +332,18 @@ const Announcements = () => {
                   How to use this App, A Walkthrough
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Published by: Mark Roosevelt (Admin)
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '400', color: '#8f8f8f'}}>
+                  style={{ fontSize: 14, fontWeight: '400', color: '#8f8f8f' }}>
                   Today at 18.40
                 </Text>
               </View>
-              <View style={{position: 'absolute', right: '5%', top: '60%'}}>
+              <View style={{ position: 'absolute', right: '5%', top: '60%' }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: 9, height: 15, marginRight: 5}}
+                  style={{ width: 9, height: 15, marginRight: 5 }}
                   source={require('../images/chevron_right.png')}
                 />
               </View>
