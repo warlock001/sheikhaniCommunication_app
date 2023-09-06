@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   loginscreen: {
@@ -137,6 +137,7 @@ export const styles = StyleSheet.create({
     height: 400,
     backgroundColor: '#fff',
     position: 'absolute',
+    left: 25,
     bottom: 0,
     zIndex: 10,
     paddingVertical: 50,

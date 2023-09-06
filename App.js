@@ -39,6 +39,7 @@ import SplashScreenComponent from "./component/SplashScreenComponent";
 import DirectMessages from "./screens/DirectMessagesScreen";
 import DirectMessagesScreen from "./screens/DirectMessagesScreen";
 import DirectMessaging from "./screens/DirectMessaging";
+import GroupMessagesScreen from './screens/GroupMessagesScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -142,6 +143,11 @@ function HomeTabs() {
       <Tab.Screen
         name="Workspace"
         component={Chat}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Groups"
+        component={GroupMessagesScreen}
         options={{ headerShown: false }}
       />
       {/* <Tab.Screen name="Groups" component={Chat} /> */}

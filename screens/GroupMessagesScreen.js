@@ -26,7 +26,7 @@ import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import MessageComponent from '../component/MessageComponent';
-export default function DirectMessagesScreen({ navigation }) {
+export default function GroupMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -109,15 +109,6 @@ export default function DirectMessagesScreen({ navigation }) {
     }, []),
   );
 
-  // useEffect(() => {
-  //   async function getRooms() {
-  //     let rooms = await AsyncStorage.getItem("@rooms");
-  //     rooms = JSON.parse(rooms);
-  //     console.log("rooms :" + JSON.stringify(rooms));setSearchedUsers
-  //     setRooms(rooms ? rooms : []);
-  //   }
-  //   getRooms();
-  // }, []);
 
   useEffect(() => {
     async function getUsers() {
@@ -150,8 +141,17 @@ export default function DirectMessagesScreen({ navigation }) {
             }}>
             Sheikhani Communication
           </Text>
-
-          <Text style={styles.pageHeading}>All DMs</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Text style={styles.pageHeading}>My Groups</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <Text style={{ color: '#003A9A' }}>Create a new group</Text>
+              <TouchableOpacity onPress={() => {
+                setVisible(true)
+              }}>
+                <Image source={require('../images/add.png')}></Image>
+              </TouchableOpacity>
+            </View>
+          </View>
           <Text style={styles.pageSubHeading}>
             You can check your recent & new chats here
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
@@ -232,12 +232,13 @@ export default function DirectMessagesScreen({ navigation }) {
             />
           ) : (
             <View style={styles.chatemptyContainer}>
-              <Text style={styles.chatemptyText}>No chats created!</Text>
+              <Text style={styles.chatemptyText}>No groups created!</Text>
             </View>
           )}
         </View>
         {visible ? <Modal setVisible={setVisible} /> : ''}
       </SafeAreaView>
+
     </TouchableWithoutFeedback>
   );
 }
