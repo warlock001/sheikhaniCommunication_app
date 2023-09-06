@@ -26,7 +26,12 @@ import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import MessageComponent from '../component/MessageComponent';
+<<<<<<< HEAD
 export default function GroupMessagesScreen({navigation}) {
+=======
+import GroupChatComponent from '../component/GroupChatComponent';
+export default function GroupMessagesScreen({ navigation }) {
+>>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -105,14 +110,20 @@ export default function GroupMessagesScreen({navigation}) {
   useFocusEffect(
     React.useCallback(() => {
       async function getChats() {
+<<<<<<< HEAD
         const id = await AsyncStorage.getItem('@id');
         await axios
           .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
           .then(results => {
             setRooms(results.data.recentChats[0].chats);
           });
+=======
+        const id = await AsyncStorage.getItem("@id");
+        await axios.get(`http://192.168.0.100:3001/group?id=${id}`).then(results => {
+          setRooms(results.data.user.groups)
+        })
+>>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
       }
-
       getChats();
     }, []),
   );
@@ -238,8 +249,13 @@ export default function GroupMessagesScreen({navigation}) {
             <FlatList
               extraData={rooms}
               data={rooms}
+<<<<<<< HEAD
               renderItem={({item}) => (
                 <DirectChatComponent item={item} username={username} />
+=======
+              renderItem={({ item }) => (
+                <GroupChatComponent item={item} username={username} />
+>>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
               )}
               keyExtractor={item => item.user}
             />

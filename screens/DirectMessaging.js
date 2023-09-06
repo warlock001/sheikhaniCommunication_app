@@ -1,12 +1,23 @@
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
-import {View, TextInput, Image, Text, FlatList, Pressable} from 'react-native';
+import {
+  View,
+  TextInput,
+  Image,
+  Text,
+  FlatList,
+  Pressable,
+  PermissionsAndroid,
+  Alert,
+  Modal,
+} from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
 import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 let flatlistRef;
 let textInputRef; // Define the ref
@@ -172,6 +183,108 @@ const DirectMessaging = ({route, navigation}) => {
     }
     listen();
   }, [socket]);
+
+  const chooseImage = async () => {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    }
+
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, async response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        setImageName(response.assets[0].uri);
+        setImage({
+          uri: response.assets[0].uri,
+          name: `${new Date()}_profilePicture.jpg`,
+          type: mime.getType(response.assets[0].uri),
+        });
+      }
+    });
+  };
+
+  const [pickermodalVisible, setpickerModalVisible] = useState(false);
+
+  async function sendData() {
+    if (!image) {
+      Alert.alert('', 'Please select an Image to upload.', [
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ]);
+    } else {
+      const id = await AsyncStorage.getItem('@id');
+      const form = new FormData();
+      form.append('id', id);
+      form.append('image', {
+        uri: image.uri,
+        name: `${new Date()}_chatimage.jpg`,
+        type: mime.getType(image.uri),
+      });
+
+      await axios({
+        timeout: 20000,
+        method: 'POST',
+        url: `http://192.168.0.103:3001/`,
+        data: form,
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(async res => {
+          console.log('This is working'); //nope
+          console.log('response: ', res.data);
+          await AsyncStorage.setItem('@profilepicture', res.data.id);
+          await axios
+            .get(`http://192.168.0.103:3001/files/${res.data.id}/true`)
+            .then(res => {
+              setprofilepictureURL(
+                `data:${res.headers['content-type']};base64,${res.data}`,
+              );
+            });
+          setpickerModalVisible(true);
+          setShouldUpdate(!shouldUpdate);
+        })
+        .catch(error => {
+          if (error.response) {
+            // The request was made and the server responded with an error status code
+            console.log('Server Error:', error.response.data);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('Network Error:', error.response.data); // This the error
+          } else {
+            // Something else happened while setting up the request
+            console.log('Error:', error.message);
+            console.log('Error');
+          }
+
+          // You can display an error message to the user here
+          Alert.alert('', 'An unknown error occured.', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ]);
+        });
+    }
+  }
+
   return (
     <View style={styles.messagingscreen}>
       <View
@@ -200,15 +313,25 @@ const DirectMessaging = ({route, navigation}) => {
       </View>
 
       <View style={styles.messaginginputContainer}>
+        <Pressable onPress={chooseImage}>
+          <View>
+            <Image
+              resizeMode="contain"
+              style={{width: 25, height: 25, marginRight: 5}}
+              source={require('../images/attach_file.png')}
+            />
+          </View>
+        </Pressable>
         <TextInput
+          multiline={true}
           value={message}
           ref={inputRef => {
             textInputRef = inputRef;
           }}
+          placeholderTextColor="#000"
           style={styles.messaginginput}
           onChangeText={value => setMessage(value)}
           placeholder="Write Message..."
-          placeholderTextColor="#000"
         />
         <Pressable
           //   style={styles.messagingbuttonContainer}

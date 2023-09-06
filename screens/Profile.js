@@ -166,6 +166,7 @@ const Profile = () => {
             .then(res => {
               setprofilepictureURL(
                 `data:${res.headers['content-type']};base64,${res.data}`,
+                toggleEditModal(),
               );
             });
           setpickerModalVisible(true);
@@ -317,9 +318,10 @@ const Profile = () => {
                       textAlign: 'center',
                       borderWidth: 1,
                       borderStyle: 'dashed',
-                      borderColor: '#000',
+                      borderColor: '#fff',
                       width: 150,
                       height: 150,
+                      color: '#fff',
                       borderRadius: 200,
                     }}>
                     Please select a picture for preview

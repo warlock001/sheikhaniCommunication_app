@@ -40,6 +40,7 @@ import DirectMessages from "./screens/DirectMessagesScreen";
 import DirectMessagesScreen from "./screens/DirectMessagesScreen";
 import DirectMessaging from "./screens/DirectMessaging";
 import GroupMessagesScreen from './screens/GroupMessagesScreen';
+import GroupMessaging from './screens/GroupMessaging';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -279,6 +280,11 @@ export default function App() {
           <Stack.Screen
             name="DirectMessaging"
             component={DirectMessaging}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="GroupMessaging"
+            component={GroupMessaging}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>
