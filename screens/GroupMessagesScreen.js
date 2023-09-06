@@ -26,12 +26,8 @@ import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import MessageComponent from '../component/MessageComponent';
-<<<<<<< HEAD
-export default function GroupMessagesScreen({navigation}) {
-=======
 import GroupChatComponent from '../component/GroupChatComponent';
-export default function GroupMessagesScreen({ navigation }) {
->>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
+export default function GroupMessagesScreen({navigation}) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -55,7 +51,7 @@ export default function GroupMessagesScreen({ navigation }) {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -110,19 +106,12 @@ export default function GroupMessagesScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       async function getChats() {
-<<<<<<< HEAD
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
+          .get(`http://192.168.0.100:3001/group?id=${id}`)
           .then(results => {
-            setRooms(results.data.recentChats[0].chats);
+            setRooms(results.data.user.groups);
           });
-=======
-        const id = await AsyncStorage.getItem("@id");
-        await axios.get(`http://192.168.0.100:3001/group?id=${id}`).then(results => {
-          setRooms(results.data.user.groups)
-        })
->>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
       }
       getChats();
     }, []),
@@ -134,7 +123,7 @@ export default function GroupMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -152,12 +141,13 @@ export default function GroupMessagesScreen({ navigation }) {
             style={{
               textAlign: 'center',
               fontSize: 24,
-              textDecorationLine: 'underline',
+              // textDecorationLine: 'underline',
               marginBottom: 10,
               fontWeight: '600',
               color: '#000',
+              fontFamily: 'Pacifico-Regular',
             }}>
-            Sheikhani Communication
+            Sheikhani Group Communication
           </Text>
           <View
             style={{
@@ -167,7 +157,10 @@ export default function GroupMessagesScreen({ navigation }) {
             }}>
             <Text style={styles.pageHeading}>My Groups</Text>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
-              <Text style={{color: '#003A9A'}}>Create a new group</Text>
+              <Text
+                style={{color: '#1F2067', fontFamily: 'Roboto', fontSize: 14}}>
+                Create a new group
+              </Text>
               <TouchableOpacity
                 onPress={() => {
                   setVisible(true);
@@ -177,7 +170,8 @@ export default function GroupMessagesScreen({ navigation }) {
             </View>
           </View>
           <Text style={styles.pageSubHeading}>
-            You can check your recent & new chats here
+            Create groups with colleagues for project discussions, picnic
+            planning, and for anything more than personal
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
         </View>
@@ -249,13 +243,8 @@ export default function GroupMessagesScreen({ navigation }) {
             <FlatList
               extraData={rooms}
               data={rooms}
-<<<<<<< HEAD
               renderItem={({item}) => (
-                <DirectChatComponent item={item} username={username} />
-=======
-              renderItem={({ item }) => (
                 <GroupChatComponent item={item} username={username} />
->>>>>>> 1066c5e7d700f0140af2c5b073af135424f79ec1
               )}
               keyExtractor={item => item.user}
             />
