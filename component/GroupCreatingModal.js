@@ -5,7 +5,7 @@ import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const Modal = ({ setVisible }) => {
+const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState("");
 
@@ -17,6 +17,7 @@ const Modal = ({ setVisible }) => {
     }).then((res) => {
       setGroupName('')
       Alert.alert("", "Group Created Successfully")
+      setShouldUpdate(!shouldUpdate)
     }).catch(err => {
       console.log(err)
     })

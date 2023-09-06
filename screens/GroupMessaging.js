@@ -103,7 +103,6 @@ const GroupMessaging = ({ route, navigation }) => {
         console.log("fetching messages for room id -", roomid)
         await axios.get(`http://192.168.0.100:3001/getMessage?roomid=${id}`).then(res => {
           setChatMessages(res.data.messages)
-          console.log(res.data.messages)
         }).catch(err => {
           console.log("error fetching old messages -", err)
         })
@@ -219,7 +218,7 @@ const GroupMessaging = ({ route, navigation }) => {
           </View>
         </Pressable>
       </View>
-      {addMember ? <Modal setVisible={setAddMember} /> : ''}
+      {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
     </View>
   );
 };

@@ -34,11 +34,12 @@ export default function GroupMessagesScreen({ navigation }) {
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(false);
   const [search, setSearch] = useState('');
   const [username, setUsername] = useState('');
+  const [shouldUpdate, setShouldUpdate] = useState('');
 
   const [department, setDepartment] = useState('');
 
   const handleNavigation = (id, name) => {
-    navigation.navigate('DirectMessaging', {
+    navigation.navigate('GroupMessaging', {
       id: id,
       name: name,
     });
@@ -105,7 +106,7 @@ export default function GroupMessagesScreen({ navigation }) {
         })
       }
       getChats();
-    }, []),
+    }, [shouldUpdate]),
   );
 
 
@@ -235,7 +236,7 @@ export default function GroupMessagesScreen({ navigation }) {
             </View>
           )}
         </View>
-        {visible ? <Modal setVisible={setVisible} /> : ''}
+        {visible ? <Modal setShouldUpdate={setShouldUpdate} shouldUpdate={shouldUpdate} setVisible={setVisible} /> : ''}
       </SafeAreaView>
 
     </TouchableWithoutFeedback>
