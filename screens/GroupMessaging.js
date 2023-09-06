@@ -11,7 +11,7 @@ import DirectChatComponent from '../component/DirectChatComponent';
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const DirectMessaging = ({route, navigation}) => {
+const GroupMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
   const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
