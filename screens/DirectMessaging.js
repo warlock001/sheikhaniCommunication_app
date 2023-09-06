@@ -43,7 +43,7 @@ const DirectMessaging = ({route, navigation}) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.100:3001/saveMessage', {
+      .post('http://192.168.0.103:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -106,7 +106,7 @@ const DirectMessaging = ({route, navigation}) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.100:3001/getMessage?roomid=${roomid}`)
+          .get(`http://192.168.0.103:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
           })

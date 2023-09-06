@@ -76,7 +76,7 @@ const Profile = () => {
     async function getProfilePictureURL() {
       const profilepicture = await AsyncStorage.getItem('@profilepicture');
       axios
-        .get(`http://192.168.0.100:3001/files/${profilepicture}/true`)
+        .get(`http://192.168.0.103:3001/files/${profilepicture}/true`)
         .then(res => {
           setprofilepictureURL(
             `data:${res.headers['content-type']};base64,${res.data}`,
@@ -150,7 +150,7 @@ const Profile = () => {
       await axios({
         timeout: 20000,
         method: 'POST',
-        url: `http://192.168.0.100:3001/profilepicture`,
+        url: `http://192.168.0.103:3001/profilepicture`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -162,7 +162,7 @@ const Profile = () => {
           console.log('response: ', res.data);
           await AsyncStorage.setItem('@profilepicture', res.data.id);
           await axios
-            .get(`http://192.168.0.100:3001/files/${res.data.id}/true`)
+            .get(`http://192.168.0.103:3001/files/${res.data.id}/true`)
             .then(res => {
               setprofilepictureURL(
                 `data:${res.headers['content-type']};base64,${res.data}`,
