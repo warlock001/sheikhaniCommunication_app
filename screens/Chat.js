@@ -144,11 +144,15 @@ export default function Chat({navigation}) {
               }}>
               {username},
             </Text>{' '}
-            Your snoozed chats will be shown here.
+            Chats moved to workspace are snoozed outside your work hours.{' '}
+            <Text style={styles.pageSubHeading}>
+              {/* <Text
+                style={{fontWeight: '600', textDecorationLine: 'underline'}}>
+                Manage work hours
+              </Text> */}
+            </Text>
           </Text>
-          {/* <Text style={styles.pageSubHeading}>
-            <Text style={{ fontWeight: "600" }}>Manage work hours</Text>
-          </Text> */}
+          {/*  */}
         </View>
         <View style={{marginTop: 13}}>
           <KeyboardAvoidingView>

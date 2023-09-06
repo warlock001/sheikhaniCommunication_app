@@ -1,13 +1,13 @@
-import { View, Text, TextInput, Pressable, Alert } from "react-native";
-import React, { useState } from "react";
-import socket from "../utils/socket";
-import { styles } from "../utils/styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+import { View, Text, TextInput, Pressable, Alert } from 'react-native';
+import React, { useState } from 'react';
+import socket from '../utils/socket';
+import { styles } from '../utils/styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
   const closeModal = () => setVisible(false);
-  const [groupName, setGroupName] = useState("");
+  const [groupName, setGroupName] = useState('');
 
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
@@ -30,16 +30,17 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
         style={styles.modalinput}
         placeholder="Group name"
         value={groupName}
-        onChangeText={(value) => setGroupName(value)}
+        onChangeText={value => setGroupName(value)}
+        placeholderTextColor={'#000'}
+        color={'#000'}
       />
       <View style={styles.modalbuttonContainer}>
         <Pressable style={styles.modalbutton} onPress={handleCreateRoom}>
           <Text style={styles.modaltext}>CREATE</Text>
         </Pressable>
         <Pressable
-          style={[styles.modalbutton, { backgroundColor: "#E14D2A" }]}
-          onPress={closeModal}
-        >
+          style={[styles.modalbutton, { backgroundColor: '#E14D2A' }]}
+          onPress={closeModal}>
           <Text style={styles.modaltext}>CANCEL</Text>
         </Pressable>
       </View>

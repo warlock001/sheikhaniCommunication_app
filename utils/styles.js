@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   loginscreen: {
@@ -115,7 +115,7 @@ export const styles = StyleSheet.create({
   modalbutton: {
     width: '40%',
     height: 45,
-    backgroundColor: 'green',
+    backgroundColor: '#1F2067',
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
@@ -146,8 +146,10 @@ export const styles = StyleSheet.create({
   modalinput: {
     borderWidth: 2,
     padding: 15,
+    color: '#fff',
   },
   modalsubheading: {
+    color: '#000',
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 15,
@@ -218,8 +220,8 @@ export const styles = StyleSheet.create({
     fontFamily: 'TitilliumWeb-Bold',
   },
   pageSubHeading: {
-    fontSize: 16,
-    color: '#000',
+    fontSize: 15,
+    color: '#8F8F8F',
     marginTop: 8,
   },
   optionBox: {

@@ -1,6 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, TextInput, Image, Text, FlatList, Pressable, Button, TouchableOpacity } from 'react-native';
+import {
+  View,
+  TextInput,
+  Image,
+  Text,
+  FlatList,
+  Pressable,
+  Button,
+  TouchableOpacity,
+} from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
 import { styles } from '../utils/styles';
@@ -42,42 +51,45 @@ const GroupMessaging = ({ route, navigation }) => {
         ? `0${new Date().getMinutes()}`
         : `${new Date().getMinutes()}`;
 
-    const myId = await AsyncStorage.getItem("@id");
-    axios.post('http://192.168.0.100:3001/saveMessage', {
-      senderid: myId,
-      message: message,
-      roomid: id,
-    }).then(res => {
-      console.log("message send - ", res.data)
-      let data = {
-        roomId: roomId,
-        message: {
-          _id: res.data.id,
-          senderid: myId,
-          message: message,
-          roomid: id,
-          seen: false,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        }
-      }
-      // socket.emit('send_message', data)
-      setMessage('')
-    }).catch(err => {
-      console.log("error in sending message - ", err)
-      setMessage('')
-    })
+    const myId = await AsyncStorage.getItem('@id');
+    axios
+      .post('http://192.168.0.100:3001/saveMessage', {
+        senderid: myId,
+        message: message,
+        roomid: id,
+      })
+      .then(res => {
+        console.log('message send - ', res.data);
+        let data = {
+          roomId: roomId,
+          message: {
+            _id: res.data.id,
+            senderid: myId,
+            message: message,
+            roomid: id,
+            seen: false,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        };
+        // socket.emit('send_message', data)
+        setMessage('');
+      })
+      .catch(err => {
+        console.log('error in sending message - ', err);
+        setMessage('');
+      });
   };
-
 
   useLayoutEffect(() => {
     async function setup() {
       navigation.setOptions({
         title: name,
         headerRight: () => (
-          <TouchableOpacity onPress={() => {
-            setAddMember(true)
-          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setAddMember(true);
+            }}>
             <Image source={require('../images/add.png')}></Image>
           </TouchableOpacity>
         ),
@@ -98,20 +110,23 @@ const GroupMessaging = ({ route, navigation }) => {
   useFocusEffect(
     React.useCallback(() => {
       async function fetchMessages() {
-        const myId = await AsyncStorage.getItem("@id");
-        let roomid = id
-        console.log("fetching messages for room id -", roomid)
-        await axios.get(`http://192.168.0.100:3001/getMessage?roomid=${id}`).then(res => {
-          setChatMessages(res.data.messages)
-        }).catch(err => {
-          console.log("error fetching old messages -", err)
-        })
+        const myId = await AsyncStorage.getItem('@id');
+        let roomid = id;
+        console.log('fetching messages for room id -', roomid);
+        await axios
+          .get(`http://192.168.0.100:3001/getMessage?roomid=${id}`)
+          .then(res => {
+            setChatMessages(res.data.messages);
+            console.log(res.data.messages);
+          })
+          .catch(err => {
+            console.log('error fetching old messages -', err);
+          });
       }
 
-      fetchMessages()
-    }, [shouldUpdate])
-  )
-
+      fetchMessages();
+    }, [shouldUpdate]),
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -139,31 +154,30 @@ const GroupMessaging = ({ route, navigation }) => {
         setChatMessages(chatMessages => [...chatMessages, data.message]);
 
         async function readReceipt() {
-          const myId = await AsyncStorage.getItem("@id");
+          const myId = await AsyncStorage.getItem('@id');
 
-          console.log("Updating Read Receipts -", id + " recipient", id)
+          console.log('Updating Read Receipts -', id + ' recipient', id);
           let data = {
             roomid: id,
             recipient: id,
-            id: myId
-          }
-          socket.emit('read_receipt', data)
-
+            id: myId,
+          };
+          socket.emit('read_receipt', data);
         }
 
-        readReceipt()
-      })
+        readReceipt();
+      });
 
       socket.on('update_read_receipt', async data => {
-        console.log("Chat messages -> ", chatMessages)
+        console.log('Chat messages -> ', chatMessages);
         // let temp = chatMessages;
         // temp.forEach((item, index) => {
         //   temp[index].seen = true
         // })
         // console.log("Temp messages -> ", temp)
         // setChatMessages(temp)
-        setShouldUpdate(!shouldUpdate)
-      })
+        setShouldUpdate(!shouldUpdate);
+      });
     }
     listen();
   }, [socket]);
@@ -196,6 +210,7 @@ const GroupMessaging = ({ route, navigation }) => {
 
       <View style={styles.messaginginputContainer}>
         <TextInput
+          multiline={true}
           value={message}
           ref={inputRef => {
             textInputRef = inputRef;
