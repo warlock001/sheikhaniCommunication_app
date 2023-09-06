@@ -26,6 +26,7 @@ import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import MessageComponent from '../component/MessageComponent';
+import GroupChatComponent from '../component/GroupChatComponent';
 export default function GroupMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
@@ -99,12 +100,10 @@ export default function GroupMessagesScreen({ navigation }) {
     React.useCallback(() => {
       async function getChats() {
         const id = await AsyncStorage.getItem("@id");
-        await axios.get(`http://192.168.0.100:3001/recentChats?id=${id}`).then(results => {
-          setRooms(results.data.recentChats[0].chats)
+        await axios.get(`http://192.168.0.100:3001/group?id=${id}`).then(results => {
+          setRooms(results.data.user.groups)
         })
-
       }
-
       getChats();
     }, []),
   );
@@ -226,7 +225,7 @@ export default function GroupMessagesScreen({ navigation }) {
               extraData={rooms}
               data={rooms}
               renderItem={({ item }) => (
-                <DirectChatComponent item={item} username={username} />
+                <GroupChatComponent item={item} username={username} />
               )}
               keyExtractor={item => item.user}
             />

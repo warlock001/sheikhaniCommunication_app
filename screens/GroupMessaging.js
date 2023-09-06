@@ -1,13 +1,13 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { View, TextInput, Image, Text, FlatList, Pressable } from 'react-native';
+import { View, TextInput, Image, Text, FlatList, Pressable, Button, TouchableOpacity } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
 import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
-
+import Modal from '../component/AddMemberModal';
 let flatlistRef;
 let textInputRef; // Define the ref
 
@@ -18,6 +18,7 @@ const GroupMessaging = ({ route, navigation }) => {
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
   const [roomId, setRoomId] = useState('');
+  const [addMember, setAddMember] = useState(false);
 
   const getUsername = async () => {
     try {
@@ -45,8 +46,7 @@ const GroupMessaging = ({ route, navigation }) => {
     axios.post('http://192.168.0.100:3001/saveMessage', {
       senderid: myId,
       message: message,
-      roomid: roomId,
-      recieverid: id,
+      roomid: id,
     }).then(res => {
       console.log("message send - ", res.data)
       let data = {
@@ -55,14 +55,13 @@ const GroupMessaging = ({ route, navigation }) => {
           _id: res.data.id,
           senderid: myId,
           message: message,
-          roomid: roomId,
-          recieverid: id,
+          roomid: id,
           seen: false,
           createdAt: new Date(),
           updatedAt: new Date()
         }
       }
-      socket.emit('send_message', data)
+      // socket.emit('send_message', data)
       setMessage('')
     }).catch(err => {
       console.log("error in sending message - ", err)
@@ -70,25 +69,25 @@ const GroupMessaging = ({ route, navigation }) => {
     })
   };
 
-  const createRoomId = (id, myId) => {
-    if (id > myId) {
-      return id + myId;
-    } else {
-      return myId + id;
-    }
-  };
 
   useLayoutEffect(() => {
     async function setup() {
-      navigation.setOptions({ title: name });
+      navigation.setOptions({
+        title: name,
+        headerRight: () => (
+          <TouchableOpacity onPress={() => {
+            setAddMember(true)
+          }}>
+            <Image source={require('../images/add.png')}></Image>
+          </TouchableOpacity>
+        ),
+      });
       getUsername();
 
       const myId = await AsyncStorage.getItem('@id');
-
-      const roomid = createRoomId(id, myId);
-      setRoomId(roomid);
+      setRoomId(id);
       let data = {
-        roomid: roomid,
+        roomid: id,
       };
       socket.emit('join_room', data);
       // socket.emit('leave_room', data);
@@ -100,11 +99,11 @@ const GroupMessaging = ({ route, navigation }) => {
     React.useCallback(() => {
       async function fetchMessages() {
         const myId = await AsyncStorage.getItem("@id");
-        let roomid = createRoomId(id, myId)
+        let roomid = id
         console.log("fetching messages for room id -", roomid)
-        await axios.get(`http://192.168.0.100:3001/getMessage?roomid=${roomid}`).then(res => {
+        await axios.get(`http://192.168.0.100:3001/getMessage?roomid=${id}`).then(res => {
           setChatMessages(res.data.messages)
-
+          console.log(res.data.messages)
         }).catch(err => {
           console.log("error fetching old messages -", err)
         })
@@ -119,10 +118,10 @@ const GroupMessaging = ({ route, navigation }) => {
     React.useCallback(() => {
       async function readReceipt() {
         const myId = await AsyncStorage.getItem('@id');
-        let roomid = createRoomId(id, myId);
-        console.log('Updating Read Receipts -', roomid + ' recipient', id);
+
+        console.log('Updating Read Receipts -', id + ' recipient', id);
         let data = {
-          roomid: roomid,
+          roomid: id,
           recipient: id,
           id: myId,
         };
@@ -142,10 +141,10 @@ const GroupMessaging = ({ route, navigation }) => {
 
         async function readReceipt() {
           const myId = await AsyncStorage.getItem("@id");
-          let roomid = createRoomId(id, myId)
-          console.log("Updating Read Receipts -", roomid + " recipient", id)
+
+          console.log("Updating Read Receipts -", id + " recipient", id)
           let data = {
-            roomid: roomid,
+            roomid: id,
             recipient: id,
             id: myId
           }
@@ -220,8 +219,9 @@ const GroupMessaging = ({ route, navigation }) => {
           </View>
         </Pressable>
       </View>
+      {addMember ? <Modal setVisible={setAddMember} /> : ''}
     </View>
   );
 };
 
-export default DirectMessaging;
+export default GroupMessaging;
