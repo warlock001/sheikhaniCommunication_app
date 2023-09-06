@@ -140,14 +140,15 @@ const Profile = () => {
     } else {
       const id = await AsyncStorage.getItem('@id');
       const form = new FormData();
-      form.append('image', image);
+      form.append('id', id);
       form.append('image', {
         uri: image.uri,
         name: `${new Date()}_profilePicture.jpg`,
         type: mime.getType(image.uri),
       });
 
-      axios({
+      await axios({
+        timeout: 20000,
         method: 'POST',
         url: `http://192.168.0.100:3001/profilepicture`,
         data: form,
@@ -156,11 +157,20 @@ const Profile = () => {
           'Content-Type': 'multipart/form-data',
         },
       })
-        .then(res => {
+        .then(async res => {
           console.log('This is working'); //nope
-          console.log("response: ", res.message);
+          console.log("response: ", res.data);
+          await AsyncStorage.setItem('@profilepicture', res.data.id);
+          await axios
+            .get(`http://192.168.0.100:3001/files/${res.data.id}/true`)
+            .then(res => {
+              setprofilepictureURL(
+                `data:${res.headers['content-type']};base64,${res.data}`,
+              );
+            });
           setpickerModalVisible(true);
           setShouldUpdate(!shouldUpdate)
+
         })
         .catch(error => {
           if (error.response) {
