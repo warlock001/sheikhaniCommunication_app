@@ -143,7 +143,7 @@ function HomeTabs() {
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen
         name="Workspace"
-        component={Chat}
+        component={GroupMessagesScreen}
         options={{ headerShown: false }}
       />
       <Tab.Screen

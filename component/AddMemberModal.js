@@ -14,7 +14,7 @@ const Modal = ({ setVisible, roomid }) => {
   const [search, setSearch] = useState('');
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.post("http://192.168.0.100:3001/group", {
+    await axios.post("http://52.53.197.201:3001/group", {
       title: groupName,
       id: id
     }).then((res) => {
@@ -34,7 +34,7 @@ const Modal = ({ setVisible, roomid }) => {
       console.log("ye3h raaha")
       axios
         .get(
-          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://52.53.197.201:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log("ye3h raaha dataaaaaaaaaaaaaaa", res.data)
@@ -47,7 +47,7 @@ const Modal = ({ setVisible, roomid }) => {
 
   async function handleAdd(id) {
     console.log(id)
-    await axios.post("http://192.168.0.100:3001/groupMember", {
+    await axios.post("http://52.53.197.201:3001/groupMember", {
       id: id,
       roomid: roomid
     }).then(response => {
@@ -63,7 +63,7 @@ const Modal = ({ setVisible, roomid }) => {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`,
+            `http://52.53.197.201:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
