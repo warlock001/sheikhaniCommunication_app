@@ -1,10 +1,10 @@
-import { View, Image, Text, Pressable } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../utils/styles';
+import {View, Image, Text, Pressable} from 'react-native';
+import React, {useLayoutEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const GroupChatComponent = ({ item, username }) => {
+const GroupChatComponent = ({item, username}) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -26,12 +26,12 @@ const GroupChatComponent = ({ item, username }) => {
       setMessages(item.lastMessage);
 
       axios
-        .get(`http://52.53.197.201:3001/user?id=${item.user}`)
+        .get(`http://192.168.0.100:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://52.53.197.201:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.100:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -52,8 +52,26 @@ const GroupChatComponent = ({ item, username }) => {
 
   return (
     <Pressable style={styles.cchat} onPress={handleNavigation}>
-      <View style={{ width: 55, height: 55, marginRight: 15, alignItems: 'center', justifyContent: 'center', backgroundColor: '#003a9a', borderRadius: 500 }}>
-        <Text style={{ textAlign: 'center', textAlignVertical: 'center', fontSize: 45, lineHeight: 45, color: '#fff' }}  >{item.title.charAt(0)}</Text>
+      <View
+        style={{
+          width: 55,
+          height: 55,
+          marginRight: 15,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#003a9a',
+          borderRadius: 500,
+        }}>
+        <Text
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            fontSize: 45,
+            lineHeight: 45,
+            color: '#fff',
+          }}>
+          {item.title.charAt(0)}
+        </Text>
       </View>
       <View style={styles.crightContainer}>
         <View>
