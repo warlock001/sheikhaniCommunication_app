@@ -155,7 +155,7 @@ const Modal = ({setVisible, roomid}) => {
             </Text>
           </View>
           <Checkbox
-            style={{backgroundColor: 'red'}}
+            style={{backgroundColor: 'yellow'}}
             status={isChecked(props.id) ? 'checked' : 'unchecked'}
             color="#1F2067"
             onPress={() => toggleItem(props.id)}
