@@ -10,15 +10,15 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TextField from '../component/inputField';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
-const Modal = ({ setVisible, roomid }) => {
+const Modal = ({setVisible, roomid}) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState('');
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(true);
@@ -26,15 +26,18 @@ const Modal = ({ setVisible, roomid }) => {
   const [search, setSearch] = useState('');
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.post("http://52.53.197.201:3001/group", {
-      title: groupName,
-      id: id
-    }).then((res) => {
-      setGroupName('')
-      Alert.alert("", "Group Created Successfully")
-    }).catch(err => {
-      console.log(err)
-    })
+    await axios
+      .post('http://52.53.197.201:3001/group', {
+        title: groupName,
+        id: id,
+      })
+      .then(res => {
+        setGroupName('');
+        Alert.alert('', 'Group Created Successfully');
+      })
+      .catch(err => {
+        console.log(err);
+      });
     closeModal();
   };
 
@@ -58,20 +61,23 @@ const Modal = ({ setVisible, roomid }) => {
 
   //zabalon will edit this
   async function handleAdd(id) {
-    console.log(id)
-    await axios.post("http://52.53.197.201:3001/groupMember", {
-      id: id,
-      roomid: roomid
-    }).then(response => {
-      Alert.alert("", "User Added To Group")
-    }).catch(err => {
-      console.log(err)
-    })
+    console.log(id);
+    await axios
+      .post('http://52.53.197.201:3001/groupMember', {
+        id: id,
+        roomid: roomid,
+      })
+      .then(response => {
+        Alert.alert('', 'User Added To Group');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   const [checkedItems, setCheckedItems] = useState([]);
 
-  function Item({ props }) {
+  function Item({props}) {
     const [image, setImage] = useState(false);
     useLayoutEffect(() => {
       async function getImage() {
@@ -137,19 +143,19 @@ const Modal = ({ setVisible, roomid }) => {
             {image ? (
               <Image
                 resizeMode="cover"
-                style={[styles.mavatar, { marginTop: 'auto' }]}
-                source={{ uri: image }}
+                style={[styles.mavatar, {marginTop: 'auto'}]}
+                source={{uri: image}}
                 width={30}
               />
             ) : (
               ''
             )}
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+            <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
               {props.title}
             </Text>
           </View>
           <Checkbox
-            style={{ backgroundColor: 'red' }}
+            style={{backgroundColor: 'red'}}
             status={isChecked(props.id) ? 'checked' : 'unchecked'}
             color="#1F2067"
             onPress={() => toggleItem(props.id)}
@@ -195,7 +201,7 @@ const Modal = ({ setVisible, roomid }) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 30, height: 30 }}
+          style={{width: 30, height: 30}}
           source={require('../images/close.png')}
         />
       </Pressable>
@@ -242,7 +248,7 @@ const Modal = ({ setVisible, roomid }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={true}
           data={searchedUsers}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Item
               props={{
                 title: item.firstName,
