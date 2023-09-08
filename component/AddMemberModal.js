@@ -50,7 +50,7 @@ const Modal = ({ setVisible, roomid }) => {
       console.log('ye3h raaha');
       axios
         .get(
-          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
 
@@ -64,7 +64,7 @@ const Modal = ({ setVisible, roomid }) => {
   //zabalon will edit this
   async function handleAdd() {
     await axios
-      .post('http://192.168.0.100:3001/groupMember', {
+      .post('http://192.168.0.101:3001/groupMember', {
         id: checkedItems,
         roomid: roomid,
       })
@@ -84,7 +84,7 @@ const Modal = ({ setVisible, roomid }) => {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.101:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(

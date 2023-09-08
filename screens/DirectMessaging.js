@@ -28,6 +28,7 @@ const DirectMessaging = ({ route, navigation }) => {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const [rendered, setRendered] = useState(false);
   const [roomId, setRoomId] = useState('');
 
   const getUsername = async () => {
@@ -42,6 +43,7 @@ const DirectMessaging = ({ route, navigation }) => {
   };
 
   const handleNewMessage = async () => {
+
     const hour =
       new Date().getHours() < 10
         ? `0${new Date().getHours()}`
@@ -54,7 +56,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.100:3001/saveMessage', {
+      .post('http://192.168.0.101:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -116,7 +118,7 @@ const DirectMessaging = ({ route, navigation }) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.100:3001/getMessage?roomid=${roomid}`)
+          .get(`http://192.168.0.101:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
           })
@@ -153,7 +155,7 @@ const DirectMessaging = ({ route, navigation }) => {
       socket.on('receive_message', async data => {
         console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
-        console.log('Chat messages <- ', chatMessages);
+        // console.log('Chat messages <- ', chatMessages);
         async function readReceipt() {
           const myId = await AsyncStorage.getItem('@id');
           let roomid = createRoomId(id, myId);
@@ -169,19 +171,38 @@ const DirectMessaging = ({ route, navigation }) => {
         readReceipt();
       });
 
-      socket.on('update_read_receipt', async data => {
-        console.log(chatMessages);
-        // let temp = chatMessages;
-        // temp.forEach((item, index) => {
-        //   temp[index].seen = true
-        // })
-        // console.log("Temp messages -> ", temp)
-        // setChatMessages(temp)
-        setShouldUpdate(!shouldUpdate);
-      });
+
     }
     listen();
   }, []);
+
+
+  useEffect(() => {
+
+    async function updateMessageReciepts() {
+      let temp = chatMessages;
+      await socket.on('update_read_receipt', data => {
+        temp.forEach((item, index) => {
+          temp[index].seen = true
+        })
+        // console.log("Temp messages -> ", temp)
+        setChatMessages(temp)
+        // setShouldUpdate(!shouldUpdate);
+        // setTimeout(() => {
+        //   setShouldUpdate(!shouldUpdate)
+        // }, 5000);
+
+      });
+    }
+
+    updateMessageReciepts()
+  }, [chatMessages, socket])
+
+
+
+
+
+
 
   const chooseImage = async () => {
     if (Platform.OS === 'android') {
@@ -242,7 +263,7 @@ const DirectMessaging = ({ route, navigation }) => {
       await axios({
         timeout: 20000,
         method: 'POST',
-        url: `http://192.168.0.100:3001/`,
+        url: `http://192.168.0.101:3001/`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -254,7 +275,7 @@ const DirectMessaging = ({ route, navigation }) => {
           console.log('response: ', res.data);
           await AsyncStorage.setItem('@profilepicture', res.data.id);
           await axios
-            .get(`http://192.168.0.100:3001/files/${res.data.id}/true`)
+            .get(`http://192.168.0.101:3001/files/${res.data.id}/true`)
             .then(res => {
               setprofilepictureURL(
                 `data:${res.headers['content-type']};base64,${res.data}`,
@@ -293,15 +314,19 @@ const DirectMessaging = ({ route, navigation }) => {
         ]}>
         {chatMessages[0] ? (
           <FlatList
+            // style={{ display: rendered ? 'flex' : 'none' }}
             extraData={chatMessages}
             ref={ref => {
               flatlistRef = ref;
             }}
+            initialNumToRender={chatMessages.length}
             data={chatMessages}
             renderItem={({ item }) => (
-              <DirectMessageComponent item={item} user={user} />
+              <DirectMessageComponent lastItem={chatMessages[chatMessages.length - 1]._id} onRendered={() => { setRendered(true); console.log(true) }} item={item} user={user} />
             )}
             keyExtractor={item => item._id}
+            // inverted
+            // initialScrollIndex={1}
             onContentSizeChange={() =>
               flatlistRef.scrollToEnd({ animated: false })
             }

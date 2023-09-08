@@ -1,12 +1,20 @@
 import { View, Text, Image } from "react-native";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
-export default function DirectMessageComponent({ item, user }) {
+export default function DirectMessageComponent({ onRendered, lastItem, item, user }) {
 
   const [status, setStatus] = useState('');
   const date = new Date(item.createdAt);
+
+
+  // useEffect(() => {
+  //   // console.log('lastItem', lastItem);
+  //   // console.log('item._id', item._id);
+
+  //   lastItem === item._id ? onRendered() : ''
+  // }, [])
 
   useLayoutEffect(() => {
     async function getStatus() {
@@ -28,7 +36,7 @@ export default function DirectMessageComponent({ item, user }) {
 
 
   return (
-    <View>
+    <View key={item._id}>
       <View
         style={
           status
