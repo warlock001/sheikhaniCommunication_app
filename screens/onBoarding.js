@@ -63,7 +63,7 @@ export default function OnBoarding({navigation}) {
                 style={{
                   fontFamily: 'Roboto',
                   color: '#fff',
-                  fontSize: 26,
+                  fontSize: 20,
                   fontFamily: 'Pacifico-Regular',
                 }}>
                 Sheikhani Group Communication
@@ -105,7 +105,7 @@ export default function OnBoarding({navigation}) {
                 style={{
                   fontFamily: 'Roboto',
                   color: '#fff',
-                  fontSize: 26,
+                  fontSize: 20,
                   fontFamily: 'Pacifico-Regular',
                 }}>
                 Sheikhani Group Communication
@@ -144,7 +144,7 @@ export default function OnBoarding({navigation}) {
                 style={{
                   fontFamily: 'Roboto',
                   color: '#fff',
-                  fontSize: 26,
+                  fontSize: 20,
                   fontFamily: 'Pacifico-Regular',
                 }}>
                 Sheikhani Group Communication

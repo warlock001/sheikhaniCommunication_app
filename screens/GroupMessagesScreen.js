@@ -52,7 +52,7 @@ export default function GroupMessagesScreen({navigation}) {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.101:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -109,7 +109,7 @@ export default function GroupMessagesScreen({navigation}) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.100:3001/group?id=${id}`)
+          .get(`http://192.168.0.101:3001/group?id=${id}`)
           .then(results => {
             setRooms(results.data.user.groups);
           });
@@ -124,7 +124,7 @@ export default function GroupMessagesScreen({navigation}) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -141,7 +141,7 @@ export default function GroupMessagesScreen({navigation}) {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 24,
+              fontSize: 19,
               // textDecorationLine: 'underline',
               marginBottom: 10,
               fontWeight: '600',
@@ -159,14 +159,21 @@ export default function GroupMessagesScreen({navigation}) {
             <Text style={styles.pageHeading}>My Groups</Text>
             <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
               <Text
-                style={{color: '#1F2067', fontFamily: 'Roboto', fontSize: 14}}>
+                style={{
+                  color: '#1F2067',
+                  // fontFamily: 'Roboto',
+                  fontSize: 14,
+                  fontWeight: '500',
+                }}>
                 Create a new group
               </Text>
               <TouchableOpacity
                 onPress={() => {
                   setVisible(true);
                 }}>
-                <Image source={require('../images/add.png')}></Image>
+                <Image
+                  style={{width: 25, height: 25}}
+                  source={require('../images/add.png')}></Image>
               </TouchableOpacity>
             </View>
           </View>
@@ -195,7 +202,7 @@ export default function GroupMessagesScreen({navigation}) {
                       <Pressable onPress={Keyboard.dismiss}>
                         <Image
                           resizeMode="contain"
-                          style={{width: 25}}
+                          style={{width: 20}}
                           source={require('../images/close.png')}
                         />
                       </Pressable>

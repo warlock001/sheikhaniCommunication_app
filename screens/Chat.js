@@ -103,7 +103,7 @@ export default function Chat({navigation}) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           // console.log(res.data.user)
@@ -123,7 +123,7 @@ export default function Chat({navigation}) {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 24,
+              fontSize: 19,
               // textDecorationLine: 'underline',
               marginBottom: 10,
               fontWeight: '600',
@@ -133,7 +133,7 @@ export default function Chat({navigation}) {
             Sheikhani Group Communication
           </Text>
 
-          <Text style={styles.pageHeading}>All Chats</Text>
+          <Text style={styles.pageHeading}>Your Workspace</Text>
           <Text style={styles.pageSubHeading}>
             Hello{' '}
             <Text
@@ -223,7 +223,7 @@ export default function Chat({navigation}) {
             />
           ) : (
             <View style={styles.chatemptyContainer}>
-              <Text style={styles.chatemptyText}>No chats created!</Text>
+              <Text style={styles.chatemptyText}>No Snoozed Chats!</Text>
             </View>
           )}
         </View>

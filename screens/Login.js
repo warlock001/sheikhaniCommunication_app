@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import {CommonActions} from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://192.168.0.100:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.101:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import {useFocusEffect} from '@react-navigation/native';
@@ -216,7 +216,7 @@ export default function SignIn({navigation}) {
                   <Text
                     style={{
                       marginTop: 20,
-                      fontSize: 24,
+                      fontSize: 19,
                       fontWeight: '600',
                       color: '#000',
                       fontFamily: 'Pacifico-Regular',

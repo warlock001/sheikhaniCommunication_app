@@ -48,7 +48,7 @@ const Modal = ({setVisible, roomid}) => {
       console.log('ye3h raaha');
       axios
         .get(
-          `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           // console.log('ye3h raaha dataaaaaaaaaaaaaaa', res.data);
@@ -83,7 +83,7 @@ const Modal = ({setVisible, roomid}) => {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.100:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.101:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -192,7 +192,7 @@ const Modal = ({setVisible, roomid}) => {
           right: 5,
           top: 5,
           // height: 45,
-          backgroundColor: '#ddd',
+          // backgroundColor: '#ddd',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: 'center',
@@ -201,7 +201,7 @@ const Modal = ({setVisible, roomid}) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{width: 30, height: 30}}
+          style={{width: 20, height: 20}}
           source={require('../images/close.png')}
         />
       </Pressable>

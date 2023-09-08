@@ -54,7 +54,7 @@ const DirectMessaging = ({route, navigation}) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.100:3001/saveMessage', {
+      .post('http://192.168.0.101:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -117,7 +117,7 @@ const DirectMessaging = ({route, navigation}) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.100:3001/getMessage?roomid=${roomid}`)
+          .get(`http://192.168.0.101:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
           })
@@ -243,7 +243,7 @@ const DirectMessaging = ({route, navigation}) => {
       await axios({
         timeout: 20000,
         method: 'POST',
-        url: `http://192.168.0.100:3001/`,
+        url: `http://192.168.0.101:3001/`,
         data: form,
         headers: {
           accept: 'application/json',
@@ -255,7 +255,7 @@ const DirectMessaging = ({route, navigation}) => {
           console.log('response: ', res.data);
           await AsyncStorage.setItem('@profilepicture', res.data.id);
           await axios
-            .get(`http://192.168.0.100:3001/files/${res.data.id}/true`)
+            .get(`http://192.168.0.101:3001/files/${res.data.id}/true`)
             .then(res => {
               setprofilepictureURL(
                 `data:${res.headers['content-type']};base64,${res.data}`,

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,12 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
-import { TextInput } from 'react-native-paper';
+import {styles} from '../utils/styles';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import axios from 'axios';
 const Profile = () => {
@@ -37,16 +37,12 @@ const Profile = () => {
   const [NewPassword2, setNewPassword2] = useState(null);
   const [allPasswordValidity, setAllPasswordValidity] = useState(false);
 
-
-
   const [editingPersonalDetails, setPersonalDetails] = useState(true);
   const [editing, setEditing] = useState(false); // State to manage editing mode
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [designation, setDesignation] = useState('');
   const [department, setDepartment] = useState('');
-
-
 
   useEffect(() => {
     const getUsername = async () => {
@@ -57,17 +53,17 @@ const Profile = () => {
         const department = await AsyncStorage.getItem('@department');
 
         if (profileUsername !== null) {
-          setFirstName(profileUsername)
+          setFirstName(profileUsername);
           setUser(profileUsername);
         }
         if (lastName) {
-          setLastName(lastName)
+          setLastName(lastName);
         }
         if (designation) {
-          setDesignation(designation)
+          setDesignation(designation);
         }
         if (department) {
-          setDepartment(department)
+          setDepartment(department);
         }
       } catch (e) {
         console.error('Error while loading username!');
@@ -75,8 +71,7 @@ const Profile = () => {
     };
 
     getUsername();
-  }, [])
-
+  }, []);
 
   const handlePersonalDetails = () => {
     setPersonalDetails(true);
@@ -92,17 +87,22 @@ const Profile = () => {
 
   useEffect(() => {
     const updatePasswordValidity = () => {
-      if (NewPassword !== NewPassword2 || !NewPassword || !CurrentPassword || !NewPassword2 || NewPassword == CurrentPassword) {
-        setAllPasswordValidity(false)
+      if (
+        NewPassword !== NewPassword2 ||
+        !NewPassword ||
+        !CurrentPassword ||
+        !NewPassword2 ||
+        NewPassword == CurrentPassword
+      ) {
+        setAllPasswordValidity(false);
       } else {
-        console.log(true)
-        setAllPasswordValidity(true)
+        console.log(true);
+        setAllPasswordValidity(true);
       }
     };
 
-    updatePasswordValidity()
-  }, [NewPassword, NewPassword2, CurrentPassword])
-
+    updatePasswordValidity();
+  }, [NewPassword, NewPassword2, CurrentPassword]);
 
   const handleCurrentPasswordChange = text => {
     setCurrentPassword(text);
@@ -116,48 +116,59 @@ const Profile = () => {
     setNewPassword2(text);
   };
 
-
   const saveNewPassword = async () => {
-
     if (NewPassword == NewPassword2) {
-      if (NewPassword.length >= 8 && /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(NewPassword) && /[A-Z]/.test(NewPassword)) {
-        console.log("first")
+      if (
+        NewPassword.length >= 8 &&
+        /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(NewPassword) &&
+        /[A-Z]/.test(NewPassword)
+      ) {
+        console.log('first');
         const id = await AsyncStorage.getItem('@id');
-        console.log(id)
-        console.log(NewPassword)
-        console.log(CurrentPassword)
-        await axios.put("http://192.168.0.100:3001/password", {
-          id: id,
-          currectPassword: CurrentPassword,
-          newPassword: NewPassword
-        }).then(res => {
-          Alert.alert("", "Password Updated Successfully!")
-        }).catch(err => {
-          Alert.alert("", "Could not Update Password")
-        })
+        console.log(id);
+        console.log(NewPassword);
+        console.log(CurrentPassword);
+        await axios
+          .put('http://192.168.0.101:3001/password', {
+            id: id,
+            currectPassword: CurrentPassword,
+            newPassword: NewPassword,
+          })
+          .then(res => {
+            Alert.alert('', 'Password Updated Successfully!');
+          })
+          .catch(err => {
+            Alert.alert('', 'Could not Update Password');
+          });
       } else {
-        Alert.alert("Invalid Format", "Password should be 8 characters long, Use alphanumeric characters to make strong password, Use at least one capital letter in the combination ")
+        Alert.alert(
+          'Invalid Format',
+          'Password should be 8 characters long, Use alphanumeric characters to make strong password, Use at least one capital letter in the combination ',
+        );
       }
     } else {
-      Alert.alert("", "Passwords does not match!")
+      Alert.alert('', 'Passwords does not match!');
     }
 
-    CurrentPassword
+    CurrentPassword;
   };
 
   const updateUser = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.put("http://192.168.0.100:3001/user", {
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      designation: designation,
-      department: department
-    }).then(res => {
-      Alert.alert("", "User Details Updated Successfully")
-    }).catch(err => {
-      Alert.alert("", "Unknown Error Occured")
-    })
+    await axios
+      .put('http://192.168.0.101:3001/user', {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        designation: designation,
+        department: department,
+      })
+      .then(res => {
+        Alert.alert('', 'User Details Updated Successfully');
+      })
+      .catch(err => {
+        Alert.alert('', 'Unknown Error Occured');
+      });
   };
 
   return (
@@ -170,7 +181,7 @@ const Profile = () => {
       }}>
       <KeyboardAvoidingView>
         <ScrollView>
-          <View style={{ padding: 10 }}>
+          <View style={{padding: 10}}>
             <Text
               style={{
                 fontSize: 18,
@@ -190,7 +201,7 @@ const Profile = () => {
             </Text>
             {editingPersonalDetails ? (
               <View>
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                <View style={{flexDirection: 'row', marginTop: 20}}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -205,7 +216,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{ marginLeft: 30 }}>
+                    style={{marginLeft: 30}}>
                     <Text
                       style={{
                         color: '#000',
@@ -228,28 +239,28 @@ const Profile = () => {
                       <TextField
                         label="First Name"
                         outlineColor="#1f2067"
-                        style={{ marginTop: 20, height: 60 }}
+                        style={{marginTop: 20, height: 60}}
                         value={firstName}
                         onChangeText={setFirstName}
                       />
                       <TextField
                         label="Last Name"
                         outlineColor="#1f2067"
-                        style={{ marginTop: 20, height: 60 }}
+                        style={{marginTop: 20, height: 60}}
                         value={lastName}
                         onChangeText={setLastName}
                       />
                       <TextField
                         label="Designation"
                         outlineColor="#1f2067"
-                        style={{ marginTop: 20, height: 60 }}
+                        style={{marginTop: 20, height: 60}}
                         value={designation}
                         onChangeText={setDesignation}
                       />
                       <TextField
                         label="Department"
                         outlineColor="#1f2067"
-                        style={{ marginTop: 20, height: 60 }}
+                        style={{marginTop: 20, height: 60}}
                         value={department}
                         onChangeText={setDepartment}
                       />
@@ -353,10 +364,11 @@ const Profile = () => {
                   )}
                   {editing ? (
                     <View>
-                      <Pressable onPress={() => {
-                        setEditing(false);
-                        updateUser()
-                      }}>
+                      <Pressable
+                        onPress={() => {
+                          setEditing(false);
+                          updateUser();
+                        }}>
                         <View
                           style={{
                             paddingHorizontal: '33%',
@@ -370,7 +382,7 @@ const Profile = () => {
                           }}>
                           <Image
                             resizeMode="contain"
-                            style={{ width: 25, height: 25 }}
+                            style={{width: 25, height: 25}}
                             source={require('../images/check.png')}
                           />
                           <Text
@@ -385,9 +397,10 @@ const Profile = () => {
                         </View>
                       </Pressable>
 
-                      <Pressable onPress={() => {
-                        setEditing(false)
-                      }}>
+                      <Pressable
+                        onPress={() => {
+                          setEditing(false);
+                        }}>
                         <View
                           style={{
                             paddingHorizontal: '33%',
@@ -426,7 +439,7 @@ const Profile = () => {
                         }}>
                         <Image
                           resizeMode="contain"
-                          style={{ width: 25, height: 25 }}
+                          style={{width: 25, height: 25}}
                           source={require('../images/EditProfile3.png')}
                         />
                         <Text
@@ -445,7 +458,7 @@ const Profile = () => {
               </View>
             ) : (
               <View>
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                <View style={{flexDirection: 'row', marginTop: 20}}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -456,7 +469,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{ marginLeft: 30 }}>
+                    style={{marginLeft: 30}}>
                     <Text
                       style={{
                         borderBottomWidth: 3,
@@ -506,7 +519,7 @@ const Profile = () => {
                       Use at least one capital letter in the combination
                     </Text>
                     <TextField
-                      style={{ marginBottom: 10 }}
+                      style={{marginBottom: 10}}
                       label="Current Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showCurrentPassword ? false : true}
@@ -520,7 +533,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{ width: 25 }}
+                                style={{width: 25}}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -529,7 +542,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{ marginBottom: 10 }}
+                      style={{marginBottom: 10}}
                       label="New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword ? false : true}
@@ -543,7 +556,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{ width: 25 }}
+                                style={{width: 25}}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -552,7 +565,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{ marginBottom: 5 }}
+                      style={{marginBottom: 5}}
                       label="Retype New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword2 ? false : true}
@@ -566,7 +579,7 @@ const Profile = () => {
                               }}>
                               <Image
                                 resizeMode="contain"
-                                style={{ width: 25 }}
+                                style={{width: 25}}
                                 source={require('../images/Hide.png')}
                               />
                             </TouchableOpacity>
@@ -586,15 +599,14 @@ const Profile = () => {
                         paddingVertical: 14,
                         flexDirection: 'row',
                         marginTop: '10%',
-                        backgroundColor:
-                          allPasswordValidity
-                            ? '#00BD57'
-                            : '#C7C7C7',
+                        backgroundColor: allPasswordValidity
+                          ? '#00BD57'
+                          : '#C7C7C7',
                         borderRadius: 5,
                       }}>
                       <Image
                         resizeMode="contain"
-                        style={{ width: 25, height: 25 }}
+                        style={{width: 25, height: 25}}
                         source={require('../images/check.png')}
                       />
                       <Text
