@@ -53,7 +53,7 @@ const GroupMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://52.53.197.201:3001/saveMessage', {
+      .post('http://192.168.0.100:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: id,
@@ -114,7 +114,7 @@ const GroupMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://52.53.197.201:3001/getMessage?roomid=${id}`)
+          .get(`http://192.168.0.100:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);

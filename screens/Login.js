@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://52.53.197.201:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.100:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
@@ -69,7 +69,9 @@ export default function SignIn({ navigation }) {
         await AsyncStorage.setItem('@role', res.data.role);
         await AsyncStorage.setItem('@email', res.data.email);
         await AsyncStorage.setItem('@department', res.data.department);
+        await AsyncStorage.setItem('@designation', res.data.designation);
         await AsyncStorage.setItem('@username', res.data.firstName);
+        await AsyncStorage.setItem('@lastName', res.data.lastName);
         await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
         const value = await AsyncStorage.getItem('@username');
         console.log(value);

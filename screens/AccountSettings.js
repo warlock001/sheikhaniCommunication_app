@@ -9,6 +9,7 @@ import {
   Touchable,
   TouchableOpacity,
   ScrollView,
+  Alert,
   KeyboardAvoidingView,
   ToastAndroid,
 } from 'react-native';
@@ -20,6 +21,7 @@ import socket from '../utils/socket';
 import { styles } from '../utils/styles';
 import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
+import axios from 'axios';
 const Profile = () => {
   const navigation = useNavigation();
 
@@ -33,26 +35,48 @@ const Profile = () => {
   const [CurrentPassword, setCurrentPassword] = useState(null);
   const [NewPassword, setNewPassword] = useState(null);
   const [NewPassword2, setNewPassword2] = useState(null);
+  const [allPasswordValidity, setAllPasswordValidity] = useState(false);
 
-  const getUsername = async () => {
-    try {
-      const profileUsername = await AsyncStorage.getItem('@username');
-      // console.log(profileUsername);
-      if (profileUsername !== null) {
-        setUser(profileUsername);
-      }
-    } catch (e) {
-      console.error('Error while loading username!');
-    }
-  };
 
-  getUsername();
 
   const [editingPersonalDetails, setPersonalDetails] = useState(true);
   const [editing, setEditing] = useState(false); // State to manage editing mode
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('Nelson');
-  const [designation, setDesignation] = useState('Marketing Manager');
+  const [lastName, setLastName] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [department, setDepartment] = useState('');
+
+
+
+  useEffect(() => {
+    const getUsername = async () => {
+      try {
+        const profileUsername = await AsyncStorage.getItem('@username');
+        const lastName = await AsyncStorage.getItem('@lastName');
+        const designation = await AsyncStorage.getItem('@designation');
+        const department = await AsyncStorage.getItem('@department');
+
+        if (profileUsername !== null) {
+          setFirstName(profileUsername)
+          setUser(profileUsername);
+        }
+        if (lastName) {
+          setLastName(lastName)
+        }
+        if (designation) {
+          setDesignation(designation)
+        }
+        if (department) {
+          setDepartment(department)
+        }
+      } catch (e) {
+        console.error('Error while loading username!');
+      }
+    };
+
+    getUsername();
+  }, [])
+
 
   const handlePersonalDetails = () => {
     setPersonalDetails(true);
@@ -66,42 +90,74 @@ const Profile = () => {
     setEditing(true);
   };
 
-  const saveChanges = () => {
-    setEditing(false);
-    // You can perform saving logic here, like updating the data
-  };
+  useEffect(() => {
+    const updatePasswordValidity = () => {
+      if (NewPassword !== NewPassword2 || !NewPassword || !CurrentPassword || !NewPassword2 || NewPassword == CurrentPassword) {
+        setAllPasswordValidity(false)
+      } else {
+        console.log(true)
+        setAllPasswordValidity(true)
+      }
+    };
 
-  const [matchingPasswords, setMatchingPasswords] = useState(false);
-  const [currentPasswordMatch, setCurrentPasswordMatch] = useState(false);
+    updatePasswordValidity()
+  }, [NewPassword, NewPassword2, CurrentPassword])
+
+
+  const handleCurrentPasswordChange = text => {
+    setCurrentPassword(text);
+  };
 
   const handleNewPasswordChange = text => {
     setNewPassword(text);
-
-    // Check for password conditions
-    const isLengthValid = text.length >= 8;
-    const hasAlphanumeric = /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(text);
-    const hasUpperCase = /[A-Z]/.test(text);
-
-    setMatchingPasswords(
-      text === NewPassword2 && isLengthValid && hasAlphanumeric && hasUpperCase,
-    );
   };
 
   const handleNewPassword2Change = text => {
     setNewPassword2(text);
-    setMatchingPasswords(text === NewPassword);
   };
 
-  const handleCurrentPasswordChange = text => {
-    setCurrentPasswordMatch(text === 'abc.123'); // Replace "predefinedcurrentpassword" with your actual predefined password
-    setCurrentPassword(text);
-  };
 
-  const saveNewPassword = () => {
-    if (matchingPasswords && currentPasswordMatch) {
-      // Perform the logic to save the new password here
-      console.log('New password saved!');
+  const saveNewPassword = async () => {
+
+    if (NewPassword == NewPassword2) {
+      if (NewPassword.length >= 8 && /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(NewPassword) && /[A-Z]/.test(NewPassword)) {
+        console.log("first")
+        const id = await AsyncStorage.getItem('@id');
+        console.log(id)
+        console.log(NewPassword)
+        console.log(CurrentPassword)
+        await axios.put("http://192.168.0.100:3001/password", {
+          id: id,
+          currectPassword: CurrentPassword,
+          newPassword: NewPassword
+        }).then(res => {
+          Alert.alert("", "Password Updated Successfully!")
+        }).catch(err => {
+          Alert.alert("", "Could not Update Password")
+        })
+      } else {
+        Alert.alert("Invalid Format", "Password should be 8 characters long, Use alphanumeric characters to make strong password, Use at least one capital letter in the combination ")
+      }
+    } else {
+      Alert.alert("", "Passwords does not match!")
     }
+
+    CurrentPassword
+  };
+
+  const updateUser = async () => {
+    const id = await AsyncStorage.getItem('@id');
+    await axios.put("http://192.168.0.100:3001/user", {
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      designation: designation,
+      department: department
+    }).then(res => {
+      Alert.alert("", "User Details Updated Successfully")
+    }).catch(err => {
+      Alert.alert("", "Unknown Error Occured")
+    })
   };
 
   return (
@@ -190,6 +246,13 @@ const Profile = () => {
                         value={designation}
                         onChangeText={setDesignation}
                       />
+                      <TextField
+                        label="Department"
+                        outlineColor="#1f2067"
+                        style={{ marginTop: 20, height: 60 }}
+                        value={department}
+                        onChangeText={setDepartment}
+                      />
                     </View>
                   ) : (
                     <View>
@@ -236,7 +299,7 @@ const Profile = () => {
                             fontWeight: '400',
                             color: '#8f8f8f',
                           }}>
-                          Nelson
+                          {lastName}
                         </Text>
                       </View>
                       <View
@@ -259,40 +322,95 @@ const Profile = () => {
                             fontWeight: '400',
                             color: '#8f8f8f',
                           }}>
-                          Marketing Manager
+                          {designation}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          marginTop: 20,
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '500',
+                            color: '#1f1f1f',
+                          }}>
+                          Department
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: '400',
+                            color: '#8f8f8f',
+                          }}>
+                          {department}
                         </Text>
                       </View>
                     </View>
                   )}
                   {editing ? (
-                    <Pressable onPress={saveChanges}>
-                      <View
-                        style={{
-                          paddingHorizontal: '33%',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          paddingVertical: 14,
-                          flexDirection: 'row',
-                          marginTop: '10%',
-                          backgroundColor: '#00BD57',
-                          borderRadius: 5,
-                        }}>
-                        <Image
-                          resizeMode="contain"
-                          style={{ width: 25, height: 25 }}
-                          source={require('../images/check.png')}
-                        />
-                        <Text
+                    <View>
+                      <Pressable onPress={() => {
+                        setEditing(false);
+                        updateUser()
+                      }}>
+                        <View
                           style={{
-                            color: '#FFF',
-                            fontSize: 16,
-                            fontWeight: '500',
-                            marginLeft: 10,
+                            paddingHorizontal: '33%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingVertical: 14,
+                            flexDirection: 'row',
+                            marginTop: '10%',
+                            backgroundColor: '#00BD57',
+                            borderRadius: 5,
                           }}>
-                          Save Changes
-                        </Text>
-                      </View>
-                    </Pressable>
+                          <Image
+                            resizeMode="contain"
+                            style={{ width: 25, height: 25 }}
+                            source={require('../images/check.png')}
+                          />
+                          <Text
+                            style={{
+                              color: '#FFF',
+                              fontSize: 16,
+                              fontWeight: '500',
+                              marginLeft: 10,
+                            }}>
+                            Save Changes
+                          </Text>
+                        </View>
+                      </Pressable>
+
+                      <Pressable onPress={() => {
+                        setEditing(false)
+                      }}>
+                        <View
+                          style={{
+                            paddingHorizontal: '33%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            paddingVertical: 14,
+                            flexDirection: 'row',
+                            marginTop: '10%',
+                            backgroundColor: '#949393',
+                            borderRadius: 5,
+                          }}>
+                          <Text
+                            style={{
+                              color: '#FFF',
+                              fontSize: 16,
+                              fontWeight: '500',
+                              marginLeft: 10,
+                            }}>
+                            Cancel
+                          </Text>
+                        </View>
+                      </Pressable>
+                    </View>
                   ) : (
                     <Pressable onPress={startEditing}>
                       <View
@@ -459,7 +577,7 @@ const Profile = () => {
                   </View>
                   <Pressable
                     onPress={saveNewPassword}
-                    disabled={!matchingPasswords || !currentPasswordMatch}>
+                    disabled={!allPasswordValidity}>
                     <View
                       style={{
                         paddingHorizontal: '10%',
@@ -469,7 +587,7 @@ const Profile = () => {
                         flexDirection: 'row',
                         marginTop: '10%',
                         backgroundColor:
-                          matchingPasswords && currentPasswordMatch
+                          allPasswordValidity
                             ? '#00BD57'
                             : '#C7C7C7',
                         borderRadius: 5,
