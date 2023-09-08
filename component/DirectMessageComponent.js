@@ -11,8 +11,6 @@ export default function DirectMessageComponent({ item, user }) {
   useLayoutEffect(() => {
     async function getStatus() {
       const myId = await AsyncStorage.getItem("@id");
-      console.log(item.message + "seen" + item.seen)
-      console.log(item.senderid == myId)
       setStatus(item.senderid !== myId)
     }
 

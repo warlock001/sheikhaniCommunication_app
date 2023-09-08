@@ -43,15 +43,16 @@ const Modal = ({setVisible, roomid}) => {
 
   useEffect(() => {
     async function getUsers() {
+      console.log('ye3h raaha');
       const department = await AsyncStorage.getItem('@department');
       const id = await AsyncStorage.getItem('@id');
+      console.log('ye3h raaha dataaaaaaaaaaaaaaa', department);
       console.log('ye3h raaha');
       axios
         .get(
           `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
-          // console.log('ye3h raaha dataaaaaaaaaaaaaaa', res.data);
           setSearchedUsers(res.data.user);
         });
     }
@@ -60,15 +61,14 @@ const Modal = ({setVisible, roomid}) => {
   }, [search]);
 
   //zabalon will edit this
-  async function handleAdd(id) {
-    console.log(id);
+  async function handleAdd() {
     await axios
-      .post('http://52.53.197.201:3001/groupMember', {
-        id: id,
+      .post('http://192.168.0.100:3001/groupMember', {
+        id: checkedItems,
         roomid: roomid,
       })
       .then(response => {
-        Alert.alert('', 'User Added To Group');
+        Alert.alert('', 'Added To Group Sucessfully');
       })
       .catch(err => {
         console.log(err);
@@ -232,8 +232,8 @@ const Modal = ({setVisible, roomid}) => {
         mode="flat"
         textAlign="center"
         multiline={true}
-        value={groupName}
-        onChangeText={value => setGroupName(value)}
+        value={search}
+        onChangeText={value => setSearch(value)}
         placeholderTextColor={'#000'}
         color={'#000'}
       />
@@ -260,6 +260,10 @@ const Modal = ({setVisible, roomid}) => {
           keyExtractor={item => item._id}
         />
       </ScrollView>
+      <Text>
+        {checkedItems.length} {checkedItems.length > 1 ? 'Users' : 'User'}{' '}
+        selected
+      </Text>
       <View
         style={{
           flexDirection: 'row',
