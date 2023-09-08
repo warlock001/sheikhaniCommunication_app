@@ -85,7 +85,7 @@ const DirectChatComponent = ({item, username}) => {
                 marginTop: 'auto',
                 marginLeft: 'auto',
                 display: 'flex',
-                backgroundColor: '#003A9A',
+                backgroundColor: '#1f2067',
                 width: 25,
                 height: 25,
                 borderRadius: 50,
