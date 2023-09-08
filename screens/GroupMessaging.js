@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
@@ -20,9 +20,9 @@ import Modal from '../component/AddMemberModal';
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const GroupMessaging = ({ route, navigation }) => {
+const GroupMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -186,7 +186,7 @@ const GroupMessaging = ({ route, navigation }) => {
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -195,12 +195,12 @@ const GroupMessaging = ({ route, navigation }) => {
               flatlistRef = ref;
             }}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <DirectMessageComponent item={item} user={user} />
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
@@ -226,7 +226,7 @@ const GroupMessaging = ({ route, navigation }) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{ width: 30, height: 30, marginRight: 5 }}
+              style={{width: 30, height: 30, marginRight: 5}}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
