@@ -151,7 +151,7 @@ export default function DirectMessagesScreen({ navigation }) {
           <Text
             style={{
               textAlign: 'center',
-              fontSize: 24,
+              fontSize: 19,
               // textDecorationLine: 'underline',
               marginBottom: 10,
               fontWeight: '600',

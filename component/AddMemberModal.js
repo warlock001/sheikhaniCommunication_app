@@ -10,15 +10,15 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TextField from '../component/inputField';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
-const Modal = ({ setVisible, roomid }) => {
+const Modal = ({setVisible, roomid}) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState('');
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(true);
@@ -53,7 +53,6 @@ const Modal = ({ setVisible, roomid }) => {
           `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
-
           setSearchedUsers(res.data.user);
         });
     }
@@ -78,7 +77,7 @@ const Modal = ({ setVisible, roomid }) => {
 
   const [checkedItems, setCheckedItems] = useState([]);
 
-  function Item({ props }) {
+  function Item({props}) {
     const [image, setImage] = useState(false);
     useLayoutEffect(() => {
       async function getImage() {
@@ -144,19 +143,19 @@ const Modal = ({ setVisible, roomid }) => {
             {image ? (
               <Image
                 resizeMode="cover"
-                style={[styles.mavatar, { marginTop: 'auto' }]}
-                source={{ uri: image }}
+                style={[styles.mavatar, {marginTop: 'auto'}]}
+                source={{uri: image}}
                 width={30}
               />
             ) : (
               ''
             )}
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+            <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
               {props.title}
             </Text>
           </View>
           <Checkbox
-            style={{ backgroundColor: 'yellow' }}
+            style={{backgroundColor: 'yellow'}}
             status={isChecked(props.id) ? 'checked' : 'unchecked'}
             color="#1F2067"
             onPress={() => toggleItem(props.id)}
@@ -193,7 +192,7 @@ const Modal = ({ setVisible, roomid }) => {
           right: 5,
           top: 5,
           // height: 45,
-          backgroundColor: '#ddd',
+          // backgroundColor: '#ddd',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: 'center',
@@ -202,7 +201,7 @@ const Modal = ({ setVisible, roomid }) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 30, height: 30 }}
+          style={{width: 20, height: 20}}
           source={require('../images/close.png')}
         />
       </Pressable>
@@ -249,7 +248,7 @@ const Modal = ({ setVisible, roomid }) => {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={true}
           data={searchedUsers}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Item
               props={{
                 title: item.firstName,
@@ -261,7 +260,10 @@ const Modal = ({ setVisible, roomid }) => {
           keyExtractor={item => item._id}
         />
       </ScrollView>
-      <Text>{checkedItems.length} {checkedItems.length > 1 ? 'Users' : 'User'} selected</Text>
+      <Text>
+        {checkedItems.length} {checkedItems.length > 1 ? 'Users' : 'User'}{' '}
+        selected
+      </Text>
       <View
         style={{
           flexDirection: 'row',

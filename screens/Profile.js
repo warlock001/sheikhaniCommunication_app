@@ -222,7 +222,7 @@ const Profile = () => {
             style={{
               fontFamily: 'Pacifico-Regular',
               marginTop: 30,
-              fontSize: 24,
+              fontSize: 19,
               fontWeight: '600',
               color: '#fff',
             }}>
@@ -280,15 +280,13 @@ const Profile = () => {
                 }}>
                 <Text
                   style={{
-                    fontSize: 20,
+                    fontSize: 19,
                     marginBottom: '10%',
                     fontWeight: '600',
                     color: '#fff',
                     fontFamily: 'Pacifico-Regular',
                     textAlign: 'center',
-                  }}>
-                  Sheikhani Group Communication
-                </Text>
+                  }}></Text>
                 {/* <Text
           style={{
             fontSize: 20,

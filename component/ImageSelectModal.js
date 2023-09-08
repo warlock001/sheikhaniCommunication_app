@@ -13,7 +13,7 @@ const ImageSelectModal = ({visible, onClose, chooseImage, sendData, image}) => {
         }}>
         <Text
           style={{
-            fontSize: 20,
+            fontSize: 19,
             marginBottom: '10%',
             fontWeight: '600',
             color: '#fff',

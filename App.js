@@ -41,6 +41,7 @@ import DirectMessagesScreen from './screens/DirectMessagesScreen';
 import DirectMessaging from './screens/DirectMessaging';
 import GroupMessagesScreen from './screens/GroupMessagesScreen';
 import GroupMessaging from './screens/GroupMessaging';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -143,7 +144,7 @@ function HomeTabs() {
       tabBar={props => <MyTabBar {...props} />}>
       <Tab.Screen
         name="Workspace"
-        component={GroupMessagesScreen}
+        component={Chat}
         options={{headerShown: false}}
       />
       <Tab.Screen
@@ -239,69 +240,71 @@ export default function App() {
   };
 
   return (
-    <NavigationContainer>
-      {appReady ? (
-        <Stack.Navigator>
-          <Stack.Screen
-            name="OnBoarding"
-            component={OnBoarding}
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        {appReady ? (
+          <Stack.Navigator>
+            <Stack.Screen
+              name="OnBoarding"
+              component={OnBoarding}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Home"
+              component={HomeTabs}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Messaging"
+              component={Messaging}
+              options={{headerShown: true}}
+            />
+            <Stack.Screen
+              name="Announcements"
+              component={Announcements}
+              options={{headerShown: true}}
+            />
+            <Stack.Screen
+              name="AnnouncementPreview"
+              component={AnnouncementPreview}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="AccountSettings"
+              component={AccountSettings}
+              options={{headerShown: true}}
+            />
+            <Stack.Screen
+              name="DirectMessaging"
+              component={DirectMessaging}
+              options={{headerShown: true}}
+            />
+            <Stack.Screen
+              name="GroupMessaging"
+              component={GroupMessaging}
+              options={{headerShown: true}}
+            />
+            <Stack.Screen
+              name="GroupChatDetails"
+              component={GroupChatDetails}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        ) : (
+          <SplashScreenComponent
+            name="Splash"
+            component={SplashScreenComponent}
             options={{headerShown: false}}
+            onSplashEnd={handleSplashEnd}
           />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeTabs}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Messaging"
-            component={Messaging}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="Announcements"
-            component={Announcements}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="AnnouncementPreview"
-            component={AnnouncementPreview}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="AccountSettings"
-            component={AccountSettings}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="DirectMessaging"
-            component={DirectMessaging}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="GroupMessaging"
-            component={GroupMessaging}
-            options={{headerShown: true}}
-          />
-          <Stack.Screen
-            name="GroupChatDetails"
-            component={GroupChatDetails}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      ) : (
-        <SplashScreenComponent
-          name="Splash"
-          component={SplashScreenComponent}
-          options={{headerShown: false}}
-          onSplashEnd={handleSplashEnd}
-        />
-      )}
-    </NavigationContainer>
+        )}
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 

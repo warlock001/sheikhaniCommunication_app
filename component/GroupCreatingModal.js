@@ -51,7 +51,7 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
           right: 5,
           top: 5,
           // height: 45,
-          backgroundColor: '#ddd',
+          // backgroundColor: '#ddd',
           borderRadius: 5,
           alignItems: 'center',
           justifyContent: 'center',
@@ -60,7 +60,7 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 30, height: 30 }}
+          style={{ width: 20, height: 20 }}
           source={require('../images/close.png')}
         />
       </Pressable>

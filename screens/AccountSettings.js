@@ -37,16 +37,12 @@ const Profile = () => {
   const [NewPassword2, setNewPassword2] = useState(null);
   const [allPasswordValidity, setAllPasswordValidity] = useState(false);
 
-
-
   const [editingPersonalDetails, setPersonalDetails] = useState(true);
   const [editing, setEditing] = useState(false); // State to manage editing mode
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [designation, setDesignation] = useState('');
   const [department, setDepartment] = useState('');
-
-
 
   useEffect(() => {
     const getUsername = async () => {
@@ -57,17 +53,17 @@ const Profile = () => {
         const department = await AsyncStorage.getItem('@department');
 
         if (profileUsername !== null) {
-          setFirstName(profileUsername)
+          setFirstName(profileUsername);
           setUser(profileUsername);
         }
         if (lastName) {
-          setLastName(lastName)
+          setLastName(lastName);
         }
         if (designation) {
-          setDesignation(designation)
+          setDesignation(designation);
         }
         if (department) {
-          setDepartment(department)
+          setDepartment(department);
         }
       } catch (e) {
         console.error('Error while loading username!');
@@ -75,8 +71,7 @@ const Profile = () => {
     };
 
     getUsername();
-  }, [])
-
+  }, []);
 
   const handlePersonalDetails = () => {
     setPersonalDetails(true);
@@ -92,17 +87,22 @@ const Profile = () => {
 
   useEffect(() => {
     const updatePasswordValidity = () => {
-      if (NewPassword !== NewPassword2 || !NewPassword || !CurrentPassword || !NewPassword2 || NewPassword == CurrentPassword) {
-        setAllPasswordValidity(false)
+      if (
+        NewPassword !== NewPassword2 ||
+        !NewPassword ||
+        !CurrentPassword ||
+        !NewPassword2 ||
+        NewPassword == CurrentPassword
+      ) {
+        setAllPasswordValidity(false);
       } else {
-        console.log(true)
-        setAllPasswordValidity(true)
+        console.log(true);
+        setAllPasswordValidity(true);
       }
     };
 
-    updatePasswordValidity()
-  }, [NewPassword, NewPassword2, CurrentPassword])
-
+    updatePasswordValidity();
+  }, [NewPassword, NewPassword2, CurrentPassword]);
 
   const handleCurrentPasswordChange = text => {
     setCurrentPassword(text);
@@ -116,12 +116,14 @@ const Profile = () => {
     setNewPassword2(text);
   };
 
-
   const saveNewPassword = async () => {
-
     if (NewPassword == NewPassword2) {
-      if (NewPassword.length >= 8 && /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(NewPassword) && /[A-Z]/.test(NewPassword)) {
-        console.log("first")
+      if (
+        NewPassword.length >= 8 &&
+        /^(?=.*[a-zA-Z])(?=.*[0-9])/.test(NewPassword) &&
+        /[A-Z]/.test(NewPassword)
+      ) {
+        console.log('first');
         const id = await AsyncStorage.getItem('@id');
         console.log(id)
         console.log(NewPassword)
@@ -136,13 +138,16 @@ const Profile = () => {
           Alert.alert("", "Could not Update Password")
         })
       } else {
-        Alert.alert("Invalid Format", "Password should be 8 characters long, Use alphanumeric characters to make strong password, Use at least one capital letter in the combination ")
+        Alert.alert(
+          'Invalid Format',
+          'Password should be 8 characters long, Use alphanumeric characters to make strong password, Use at least one capital letter in the combination ',
+        );
       }
     } else {
-      Alert.alert("", "Passwords does not match!")
+      Alert.alert('', 'Passwords does not match!');
     }
 
-    CurrentPassword
+    CurrentPassword;
   };
 
   const updateUser = async () => {
@@ -353,10 +358,11 @@ const Profile = () => {
                   )}
                   {editing ? (
                     <View>
-                      <Pressable onPress={() => {
-                        setEditing(false);
-                        updateUser()
-                      }}>
+                      <Pressable
+                        onPress={() => {
+                          setEditing(false);
+                          updateUser();
+                        }}>
                         <View
                           style={{
                             paddingHorizontal: '33%',
@@ -385,9 +391,10 @@ const Profile = () => {
                         </View>
                       </Pressable>
 
-                      <Pressable onPress={() => {
-                        setEditing(false)
-                      }}>
+                      <Pressable
+                        onPress={() => {
+                          setEditing(false);
+                        }}>
                         <View
                           style={{
                             paddingHorizontal: '33%',
@@ -586,10 +593,9 @@ const Profile = () => {
                         paddingVertical: 14,
                         flexDirection: 'row',
                         marginTop: '10%',
-                        backgroundColor:
-                          allPasswordValidity
-                            ? '#00BD57'
-                            : '#C7C7C7',
+                        backgroundColor: allPasswordValidity
+                          ? '#00BD57'
+                          : '#C7C7C7',
                         borderRadius: 5,
                       }}>
                       <Image

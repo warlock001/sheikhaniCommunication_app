@@ -215,7 +215,7 @@ export default function SignIn({ navigation }) {
                   <Text
                     style={{
                       marginTop: 20,
-                      fontSize: 24,
+                      fontSize: 19,
                       fontWeight: '600',
                       color: '#000',
                       fontFamily: 'Pacifico-Regular',

@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,12 +13,12 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
-import { TextInput } from 'react-native-paper';
+import {styles} from '../utils/styles';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 const AnnouncementPreview = () => {
   const navigation = useNavigation();
@@ -114,10 +114,10 @@ const AnnouncementPreview = () => {
       }}>
       <KeyboardAvoidingView>
         <ScrollView>
-          <View style={{ padding: 10 }}>
+          <View style={{padding: 10}}>
             <Text
               style={{
-                fontSize: 24,
+                fontSize: 19,
                 fontWeight: '600',
                 color: '#000',
                 fontFamily: 'Pacifico-Regular',
@@ -141,7 +141,7 @@ const AnnouncementPreview = () => {
               }}>
               <Image
                 resizeMode="cover"
-                style={{ width: 25 }}
+                style={{width: 25}}
                 source={require('../images/close.png')}
               />
             </Pressable>
