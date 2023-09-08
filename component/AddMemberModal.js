@@ -20,7 +20,7 @@ import { Checkbox } from 'react-native-paper';
 
 const Modal = ({ setVisible, roomid }) => {
   const closeModal = () => setVisible(false);
-  const [groupName, setGroupName] = useState("");
+  const [groupName, setGroupName] = useState('');
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(true);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [search, setSearch] = useState('');
@@ -41,18 +41,19 @@ const Modal = ({ setVisible, roomid }) => {
     closeModal();
   };
 
-
   useEffect(() => {
     async function getUsers() {
+      console.log('ye3h raaha');
       const department = await AsyncStorage.getItem('@department');
       const id = await AsyncStorage.getItem('@id');
-      console.log("ye3h raaha")
+      console.log('ye3h raaha dataaaaaaaaaaaaaaa', department);
+      console.log('ye3h raaha');
       axios
         .get(
           `http://192.168.0.100:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
-          console.log("ye3h raaha dataaaaaaaaaaaaaaa", res.data)
+
           setSearchedUsers(res.data.user);
         });
     }
@@ -60,15 +61,15 @@ const Modal = ({ setVisible, roomid }) => {
     getUsers();
   }, [search]);
 
-  async function handleAdd(id) {
-    console.log(id);
+  //zabalon will edit this
+  async function handleAdd() {
     await axios
-      .post('http://52.53.197.201:3001/groupMember', {
-        id: id,
+      .post('http://192.168.0.100:3001/groupMember', {
+        id: checkedItems,
         roomid: roomid,
       })
       .then(response => {
-        Alert.alert('', 'User Added To Group');
+        Alert.alert('', 'Added To Group Sucessfully');
       })
       .catch(err => {
         console.log(err);
@@ -97,11 +98,42 @@ const Modal = ({ setVisible, roomid }) => {
 
       getImage();
     });
+
+    const isChecked = id => {
+      return checkedItems.includes(id);
+    };
+
+    const toggleItem = id => {
+      if (isChecked(id)) {
+        setCheckedItems(checkedItems.filter(item => item !== id));
+      } else {
+        setCheckedItems([...checkedItems, id]);
+      }
+    };
+    console.log(checkedItems);
+
+    // const isChecked = id => {
+    //   return checkedItems.includes(id);
+    // };
+
+    // const toggleItem = id => {
+    //   console.log(id);
+    //   if (isChecked(id)) {
+    //     let CheckedItems = [];
+    //     CheckedItems = checkedItems;
+    //     CheckedItems.splice(CheckedItems.indexOf(id));
+    //     setCheckedItems(CheckedItems);
+    //   } else {
+    //     setCheckedItems([...checkedItems, id]);
+    //   }
+    //   console.log(checkedItems);
+    // };
     return (
-      <TouchableOpacity
-        onPress={() => {
-          handleAdd(props.id);
-        }}>
+      <View
+      // onPress={() => {
+      //   handleAdd(props.id);
+      // }}
+      >
         <View style={style.item}>
           <View
             style={{
@@ -124,7 +156,7 @@ const Modal = ({ setVisible, roomid }) => {
             </Text>
           </View>
           <Checkbox
-            style={{ backgroundColor: 'red' }}
+            style={{ backgroundColor: 'yellow' }}
             status={isChecked(props.id) ? 'checked' : 'unchecked'}
             color="#1F2067"
             onPress={() => toggleItem(props.id)}
@@ -201,15 +233,17 @@ const Modal = ({ setVisible, roomid }) => {
         mode="flat"
         textAlign="center"
         multiline={true}
-        value={groupName}
-        onChangeText={(value) => setGroupName(value)}
+        value={search}
+        onChangeText={value => setSearch(value)}
+        placeholderTextColor={'#000'}
+        color={'#000'}
       />
-      <View
-        style={[
-          styles.optionBox,
-          { display: searchedUsersVisible ? 'flex' : 'none' },
-        ]}>
-
+      <ScrollView
+        style={{
+          display: searchedUsersVisible ? 'flex' : 'none',
+          marginTop: 33,
+          maxHeight: 400,
+        }}>
         {/* <Text style={{ marginBottom: 10 }}>Search Users</Text> */}
         <FlatList
           keyboardShouldPersistTaps="handled"
@@ -226,14 +260,35 @@ const Modal = ({ setVisible, roomid }) => {
           )}
           keyExtractor={item => item._id}
         />
-      </View>
-      <View style={[styles.modalbuttonContainer, { justifyContent: 'center' }]}>
-
+      </ScrollView>
+      <Text>{checkedItems.length} {checkedItems.length > 1 ? 'Users' : 'User'} selected</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: 40,
+        }}>
         <Pressable
-          style={[styles.modalbutton, { backgroundColor: "#E14D2A" }]}
-          onPress={closeModal}
-        >
-          <Text style={styles.modaltext}>CANCEL</Text>
+          style={{
+            alignSelf: 'center',
+            width: '100%',
+            height: 45,
+            backgroundColor: '#1F2067',
+            borderRadius: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#fff',
+          }}
+          onPress={handleAdd}>
+          <Text
+            style={{
+              color: '#fff',
+              fontSize: 16,
+              fontWeight: '600',
+              letterSpacing: 4,
+            }}>
+            ADD PEOPLE
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -247,7 +302,11 @@ const style = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: 16,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
     paddingLeft: 5,
+    paddingBottom: 5,
   },
 });
