@@ -45,13 +45,6 @@ export default function GroupMessagesScreen({navigation}) {
     });
   };
 
-  const handleDetailNavigation = (id, name) => {
-    navigation.navigate('GroupChatDetails', {
-      id: id,
-      name: name,
-    });
-  };
-
   function Item({props}) {
     const [image, setImage] = useState(false);
 

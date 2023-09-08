@@ -18,7 +18,7 @@ import Chat from './screens/Chat';
 import OnBoarding from './screens/onBoarding';
 import AccountSettings from './screens/AccountSettings';
 import AnnouncementPreview from './screens/AnnouncementPreview';
-
+import GroupChatDetails from './screens/GroupChatDetails';
 //👇🏻 React Navigation configurations
 import {
   CommonActions,
@@ -286,6 +286,11 @@ export default function App() {
             name="GroupMessaging"
             component={GroupMessaging}
             options={{headerShown: true}}
+          />
+          <Stack.Screen
+            name="GroupChatDetails"
+            component={GroupChatDetails}
+            options={{headerShown: false}}
           />
         </Stack.Navigator>
       ) : (
