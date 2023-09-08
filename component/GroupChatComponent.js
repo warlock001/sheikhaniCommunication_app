@@ -59,18 +59,18 @@ const GroupChatComponent = ({item, username}) => {
           marginRight: 15,
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#003a9a',
+          backgroundColor: '#1f2067',
           borderRadius: 500,
         }}>
         <Text
           style={{
             textAlign: 'center',
             textAlignVertical: 'center',
-            fontSize: 45,
-            lineHeight: 45,
+            fontSize: 35,
+            lineHeight: 40,
             color: '#fff',
           }}>
-          {item.title.charAt(0)}
+          {item.title.charAt(0).toUpperCase()}
         </Text>
       </View>
       <View style={styles.crightContainer}>
@@ -95,7 +95,7 @@ const GroupChatComponent = ({item, username}) => {
                 marginTop: 'auto',
                 marginLeft: 'auto',
                 display: 'flex',
-                backgroundColor: '#003A9A',
+                backgroundColor: '#1f2067',
                 width: 25,
                 height: 25,
                 borderRadius: 50,

@@ -40,6 +40,13 @@ const GroupMessaging = ({route, navigation}) => {
     }
   };
 
+  const handleDetailNavigation = (id, name) => {
+    navigation.navigate('GroupChatDetails', {
+      id: id,
+      name: name,
+    });
+  };
+
   const handleNewMessage = async () => {
     const hour =
       new Date().getHours() < 10
@@ -81,10 +88,46 @@ const GroupMessaging = ({route, navigation}) => {
       });
   };
 
-  useLayoutEffect(() => {
+  useLayoutEffect(props => {
     async function setup() {
       navigation.setOptions({
-        title: name,
+        headerTitle: () => (
+          <TouchableOpacity
+            style={{flexDirection: 'row', alignItems: 'center'}}
+            onPress={() => {
+              handleDetailNavigation(route, navigation);
+            }}>
+            <View
+              style={{
+                width: 45,
+                height: 45,
+                marginRight: 10,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#1f2067',
+                borderRadius: 500,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  fontSize: 25,
+                  lineHeight: 30,
+                  color: '#fff',
+                }}>
+                {name.charAt(0).toUpperCase()}
+              </Text>
+            </View>
+            <Text
+              style={{
+                color: '#000',
+                fontSize: 18,
+                fontFamily: 'Roboto-Medium',
+              }}>
+              {name}
+            </Text>
+          </TouchableOpacity>
+        ),
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
