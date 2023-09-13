@@ -49,6 +49,7 @@ const GroupMessaging = ({ route, navigation }) => {
     navigation.navigate('GroupChatDetails', {
       id: id,
       name: name,
+      roomid: roomId
     });
   };
 
