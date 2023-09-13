@@ -114,6 +114,7 @@ const GroupChatDetails = ({ route, navigation }) => {
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [memberSize, setMemberSize] = useState(0);
+  const [members, setMembers] = useState([]);
 
   useLayoutEffect(() => {
     async function groupDetails() {
@@ -126,6 +127,7 @@ const GroupChatDetails = ({ route, navigation }) => {
           setLoader(true);
           setGroupName(res.data.group.title)
           setMemberSize(res.data.group.members.length)
+          setMembers(res.data.group.members)
         })
         .catch(async er => {
           setLoader(true);
@@ -235,7 +237,7 @@ const GroupChatDetails = ({ route, navigation }) => {
                       color: '#fff',
                       fontWeight: '600',
                     }}>
-                    DG{/* {name.charAt(0)} */}
+                    {groupName.charAt(0).toUpperCase()}{groupName.charAt(1).toUpperCase()}
                   </Text>
                 </View>
               </Pressable>
@@ -366,11 +368,11 @@ const GroupChatDetails = ({ route, navigation }) => {
                 <FlatList
                   keyboardShouldPersistTaps="handled"
                   showsVerticalScrollIndicator={true}
-                  data={datta}
+                  data={members}
                   renderItem={({ item }) => (
                     <Item
                       props={{
-                        title: item.firstName,
+                        title: item.firstName + ' ' + item.lastName,
                         id: item._id,
                         designation: item.designation,
                         // profilePicture: item.profilePicture,
