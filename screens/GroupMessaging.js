@@ -45,11 +45,9 @@ const GroupMessaging = ({ route, navigation }) => {
     }
   };
 
-  const handleDetailNavigation = (id, name) => {
+  const handleDetailNavigation = (id) => {
     navigation.navigate('GroupChatDetails', {
-      id: id,
-      name: name,
-      roomid: roomId
+      roomid: id
     });
   };
 
@@ -107,7 +105,7 @@ const GroupMessaging = ({ route, navigation }) => {
           <TouchableOpacity
             style={{ flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
-              handleDetailNavigation(route, navigation);
+              handleDetailNavigation(id);
             }}>
             <View
               style={{
