@@ -128,7 +128,7 @@ const Profile = () => {
         console.log(id)
         console.log(NewPassword)
         console.log(CurrentPassword)
-        await axios.put("http://192.168.0.102:3001/password", {
+        await axios.put("http://192.168.0.103:3001/password", {
           id: id,
           currectPassword: CurrentPassword,
           newPassword: NewPassword
@@ -152,7 +152,7 @@ const Profile = () => {
 
   const updateUser = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.put("http://192.168.0.102:3001/user", {
+    await axios.put("http://192.168.0.103:3001/user", {
       id: id,
       firstName: firstName,
       lastName: lastName,

@@ -75,7 +75,7 @@ export default function DirectMessagesScreen({ navigation }) {
         socket.on('receive_message', async data => {
           const id = await AsyncStorage.getItem('@id');
           await axios
-            .get(`http://192.168.0.102:3001/recentChats?id=${id}`)
+            .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
             .then(results => {
               console.log(results.data.recentChats[0].chats)
               setRooms(results.data.recentChats[0].chats);
@@ -94,7 +94,7 @@ export default function DirectMessagesScreen({ navigation }) {
       async function getImage() {
         await axios
           .get(
-            `http://192.168.0.102:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -153,7 +153,7 @@ export default function DirectMessagesScreen({ navigation }) {
         console.log("firstttt")
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.102:3001/recentChats?id=${id}`)
+          .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
           .then(results => {
             console.log(results.data.recentChats[0].chats)
             setRooms(results.data.recentChats[0].chats);
@@ -183,7 +183,7 @@ export default function DirectMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.102:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);
