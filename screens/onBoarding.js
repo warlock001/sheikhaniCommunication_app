@@ -7,19 +7,44 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-swiper';
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CommonActions } from '@react-navigation/native';
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 
-export default function OnBoarding({navigation}) {
+export default function OnBoarding({ navigation }) {
   const swiper = useRef(null);
 
+  getMyStringValue = async () => {
+    try {
+      id = await AsyncStorage.getItem('@id');
+      console.log(`${id} id hai`);
+      navigate(id);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  function navigate(ids) {
+    if (ids !== null) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 1,
+          routes: [{ name: 'Home' }],
+        }),
+      );
+    }
+  }
+
+  getMyStringValue();
+
   return (
-    <View style={{height: '100%'}}>
+    <View style={{ height: '100%' }}>
       <Swiper
         ref={swiper}
-        style={{height: '100%'}}
+        style={{ height: '100%' }}
         loop={false}
         dot={
           <View
@@ -28,7 +53,7 @@ export default function OnBoarding({navigation}) {
               width: 60,
               height: 5,
               borderRadius: 20,
-              marginBottom: 165,
+              marginBottom: 80,
               marginLeft: 5,
               marginRight: 5,
             }}
@@ -42,7 +67,7 @@ export default function OnBoarding({navigation}) {
               width: 60,
               height: 5,
               borderRadius: 20,
-              marginBottom: 165,
+              marginBottom: 80,
               marginLeft: 5,
               marginRight: 5,
             }}
@@ -51,12 +76,12 @@ export default function OnBoarding({navigation}) {
         <View>
           <ImageBackground
             source={require('../images/onboarding1.png')}
-            style={{width: '100%', height: '100%'}}>
+            style={{ width: '100%', height: '100%' }}>
             <LinearGradient
               colors={['#00000000', '#000000']}
               style={styles.gradientStyle}
-              start={{x: 0.5, y: 0.2}}
-              end={{x: 0.5, y: 0.8}}
+              start={{ x: 0.5, y: 0.2 }}
+              end={{ x: 0.5, y: 0.8 }}
             />
             <View style={styles.sectionContainer}>
               <Text
@@ -89,16 +114,16 @@ export default function OnBoarding({navigation}) {
             </View>
           </ImageBackground>
         </View>
-        <View style={{display: 'flex'}}>
+        <View style={{ display: 'flex' }}>
           <ImageBackground
             resizeMode={'cover'}
             source={require('../images/onboarding2.png')}
-            style={{width: '100%', height: '100%'}}>
+            style={{ width: '100%', height: '100%' }}>
             <LinearGradient
               colors={['#00000000', '#000000']}
               style={styles.gradientStyle}
-              start={{x: 0.5, y: 0.2}}
-              end={{x: 0.5, y: 1}}
+              start={{ x: 0.5, y: 0.2 }}
+              end={{ x: 0.5, y: 1 }}
             />
             <View style={styles.sectionContainer}>
               <Text
@@ -121,9 +146,7 @@ export default function OnBoarding({navigation}) {
                   height: '100%',
                   // padding: 24,
                 }}>
-                <Text style={styles.titleStyle}>CONNECT</Text>
-                <Text style={styles.titleStyle}>WITH YOUR</Text>
-                <Text style={styles.titleStyle}>WORKSPACE</Text>
+                <Text style={styles.titleStyle}>Start Chatting Instantly</Text>
               </View>
             </View>
           </ImageBackground>
@@ -132,12 +155,12 @@ export default function OnBoarding({navigation}) {
           <ImageBackground
             resizeMode={'cover'}
             source={require('../images/onboarding3.png')}
-            style={{width: '100%', height: '100%'}}>
+            style={{ width: '100%', height: '100%' }}>
             <LinearGradient
               colors={['#CF333900', '#CF3339']}
               style={styles.gradientStyle}
-              start={{x: 0.5, y: 0.2}}
-              end={{x: 0.5, y: 1}}
+              start={{ x: 0.5, y: 0.2 }}
+              end={{ x: 0.5, y: 1 }}
             />
             <View style={styles.sectionContainer}>
               <Text
@@ -160,30 +183,22 @@ export default function OnBoarding({navigation}) {
                   height: '100%',
                   // padding: 24,
                 }}>
-                <Text style={styles.titleStyle}>CHAT</Text>
-                <Text style={styles.titleStyle}>WITH YOUR</Text>
-                <Text style={styles.titleStyle}>COLLEAGUES</Text>
+                <Text style={styles.titleStyle}>Move Chats To Workspace</Text>
+                <Text style={styles.subTitleStyle}>
+                  Create real work-life balance. Snooze chats under Workspace for lunch time and outside working hours
+                </Text>
               </View>
             </View>
           </ImageBackground>
         </View>
       </Swiper>
       <TouchableOpacity
-        style={styles.buttonStyle}
-        onPress={() => {
-          navigation.navigate('Login');
-        }}>
-        <Text style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
-          Login
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         style={styles.SignupButtonStyle}
         onPress={() => {
           navigation.navigate('Login');
         }}>
-        <Text style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
-          Create Account
+        <Text style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
+          Login
         </Text>
       </TouchableOpacity>
     </View>
@@ -201,7 +216,7 @@ const styles = StyleSheet.create({
     height: '100%',
     padding: 24,
 
-    paddingBottom: 215,
+    paddingBottom: 125,
   },
   gradientStyle: {
     width: '100%',
@@ -231,8 +246,9 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: '#1F2067',
     marginTop: 26,
-    marginBottom: 40,
-    bottom: 65,
+    marginBottom: 10,
+    paddingVertical: 15,
+    bottom: 20,
     position: 'absolute',
   },
 

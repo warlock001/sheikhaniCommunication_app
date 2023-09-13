@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
 import { launchImageLibrary } from 'react-native-image-picker';
+import ReadReceipts from '../component/ReadReceipts';
 
 let flatlistRef;
 let textInputRef; // Define the ref
@@ -30,7 +31,9 @@ const DirectMessaging = ({ route, navigation }) => {
   const [message, setMessage] = useState('');
   const [rendered, setRendered] = useState(false);
   const [roomId, setRoomId] = useState('');
-
+  const [receiptsModalVisible, setReceiptsModalVisible] = useState(false);
+  const [seen, setSeen] = useState('')
+  const [delivered, setDelivered] = useState('')
   const getUsername = async () => {
     try {
       const value = await AsyncStorage.getItem('@username');
@@ -43,7 +46,7 @@ const DirectMessaging = ({ route, navigation }) => {
   };
 
   const handleNewMessage = async () => {
-
+    const user = await AsyncStorage.getItem('@username');
     const hour =
       new Date().getHours() < 10
         ? `0${new Date().getHours()}`
@@ -56,7 +59,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.101:3001/saveMessage', {
+      .post('http://192.168.0.102:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -73,6 +76,8 @@ const DirectMessaging = ({ route, navigation }) => {
             roomid: roomId,
             recieverid: id,
             seen: false,
+            title: name,
+            user: user,
             createdAt: new Date(),
             updatedAt: new Date(),
           },
@@ -118,9 +123,17 @@ const DirectMessaging = ({ route, navigation }) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.101:3001/getMessage?roomid=${roomid}`)
+          .get(`http://192.168.0.102:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
+            let data = {
+              roomid: roomid,
+              recipient: id,
+              id: myId,
+            };
+            // if (res.data.messages[res.data.messages.length - 1].senderid != myId) {
+            socket.emit('read_receipt', data);
+            // }
           })
           .catch(err => {
             console.log('error fetching old messages -', err);
@@ -142,38 +155,30 @@ const DirectMessaging = ({ route, navigation }) => {
           recipient: id,
           id: myId,
         };
+
         socket.emit('read_receipt', data);
+
       }
 
       readReceipt();
-    }, []),
+    }, [chatMessages, socket]),
   );
 
   useEffect(() => {
     async function listen() {
+      await socket.off('receive_message');
       console.log('listining to incoming messages');
-      socket.on('receive_message', async data => {
+      await socket.on('receive_message', async data => {
         console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
         // console.log('Chat messages <- ', chatMessages);
-        async function readReceipt() {
-          const myId = await AsyncStorage.getItem('@id');
-          let roomid = createRoomId(id, myId);
-          console.log('Updating Read Receipts -', roomid + ' recipient', id);
-          let data = {
-            roomid: roomid,
-            recipient: id,
-            id: myId,
-          };
-          socket.emit('read_receipt', data);
-        }
 
-        readReceipt();
       });
 
 
     }
     listen();
+
   }, []);
 
 
@@ -182,6 +187,7 @@ const DirectMessaging = ({ route, navigation }) => {
     async function updateMessageReciepts() {
       let temp = chatMessages;
       await socket.on('update_read_receipt', data => {
+        // console.log("idr aa gya")
         temp.forEach((item, index) => {
           temp[index].seen = true
         })
@@ -196,7 +202,11 @@ const DirectMessaging = ({ route, navigation }) => {
     }
 
     updateMessageReciepts()
-  }, [chatMessages, socket])
+
+    return () => {
+      socket.off('update_read_receipt'); // Remove the event listener
+    };
+  }, [chatMessages])
 
 
 
@@ -245,65 +255,65 @@ const DirectMessaging = ({ route, navigation }) => {
 
   const [pickermodalVisible, setpickerModalVisible] = useState(false);
 
-  async function sendData() {
-    if (!image) {
-      Alert.alert('', 'Please select an Image to upload.', [
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-    } else {
-      const id = await AsyncStorage.getItem('@id');
-      const form = new FormData();
-      form.append('id', id);
-      form.append('image', {
-        uri: image.uri,
-        name: `${new Date()}_chatimage.jpg`,
-        type: mime.getType(image.uri),
-      });
+  // async function sendData() {
+  //   if (!image) {
+  //     Alert.alert('', 'Please select an Image to upload.', [
+  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
+  //     ]);
+  //   } else {
+  //     const id = await AsyncStorage.getItem('@id');
+  //     const form = new FormData();
+  //     form.append('id', id);
+  //     form.append('image', {
+  //       uri: image.uri,
+  //       name: `${new Date()}_chatimage.jpg`,
+  //       type: mime.getType(image.uri),
+  //     });
 
-      await axios({
-        timeout: 20000,
-        method: 'POST',
-        url: `http://192.168.0.101:3001/`,
-        data: form,
-        headers: {
-          accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-        .then(async res => {
-          console.log('This is working'); //nope
-          console.log('response: ', res.data);
-          await AsyncStorage.setItem('@profilepicture', res.data.id);
-          await axios
-            .get(`http://192.168.0.101:3001/files/${res.data.id}/true`)
-            .then(res => {
-              setprofilepictureURL(
-                `data:${res.headers['content-type']};base64,${res.data}`,
-              );
-            });
-          setpickerModalVisible(true);
-          setShouldUpdate(!shouldUpdate);
-        })
-        .catch(error => {
-          if (error.response) {
-            // The request was made and the server responded with an error status code
-            console.log('Server Error:', error.response.data);
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log('Network Error:', error.response.data); // This the error
-          } else {
-            // Something else happened while setting up the request
-            console.log('Error:', error.message);
-            console.log('Error');
-          }
+  //     await axios({
+  //       timeout: 20000,
+  //       method: 'POST',
+  //       url: `http://192.168.0.102:3001/`,
+  //       data: form,
+  //       headers: {
+  //         accept: 'application/json',
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     })
+  //       .then(async res => {
+  //         console.log('This is working'); //nope
+  //         console.log('response: ', res.data);
+  //         await AsyncStorage.setItem('@profilepicture', res.data.id);
+  //         await axios
+  //           .get(`http://192.168.0.102:3001/files/${res.data.id}/true`)
+  //           .then(res => {
+  //             setprofilepictureURL(
+  //               `data:${res.headers['content-type']};base64,${res.data}`,
+  //             );
+  //           });
+  //         setpickerModalVisible(true);
+  //         setShouldUpdate(!shouldUpdate);
+  //       })
+  //       .catch(error => {
+  //         if (error.response) {
+  //           // The request was made and the server responded with an error status code
+  //           console.log('Server Error:', error.response.data);
+  //         } else if (error.request) {
+  //           // The request was made but no response was received
+  //           console.log('Network Error:', error.response.data); // This the error
+  //         } else {
+  //           // Something else happened while setting up the request
+  //           console.log('Error:', error.message);
+  //           console.log('Error');
+  //         }
 
-          // You can display an error message to the user here
-          Alert.alert('', 'An unknown error occured.', [
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ]);
-        });
-    }
-  }
+  //         // You can display an error message to the user here
+  //         Alert.alert('', 'An unknown error occured.', [
+  //           { text: 'OK', onPress: () => console.log('OK Pressed') },
+  //         ]);
+  //       });
+  //   }
+  // }
 
   return (
     <View style={styles.messagingscreen}>
@@ -322,7 +332,7 @@ const DirectMessaging = ({ route, navigation }) => {
             initialNumToRender={chatMessages.length}
             data={chatMessages}
             renderItem={({ item }) => (
-              <DirectMessageComponent lastItem={chatMessages[chatMessages.length - 1]._id} onRendered={() => { setRendered(true); console.log(true) }} item={item} user={user} />
+              <DirectMessageComponent setSeen={setSeen} setDelivered={setDelivered} setReceiptsModalVisible={setReceiptsModalVisible} lastItem={chatMessages[chatMessages.length - 1]._id} onRendered={() => { setRendered(true); console.log(true) }} item={item} user={user} />
             )}
             keyExtractor={item => item._id}
             // inverted
@@ -370,6 +380,10 @@ const DirectMessaging = ({ route, navigation }) => {
           </View>
         </Pressable>
       </View>
+      {receiptsModalVisible ?
+        <ReadReceipts setReceiptsModalVisible={setReceiptsModalVisible} seen={seen} delivered={delivered} />
+        : ""
+      }
     </View>
   );
 };

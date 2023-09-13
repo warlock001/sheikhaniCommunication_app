@@ -1,6 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import {
   ImageBackground,
   StyleSheet,
@@ -29,10 +29,13 @@ import MessageComponent from '../component/MessageComponent';
 export default function DirectMessagesScreen({ navigation }) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const [allRooms, setAllRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(false);
   const [search, setSearch] = useState('');
+  const [refresh, setRefresh] = useState(false);
   const [username, setUsername] = useState('');
+  const [shouldUpdate, setShouldUpdate] = useState(false);
 
   const [department, setDepartment] = useState('');
 
@@ -43,14 +46,55 @@ export default function DirectMessagesScreen({ navigation }) {
     });
   };
 
+  async function searchObjectByName(array, name) {
+    let tempArray = array ? array : []
+
+    if (tempArray.length != 0) {
+      if (name) {
+        let arr = await tempArray.find(obj => obj.title.toLowerCase().includes(name));
+        console.log("tempArray", arr)
+        if (arr) {
+          return [arr]
+        } else {
+          return allRooms
+        }
+      } else {
+        console.log(allRooms)
+        return allRooms
+      }
+    } else {
+      console.log(allRooms)
+      return allRooms
+    }
+
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      async function listen() {
+        socket.on('receive_message', async data => {
+          const id = await AsyncStorage.getItem('@id');
+          await axios
+            .get(`http://192.168.0.102:3001/recentChats?id=${id}`)
+            .then(results => {
+              console.log(results.data.recentChats[0].chats)
+              setRooms(results.data.recentChats[0].chats);
+            });
+        });
+      }
+      listen();
+    }, [])
+  )
+
+
   function Item({ props }) {
     const [image, setImage] = useState(false);
 
     useLayoutEffect(() => {
       async function getImage() {
-        axios
+        await axios
           .get(
-            `http://192.168.0.101:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.102:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -58,12 +102,13 @@ export default function DirectMessagesScreen({ navigation }) {
             );
           })
           .catch(err => {
-            console.log(err);
+            console.log("error in getting user image", err);
           });
       }
 
       getImage();
     });
+
     return (
       <TouchableOpacity
         onPress={() => {
@@ -87,13 +132,13 @@ export default function DirectMessagesScreen({ navigation }) {
       </TouchableOpacity>
     );
   }
+
   useEffect(() => {
     async function getValue() {
       const value = await AsyncStorage.getItem('@department');
       if (value) {
         setDepartment(value);
       }
-
       const user = await AsyncStorage.getItem('@username');
       if (user) {
         setUsername(user);
@@ -105,16 +150,21 @@ export default function DirectMessagesScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       async function getChats() {
+        console.log("firstttt")
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.101:3001/recentChats?id=${id}`)
+          .get(`http://192.168.0.102:3001/recentChats?id=${id}`)
           .then(results => {
+            console.log(results.data.recentChats[0].chats)
             setRooms(results.data.recentChats[0].chats);
+            setAllRooms(results.data.recentChats[0].chats)
+          }).catch(err => {
+            console.log("err in fetching recent chats", err)
           });
       }
 
       getChats();
-    }, []),
+    }, [refresh]),
   );
 
   // useEffect(() => {
@@ -133,16 +183,29 @@ export default function DirectMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.101:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.102:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);
           setSearchedUsers(res.data.user);
         });
+
+
     }
 
     getUsers();
-  }, [search]);
+  }, []);
+
+
+  useLayoutEffect(() => {
+    async function sort() {
+      const result = await searchObjectByName(rooms, search);
+      console.log("result", result)
+      setRooms(result)
+    }
+    sort()
+    // console.log(rooms)
+  }, [search])
 
   return (
     <TouchableWithoutFeedback accessible={false}>
@@ -160,8 +223,15 @@ export default function DirectMessagesScreen({ navigation }) {
             }}>
             Sheikhani Group Communication
           </Text>
-
-          <Text style={styles.pageHeading}>All Chats</Text>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+            <Text style={styles.pageHeading}>All Chats</Text>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('Create New Chat')
+            }} style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+              <Text style={styles.pageHeadingRight}>Create a new chat</Text>
+              <Image source={require('../images/createChats.png')}></Image>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.pageSubHeading}>
             Hello{' '}
             <Text
@@ -191,7 +261,11 @@ export default function DirectMessagesScreen({ navigation }) {
                 <TextInput.Icon
                   name={() =>
                     searchedUsersVisible ? (
-                      <Pressable onPress={Keyboard.dismiss}>
+                      <Pressable onPress={() => {
+                        setRefresh(!refresh)
+                        setSearchedUsersVisible(false)
+                        Keyboard.dismiss()
+                      }}>
                         <Image
                           resizeMode="contain"
                           style={{ width: 25 }}
@@ -210,12 +284,12 @@ export default function DirectMessagesScreen({ navigation }) {
               }
             />
           </KeyboardAvoidingView>
-          <View
+          {/* <View
             style={[
               styles.optionBox,
               { display: searchedUsersVisible ? 'flex' : 'none' },
             ]}>
-            {/* <Text style={{ marginBottom: 10 }}>Search Users</Text> */}
+
             <FlatList
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={true}
@@ -231,13 +305,13 @@ export default function DirectMessagesScreen({ navigation }) {
               )}
               keyExtractor={item => item._id}
             />
-          </View>
+          </View> */}
         </View>
 
         <View
           style={[
             styles.chatlistContainer,
-            { display: searchedUsersVisible ? 'none' : 'flex' },
+            { display: 'flex' },
           ]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList

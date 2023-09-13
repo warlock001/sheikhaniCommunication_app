@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://192.168.0.101:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.102:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
@@ -50,53 +50,48 @@ export default function SignIn({ navigation }) {
 
   getMyStringValue();
 
-  function signIn() {
+  async function signIn() {
     console.log(REACT_APP_BASE_URL);
     setLoader(true);
-    axios({
-      timeout: 20000,
-      method: 'POST',
-      url: `${REACT_APP_BASE_URL}/login`,
-      data: {
-        email: email,
-        password: password,
-      },
-    })
-      .then(async res => {
-        console.log(res.data);
-        await AsyncStorage.setItem('@id', res.data._id);
-        await AsyncStorage.setItem('@jwt', res.data.token);
-        await AsyncStorage.setItem('@role', res.data.role);
-        await AsyncStorage.setItem('@email', res.data.email);
-        await AsyncStorage.setItem('@department', res.data.department);
-        await AsyncStorage.setItem('@designation', res.data.designation);
-        await AsyncStorage.setItem('@username', res.data.firstName);
-        await AsyncStorage.setItem('@lastName', res.data.lastName);
-        await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
-        const value = await AsyncStorage.getItem('@username');
-        console.log(value);
-        console.log('second');
-        // console.log(res.data.firstName)
-        setLoader(false);
-        if (res.data.role == 'employee') {
-          navigation.navigate('Home');
-        } else {
-          navigation.navigate('RescueCenter');
-        }
-      })
-      .catch(er => {
-        setLoader(false);
-        console.log(er.response.data);
 
-        Alert.alert(
-          'Failed',
-          `${er.response.data.message
-            ? er.response.data.message
-            : 'Something went wrong'
-          }`,
-          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-        );
-      });
+    await axios.post(`${REACT_APP_BASE_URL}/login`, {
+      email: email,
+      password: password,
+    }).then(async res => {
+      console.log(res.data);
+      await AsyncStorage.setItem('@id', res.data._id);
+      await AsyncStorage.setItem('@jwt', res.data.token);
+      await AsyncStorage.setItem('@role', res.data.role);
+      await AsyncStorage.setItem('@email', res.data.email);
+      await AsyncStorage.setItem('@department', res.data.department);
+      await AsyncStorage.setItem('@designation', res.data.designation);
+      await AsyncStorage.setItem('@username', res.data.firstName);
+      await AsyncStorage.setItem('@lastName', res.data.lastName);
+      await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
+
+      const value = await AsyncStorage.getItem('@username');
+      console.log(value);
+
+      // console.log(res.data.firstName)
+      setLoader(false);
+      if (res.data.role == 'employee') {
+        navigation.navigate('Home');
+      } else {
+        navigation.navigate('RescueCenter');
+      }
+    }).catch(async er => {
+      setLoader(false);
+      // console.log(er.response.data);
+
+      Alert.alert(
+        'Failed',
+        `${er.response.data.message
+          ? er.response.data.message
+          : 'Something went wrong'
+        }`,
+        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+      );
+    })
   }
 
   return (
@@ -144,9 +139,7 @@ export default function SignIn({ navigation }) {
                     />
                   }
                 />
-                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
-                  <Text style={styles.forgotButtonStyle}>Forgot Email ID?</Text>
-                </TouchableOpacity>
+
               </View>
               <View style={{ paddingBottom: 20 }}>
                 <TextField
@@ -174,11 +167,20 @@ export default function SignIn({ navigation }) {
                           onPress={() => {
                             setShowPassword(!showPassword);
                           }}>
-                          <Image
-                            resizeMode="contain"
-                            style={{ width: 25 }}
-                            source={Hide}
-                          />
+                          {
+                            showPassword ?
+                              <Image
+                                resizeMode="contain"
+                                style={{ width: 25 }}
+                                source={require("../images/eyeOpen.png")}
+                              />
+                              :
+                              <Image
+                                resizeMode="contain"
+                                style={{ width: 25 }}
+                                source={Hide}
+                              />
+                          }
                         </TouchableOpacity>
                       )}
                     />
@@ -223,6 +225,7 @@ export default function SignIn({ navigation }) {
                     Sheikhani Group Communication
                   </Text>
                 </View>
+
               </View>
             </View>
           </ScrollView>

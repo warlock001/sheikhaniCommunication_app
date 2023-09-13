@@ -17,6 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
 import Modal from '../component/AddMemberModal';
+import ReadReceipts from '../component/ReadReceipts';
 let flatlistRef;
 let textInputRef; // Define the ref
 
@@ -26,8 +27,12 @@ const GroupMessaging = ({ route, navigation }) => {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
+  const [rendered, setRendered] = useState(false);
   const [roomId, setRoomId] = useState('');
   const [addMember, setAddMember] = useState(false);
+  const [receiptsModalVisible, setReceiptsModalVisible] = useState(false);
+  const [seen, setSeen] = useState('')
+  const [delivered, setDelivered] = useState('')
 
   const getUsername = async () => {
     try {
@@ -48,6 +53,7 @@ const GroupMessaging = ({ route, navigation }) => {
   };
 
   const handleNewMessage = async () => {
+    const user = await AsyncStorage.getItem('@username');
     const hour =
       new Date().getHours() < 10
         ? `0${new Date().getHours()}`
@@ -60,7 +66,7 @@ const GroupMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.101:3001/saveMessage', {
+      .post('http://192.168.0.102:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: id,
@@ -68,18 +74,21 @@ const GroupMessaging = ({ route, navigation }) => {
       .then(res => {
         console.log('message send - ', res.data);
         let data = {
-          roomId: roomId,
+          roomId: id,
           message: {
             _id: res.data.id,
             senderid: myId,
             message: message,
             roomid: id,
+            recieverid: id,
             seen: false,
+            title: name,
+            user: user,
             createdAt: new Date(),
             updatedAt: new Date(),
           },
         };
-        // socket.emit('send_message', data)
+        socket.emit('send_message', data)
         setMessage('');
       })
       .catch(err => {
@@ -87,6 +96,8 @@ const GroupMessaging = ({ route, navigation }) => {
         setMessage('');
       });
   };
+
+
 
   useLayoutEffect(props => {
     async function setup() {
@@ -124,7 +135,7 @@ const GroupMessaging = ({ route, navigation }) => {
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
               }}>
-              {name}
+              {name.length > 24 ? name.slice(0, 21) + "..." : name}
             </Text>
           </TouchableOpacity>
         ),
@@ -157,10 +168,18 @@ const GroupMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.101:3001/getMessage?roomid=${id}`)
+          .get(`http://192.168.0.102:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
+            let data = {
+              roomid: id,
+              recipient: id,
+              id: myId,
+            };
+            // if (res.data.messages[res.data.messages.length - 1].senderid != myId) {
+            socket.emit('read_receipt', data);
+            // }
           })
           .catch(err => {
             console.log('error fetching old messages -', err);
@@ -186,44 +205,88 @@ const GroupMessaging = ({ route, navigation }) => {
       }
 
       readReceipt();
-    }, []),
+    }, [chatMessages, socket]),
   );
 
   useEffect(() => {
     async function listen() {
       console.log('listining to incoming messages');
+      await socket.off('receive_message');
       socket.on('receive_message', async data => {
         console.log('message recieved - ', data.message.message);
         setChatMessages(chatMessages => [...chatMessages, data.message]);
-
-        async function readReceipt() {
-          const myId = await AsyncStorage.getItem('@id');
-
-          console.log('Updating Read Receipts -', id + ' recipient', id);
-          let data = {
-            roomid: id,
-            recipient: id,
-            id: myId,
-          };
-          socket.emit('read_receipt', data);
-        }
-
-        readReceipt();
-      });
-
-      socket.on('update_read_receipt', async data => {
-        console.log('Chat messages -> ', chatMessages);
-        // let temp = chatMessages;
-        // temp.forEach((item, index) => {
-        //   temp[index].seen = true
-        // })
-        // console.log("Temp messages -> ", temp)
-        // setChatMessages(temp)
-        setShouldUpdate(!shouldUpdate);
       });
     }
     listen();
-  }, [socket]);
+  }, []);
+
+  useEffect(() => {
+
+    async function updateMessageReciepts() {
+      let temp = chatMessages;
+      await socket.on('update_read_receipt', data => {
+        // console.log("idr aa gya")
+        temp.forEach((item, index) => {
+          temp[index].seen = true
+        })
+        // console.log("Temp messages -> ", temp)
+        setChatMessages(temp)
+        // setShouldUpdate(!shouldUpdate);
+        // setTimeout(() => {
+        //   setShouldUpdate(!shouldUpdate)
+        // }, 5000);
+
+      });
+    }
+
+    updateMessageReciepts()
+
+    return () => {
+      socket.off('update_read_receipt'); // Remove the event listener
+    };
+  }, [chatMessages])
+
+  const chooseImage = async () => {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+
+      await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
+    }
+
+    let options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    launchImageLibrary(options, async response => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+        alert(response.customButton);
+      } else {
+        setImageName(response.assets[0].uri);
+        setImage({
+          uri: response.assets[0].uri,
+          name: `${new Date()}_profilePicture.jpg`,
+          type: mime.getType(response.assets[0].uri),
+        });
+      }
+    });
+  };
+
+
+
   return (
     <View style={styles.messagingscreen}>
       <View
@@ -237,9 +300,10 @@ const GroupMessaging = ({ route, navigation }) => {
             ref={ref => {
               flatlistRef = ref;
             }}
+            initialNumToRender={chatMessages.length}
             data={chatMessages}
             renderItem={({ item }) => (
-              <DirectMessageComponent item={item} user={user} />
+              <DirectMessageComponent setSeen={setSeen} setDelivered={setDelivered} setReceiptsModalVisible={setReceiptsModalVisible} lastItem={chatMessages[chatMessages.length - 1]._id} onRendered={() => { setRendered(true); console.log(true) }} item={item} user={user} />
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
@@ -252,6 +316,15 @@ const GroupMessaging = ({ route, navigation }) => {
       </View>
 
       <View style={styles.messaginginputContainer}>
+        <Pressable onPress={chooseImage}>
+          <View>
+            <Image
+              resizeMode="contain"
+              style={{ width: 25, height: 25, marginRight: 5 }}
+              source={require('../images/attach_file.png')}
+            />
+          </View>
+        </Pressable>
         <TextInput
           multiline={true}
           value={message}
@@ -276,6 +349,10 @@ const GroupMessaging = ({ route, navigation }) => {
           </View>
         </Pressable>
       </View>
+      {receiptsModalVisible ?
+        <ReadReceipts setReceiptsModalVisible={setReceiptsModalVisible} seen={seen} delivered={delivered} />
+        : ""
+      }
       {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
     </View>
   );

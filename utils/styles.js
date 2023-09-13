@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   loginscreen: {
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F7F7F7',
     flex: 1,
     padding: 24,
-    // paddingTop: 50,
+    paddingBottom: 0,
     position: 'relative',
   },
   chatheading: {
@@ -66,6 +66,7 @@ export const styles = StyleSheet.create({
   chatlistContainer: {
     paddingHorizontal: 0,
     marginTop: 16,
+    flex: 1
   },
   chatemptyContainer: {
     width: '100%',
@@ -218,6 +219,13 @@ export const styles = StyleSheet.create({
     // fontWeight: '700',
     color: '#000',
     fontFamily: 'TitilliumWeb-Bold',
+  },
+  pageHeadingRight: {
+    fontSize: 17,
+    color: '#000',
+    fontFamily: 'Roboto',
+    fontWeight: '400',
+    color: '#1F2067'
   },
   pageSubHeading: {
     fontSize: 15,

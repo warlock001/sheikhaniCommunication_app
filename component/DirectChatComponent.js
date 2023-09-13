@@ -4,11 +4,13 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import socket from '../utils/socket';
 const DirectChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
+
   const hour =
     new Date(item.time).getHours() < 10
       ? `0${new Date(item.time).getHours()}`
@@ -19,19 +21,38 @@ const DirectChatComponent = ({ item, username }) => {
       ? `0${new Date(item.time).getMinutes()}`
       : `${new Date(item.time).getMinutes()}`;
 
+  const createRoomId = (id, myId) => {
+    if (id > myId) {
+      return id + myId;
+    } else {
+      return myId + id;
+    }
+  };
+
+  useLayoutEffect(() => {
+
+    async function joinroom() {
+      const myId = await AsyncStorage.getItem('@id');
+      const roomid = createRoomId(item.user, myId);
+      let data = {
+        roomid: roomid,
+      };
+      socket.emit('join_room', data);
+    }
+    joinroom()
+
+  }, []);
+
   useLayoutEffect(() => {
     async function getUserName() {
       setMessages(item.lastMessage);
-
-      setMessages(item.lastMessage);
-
       axios
-        .get(`http://192.168.0.101:3001/user?id=${item.user}`)
+        .get(`http://192.168.0.102:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://192.168.0.101:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.102:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(

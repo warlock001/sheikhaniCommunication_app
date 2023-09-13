@@ -128,7 +128,7 @@ const Profile = () => {
         console.log(id)
         console.log(NewPassword)
         console.log(CurrentPassword)
-        await axios.put("http://192.168.0.101:3001/password", {
+        await axios.put("http://192.168.0.102:3001/password", {
           id: id,
           currectPassword: CurrentPassword,
           newPassword: NewPassword
@@ -152,7 +152,7 @@ const Profile = () => {
 
   const updateUser = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.put("http://192.168.0.101:3001/user", {
+    await axios.put("http://192.168.0.102:3001/user", {
       id: id,
       firstName: firstName,
       lastName: lastName,
@@ -525,11 +525,21 @@ const Profile = () => {
                               onPress={() => {
                                 setShowCurrentPassword(!showCurrentPassword);
                               }}>
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={require('../images/Hide.png')}
-                              />
+                              {
+                                showCurrentPassword ?
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require("../images/eyeOpen.png")}
+                                  />
+                                  :
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require('../images/Hide.png')}
+                                  />
+                              }
+
                             </TouchableOpacity>
                           )}
                         />
@@ -548,11 +558,21 @@ const Profile = () => {
                               onPress={() => {
                                 setShowNewPassword(!showNewPassword);
                               }}>
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={require('../images/Hide.png')}
-                              />
+                              {
+                                showNewPassword ?
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require("../images/eyeOpen.png")}
+                                  />
+                                  :
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require('../images/Hide.png')}
+                                  />
+                              }
+
                             </TouchableOpacity>
                           )}
                         />
@@ -571,11 +591,20 @@ const Profile = () => {
                               onPress={() => {
                                 setShowNewPassword2(!showNewPassword2);
                               }}>
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={require('../images/Hide.png')}
-                              />
+                              {
+                                showNewPassword2 ?
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require("../images/eyeOpen.png")}
+                                  />
+                                  :
+                                  <Image
+                                    resizeMode="contain"
+                                    style={{ width: 25 }}
+                                    source={require('../images/Hide.png')}
+                                  />
+                              }
                             </TouchableOpacity>
                           )}
                         />

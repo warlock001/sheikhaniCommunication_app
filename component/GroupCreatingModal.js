@@ -1,18 +1,18 @@
-import { View, Text, TextInput, Pressable, Alert, Image } from 'react-native';
+import { View, Text, Pressable, Alert, Image } from 'react-native';
 import React, { useState } from 'react';
 import socket from '../utils/socket';
 import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TextField from '../component/inputField';
-
+import { TextInput } from 'react-native-paper';
 const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState('');
 
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.post("http://192.168.0.101:3001/group", {
+    await axios.post("http://192.168.0.100:3001/group", {
       title: groupName,
       id: id
     }).then((res) => {
@@ -93,7 +93,9 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
         multiline={true}
         value={groupName}
         onChangeText={value => setGroupName(value)}
+        right={<TextInput.Affix text={groupName.length + '/22'} />}
         placeholdeTextColor={'#000'}
+        maxLength={22}
         color={'#000'}
       />
       <View
