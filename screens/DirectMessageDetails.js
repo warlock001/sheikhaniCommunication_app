@@ -143,6 +143,13 @@ const DirectMessageDetails = ({route, navigation}) => {
     groupDetails();
   }, []);
 
+  const handleNavigation = () => {
+    navigation.navigate('DirectMessaging', {
+      id: id,
+      name: groupName,
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -214,38 +221,58 @@ const DirectMessageDetails = ({route, navigation}) => {
               style={{
                 marginTop: 20,
               }}>
-              <Pressable>
-                {image ? (
-                  <Image
-                    resizeMode="cover"
-                    style={{width: 150, height: 150, borderRadius: 100}}
-                    source={{uri: image}}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 150,
-                      height: 150,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: '#1f2067',
-                      borderRadius: 100,
-                      elevation: 10,
-                    }}>
-                    <Text
+              <View>
+                <Pressable>
+                  {image ? (
+                    <Image
+                      resizeMode="cover"
+                      style={{width: 150, height: 150, borderRadius: 100}}
+                      source={{uri: image}}
+                    />
+                  ) : (
+                    <View
                       style={{
-                        textAlign: 'center',
-                        textAlignVertical: 'center',
-                        fontSize: 85,
-                        lineHeight: 100,
-                        color: '#fff',
-                        fontWeight: '600',
+                        width: 150,
+                        height: 150,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#1f2067',
+                        borderRadius: 100,
+                        elevation: 10,
                       }}>
-                      A{/* {name.charAt(0).toUpperCase()} */}
-                    </Text>
-                  </View>
-                )}
-              </Pressable>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                          fontSize: 85,
+                          lineHeight: 100,
+                          color: '#fff',
+                          fontWeight: '600',
+                        }}>
+                        A{/* {name.charAt(0).toUpperCase()} */}
+                      </Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handleNavigation}
+                  style={{
+                    position: 'absolute',
+                    bottom: -20,
+                    right: -20,
+                    // borderWidth: 3,
+                    // borderColor: "#fff",
+                    width: '33%',
+                    height: '33%',
+                    borderRadius: 100,
+                  }}>
+                  <Image
+                    id="editprofile"
+                    resizeMode="contain"
+                    source={require('../images/chat-person.png')}
+                  />
+                </Pressable>
+              </View>
             </View>
             <Text
               style={{
