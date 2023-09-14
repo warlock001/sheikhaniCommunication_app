@@ -87,11 +87,17 @@ const DirectChatComponent = ({ item, username }) => {
           <Text style={styles.cusername}>{name}</Text>
 
           <Text style={styles.cmessage}>
-            {item.lastMessage
-              ? JSON.stringify(item.lastMessage).length > 30
-                ? item.lastMessage.substring(0, 25) + '...'
-                : item.lastMessage
-              : 'Tap to start chatting'}
+            {
+              item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
+                ?
+                'Image'
+                :
+                item.lastMessage
+                  ? JSON.stringify(item.lastMessage).length > 30
+                    ? item.lastMessage.substring(0, 25) + '...'
+                    : item.lastMessage
+                  : 'Tap to start chatting'
+            }
           </Text>
         </View>
         <View>

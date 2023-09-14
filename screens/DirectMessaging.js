@@ -20,7 +20,7 @@ import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
 import { launchImageLibrary } from 'react-native-image-picker';
 import ReadReceipts from '../component/ReadReceipts';
-
+const mime = require('mime');
 let flatlistRef;
 let textInputRef; // Define the ref
 
@@ -264,6 +264,10 @@ const DirectMessaging = ({ route, navigation }) => {
   }, [chatMessages]);
 
   const chooseImage = async () => {
+
+    const user = await AsyncStorage.getItem('@username');
+    const myId = await AsyncStorage.getItem('@id');
+
     if (Platform.OS === 'android') {
       await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -290,14 +294,71 @@ const DirectMessaging = ({ route, navigation }) => {
         console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
+        Alert.alert("", response.customButton);
       } else {
-        setImageName(response.assets[0].uri);
-        setImage({
+        // setImageName(response.assets[0].uri);
+        let image = {
           uri: response.assets[0].uri,
-          name: `${new Date()}_profilePicture.jpg`,
+          name: `${new Date()}_message.jpg`,
           type: mime.getType(response.assets[0].uri),
+        };
+        const form = new FormData();
+        form.append('image', {
+          uri: image.uri,
+          name: `${new Date()}_message.jpg`,
+          type: mime.getType(image.uri),
         });
+
+        await axios({
+          timeout: 20000,
+          method: 'POST',
+          url: `http://192.168.0.103:3001/files`,
+          data: form,
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(async result => {
+
+          await axios.post('http://192.168.0.103:3001/saveMessage', {
+            senderid: myId,
+            message: result.data.id,
+            roomid: roomId,
+            recieverid: id,
+            isPicture: true
+          })
+            .then(res => {
+              console.log('message send - ', res.data);
+              let data = {
+                roomId: roomId,
+                message: {
+                  _id: res.data.id,
+                  senderid: myId,
+                  message: result.data.id,
+                  roomid: roomId,
+                  recieverid: id,
+                  isPicture: true,
+                  seen: false,
+                  title: name,
+                  user: user,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                },
+              };
+              socket.emit('send_message', data);
+              setMessage('');
+            })
+            .catch(err => {
+              console.log('error in sending message - ', err);
+              setMessage('');
+            });
+
+        }).catch(err => {
+          console.log("Error in uploading image", err)
+        })
+
+
+
       }
     });
   };

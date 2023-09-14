@@ -43,7 +43,14 @@ const ChatComponent = ({ item, username }) => {
           </Text>
 
           <Text style={styles.cmessage}>
-            {messages?.text ? messages.text : "Tap to start chatting"}
+            {
+              messages.match(/^[0-9a-fA-F]{24}$/)
+                ?
+                messages?.text ? messages.text : "Tap to start chatting"
+                :
+                'Image'
+            }
+
           </Text>
         </View>
         <View>

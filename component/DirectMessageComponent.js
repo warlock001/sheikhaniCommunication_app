@@ -17,6 +17,7 @@ export default function DirectMessageComponent({
 
   const [status, setStatus] = useState('');
   const [image, setImage] = useState('');
+  const [mediaImage, setMediaImage] = useState('');
   const date = new Date(item.createdAt);
 
   useLayoutEffect(() => {
@@ -24,7 +25,6 @@ export default function DirectMessageComponent({
       const myId = await AsyncStorage.getItem("@id");
       setStatus(item.senderid !== myId)
     }
-
     getStatus()
   }, [])
 
@@ -42,6 +42,20 @@ export default function DirectMessageComponent({
     }
     getImage()
   }, [])
+
+  useLayoutEffect(() => {
+    async function loadImage() {
+      if (item.isPicture) {
+        await axios.get(`http://192.168.0.103:3001/files/${item.message}/true`).then(result => {
+          setMediaImage(
+            `data:${result.headers['content-type']};base64,${result.data}`,
+          );
+        })
+      }
+    }
+    loadImage()
+  }, [])
+
   const hour =
     date.getHours() < 10
       ? `0${date.getHours()}`
@@ -96,48 +110,64 @@ export default function DirectMessageComponent({
                 ""
               )}
 
-            <View
-              style={
-                status
-                  ? [styles.mmessage, { borderBottomRightRadius: 10 }]
-                  : [
-                    styles.mmessage,
-                    { backgroundColor: "#1F2067", borderBottomLeftRadius: 10 },
-                  ]
-              }
-            >
-              {(status && item.title) ? <Text style={{ color: '#1F2067', marginBottom: 5, fontWeight: '500', fontSize: 14 }}>{item.title}</Text> : ''}
-              <Text style={status ? [{ color: "#000" }] : [{ color: "#FFF" }]}>
-                {item.message}
-              </Text>
-              <Text
-                style={
-                  status
-                    ? [
-                      {
-                        position: "absolute",
-                        bottom: 0,
-                        right: 7,
-                        fontSize: 10,
-                        fontWeight: "400",
-                        color: "#1F2067",
-                      },
-                    ]
-                    : [
-                      {
-                        position: "absolute",
-                        bottom: 0,
-                        right: 7,
-                        fontSize: 10,
-                        fontWeight: "400",
-                        color: "#fff",
-                      },
-                    ]
-                }
-              >
-                {hour + ":" + mins}
-              </Text>
-            </View>
+            {
+              item.isPicture
+                ?
+                <Image
+                  resizeMode="cover"
+                  // style={[styles.mavatar, { marginTop: 'auto' }]}
+                  source={{ uri: mediaImage }}
+                  width={300}
+                  height={300}
+                />
+                :
+                <View
+                  style={
+                    status
+                      ? [styles.mmessage, { borderBottomRightRadius: 10 }]
+                      : [
+                        styles.mmessage,
+                        { backgroundColor: "#1F2067", borderBottomLeftRadius: 10 },
+                      ]
+                  }
+                >
+                  {(status && item.title) ? <Text style={{ color: '#1F2067', marginBottom: 5, fontWeight: '500', fontSize: 14 }}>{item.title}</Text> : ''}
+                  <Text style={status ? [{ color: "#000" }] : [{ color: "#FFF" }]}>
+                    {
+
+                      item.message
+                    }
+                  </Text>
+                  <Text
+                    style={
+                      status
+                        ? [
+                          {
+                            position: "absolute",
+                            bottom: 0,
+                            right: 7,
+                            fontSize: 10,
+                            fontWeight: "400",
+                            color: "#1F2067",
+                          },
+                        ]
+                        : [
+                          {
+                            position: "absolute",
+                            bottom: 0,
+                            right: 7,
+                            fontSize: 10,
+                            fontWeight: "400",
+                            color: "#fff",
+                          },
+                        ]
+                    }
+                  >
+                    {hour + ":" + mins}
+                  </Text>
+                </View>
+            }
+
             {status ? (
               ""
             ) : (
@@ -160,8 +190,6 @@ export default function DirectMessageComponent({
                     source={require("../images/delivered.png")}
                   />
                 }
-
-
               </View>
             )}
           </View>
