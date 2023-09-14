@@ -1,10 +1,11 @@
-import { View, Text, Image } from 'react-native';
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { styles } from '../utils/styles';
+import {View, Text, Image, Pressable} from 'react-native';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useFocusEffect} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
+import ImageModal from './ImageModal';
 export default function DirectMessageComponent({
   onRendered,
   lastItem,
@@ -28,8 +29,6 @@ export default function DirectMessageComponent({
     getStatus();
   }, []);
 
-
-
   useLayoutEffect(() => {
     async function getImage() {
       await axios
@@ -50,21 +49,23 @@ export default function DirectMessageComponent({
           console.log('err', err);
         });
     }
-    getImage()
-  }, [])
+    getImage();
+  }, []);
 
   useLayoutEffect(() => {
     async function loadImage() {
       if (item.isPicture) {
-        await axios.get(`http://192.168.0.103:3001/files/${item.message}/true`).then(result => {
-          setMediaImage(
-            `data:${result.headers['content-type']};base64,${result.data}`,
-          );
-        })
+        await axios
+          .get(`http://192.168.0.103:3001/files/${item.message}/true`)
+          .then(result => {
+            setMediaImage(
+              `data:${result.headers['content-type']};base64,${result.data}`,
+            );
+          });
       }
     }
-    loadImage()
-  }, [])
+    loadImage();
+  }, []);
 
   const hour =
     date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`;
@@ -72,6 +73,11 @@ export default function DirectMessageComponent({
   const mins =
     date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
 
+  const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
   return (
     <TouchableOpacity
       onLongPress={() => {
@@ -84,9 +90,9 @@ export default function DirectMessageComponent({
           style={
             status
               ? [styles.mmessageWrapper]
-              : [styles.mmessageWrapper, { alignItems: 'flex-end' }]
+              : [styles.mmessageWrapper, {alignItems: 'flex-end'}]
           }>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {status ? (
               image ? (
                 <Image
@@ -100,7 +106,7 @@ export default function DirectMessageComponent({
                     marginRight: 2,
                     marginTop: 'auto',
                   }}
-                  source={{ uri: image }}
+                  source={{uri: image}}
                 />
               ) : (
                 // <Text>{image}</Text>
@@ -118,63 +124,74 @@ export default function DirectMessageComponent({
               ''
             )}
 
-            {
-              item.isPicture
-                ?
+            {item.isPicture ? (
+              <Pressable onPress={toggleModal}>
                 <Image
                   resizeMode="cover"
                   // style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{ uri: mediaImage }}
+                  source={{uri: mediaImage}}
                   width={300}
                   height={300}
+                  style={{borderRadius: 30}}
                 />
-                :
-                <View
+              </Pressable>
+            ) : (
+              <View
+                style={
+                  status
+                    ? [styles.mmessage, {borderBottomRightRadius: 10}]
+                    : [
+                        styles.mmessage,
+                        {
+                          backgroundColor: '#1F2067',
+                          borderBottomLeftRadius: 10,
+                        },
+                      ]
+                }>
+                {status && item.title ? (
+                  <Text
+                    style={{
+                      color: '#1F2067',
+                      marginBottom: 5,
+                      fontWeight: '500',
+                      fontSize: 14,
+                    }}>
+                    {item.title}
+                  </Text>
+                ) : (
+                  ''
+                )}
+                <Text style={status ? [{color: '#000'}] : [{color: '#FFF'}]}>
+                  {item.message}
+                </Text>
+                <Text
                   style={
                     status
-                      ? [styles.mmessage, { borderBottomRightRadius: 10 }]
+                      ? [
+                          {
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 7,
+                            fontSize: 10,
+                            fontWeight: '400',
+                            color: '#1F2067',
+                          },
+                        ]
                       : [
-                        styles.mmessage,
-                        { backgroundColor: "#1F2067", borderBottomLeftRadius: 10 },
-                      ]
-                  }
-                >
-                  {(status && item.title) ? <Text style={{ color: '#1F2067', marginBottom: 5, fontWeight: '500', fontSize: 14 }}>{item.title}</Text> : ''}
-                  <Text style={status ? [{ color: "#000" }] : [{ color: "#FFF" }]}>
-                    {
-
-                      item.message
-                    }
-                  </Text>
-                  <Text
-                    style={
-                      status
-                        ? [
                           {
-                            position: "absolute",
+                            position: 'absolute',
                             bottom: 0,
                             right: 7,
                             fontSize: 10,
-                            fontWeight: "400",
-                            color: "#1F2067",
+                            fontWeight: '400',
+                            color: '#fff',
                           },
                         ]
-                        : [
-                          {
-                            position: "absolute",
-                            bottom: 0,
-                            right: 7,
-                            fontSize: 10,
-                            fontWeight: "400",
-                            color: "#fff",
-                          },
-                        ]
-                    }
-                  >
-                    {hour + ":" + mins}
-                  </Text>
-                </View>
-            }
+                  }>
+                  {hour + ':' + mins}
+                </Text>
+              </View>
+            )}
 
             {status ? (
               ''
@@ -203,12 +220,16 @@ export default function DirectMessageComponent({
                     }}
                     source={require('../images/delivered.png')}
                   />
-
                 )}
               </View>
             )}
           </View>
         </View>
+        <ImageModal
+          visible={isModalVisible}
+          profileImage={{uri: mediaImage}}
+          onClose={toggleModal}
+        />
       </View>
     </TouchableOpacity>
   );
