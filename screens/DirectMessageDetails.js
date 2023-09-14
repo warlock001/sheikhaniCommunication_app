@@ -342,7 +342,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
                     fontWeight: '400',
                     marginRight: 10,
                   }}>
-                  9 Items
+                  {chatImage.length} Items
                 </Text>
               </View>
               <SafeAreaView

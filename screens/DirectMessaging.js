@@ -95,13 +95,15 @@ const DirectMessaging = ({ route, navigation }) => {
       });
   };
 
-  const handleDetailNavigation = (id, image, chatMessages) => {
-    console.log(chatMessages)
-    navigation.navigate('DirectMessageDetails', {
+  const handleDetailNavigation = async (id, image, chatMessages) => {
+    console.log("first")
+    console.log("sfd")
+    await navigation.navigate('DirectMessageDetails', {
+      chatMessages: chatMessages,
       id: id,
       image: image,
-      chatMessages: chatMessages
     });
+
   };
 
   const createRoomId = (id, myId) => {
