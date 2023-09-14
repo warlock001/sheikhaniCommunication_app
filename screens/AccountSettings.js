@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,12 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
 import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
-import {TextInput} from 'react-native-paper';
+import { styles } from '../utils/styles';
+import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
 import axios from 'axios';
 const Profile = () => {
@@ -129,7 +129,7 @@ const Profile = () => {
         console.log(NewPassword);
         console.log(CurrentPassword);
         await axios
-          .put('http://192.168.0.104:3001/password', {
+          .put('http://192.168.0.103:3001/password', {
             id: id,
             currectPassword: CurrentPassword,
             newPassword: NewPassword,
@@ -156,7 +156,7 @@ const Profile = () => {
   const updateUser = async () => {
     const id = await AsyncStorage.getItem('@id');
     await axios
-      .put('http://192.168.0.104:3001/user', {
+      .put('http://192.168.0.103:3001/user', {
         id: id,
         firstName: firstName,
         lastName: lastName,
@@ -181,7 +181,7 @@ const Profile = () => {
       }}>
       <KeyboardAvoidingView>
         <ScrollView>
-          <View style={{padding: 10}}>
+          <View style={{ padding: 10 }}>
             <Text
               style={{
                 fontSize: 18,
@@ -201,7 +201,7 @@ const Profile = () => {
             </Text>
             {editingPersonalDetails ? (
               <View>
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -216,7 +216,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{marginLeft: 30}}>
+                    style={{ marginLeft: 30 }}>
                     <Text
                       style={{
                         color: '#000',
@@ -239,28 +239,28 @@ const Profile = () => {
                       <TextField
                         label="First Name"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={firstName}
                         onChangeText={setFirstName}
                       />
                       <TextField
                         label="Last Name"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={lastName}
                         onChangeText={setLastName}
                       />
                       <TextField
                         label="Designation"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={designation}
                         onChangeText={setDesignation}
                       />
                       <TextField
                         label="Department"
                         outlineColor="#1f2067"
-                        style={{marginTop: 20, height: 60}}
+                        style={{ marginTop: 20, height: 60 }}
                         value={department}
                         onChangeText={setDepartment}
                       />
@@ -382,7 +382,7 @@ const Profile = () => {
                           }}>
                           <Image
                             resizeMode="contain"
-                            style={{width: 25, height: 25}}
+                            style={{ width: 25, height: 25 }}
                             source={require('../images/check.png')}
                           />
                           <Text
@@ -439,7 +439,7 @@ const Profile = () => {
                         }}>
                         <Image
                           resizeMode="contain"
-                          style={{width: 25, height: 25}}
+                          style={{ width: 25, height: 25 }}
                           source={require('../images/EditProfile3.png')}
                         />
                         <Text
@@ -458,7 +458,7 @@ const Profile = () => {
               </View>
             ) : (
               <View>
-                <View style={{flexDirection: 'row', marginTop: 20}}>
+                <View style={{ flexDirection: 'row', marginTop: 20 }}>
                   <Pressable onPress={handlePersonalDetails}>
                     <Text
                       style={{
@@ -469,7 +469,7 @@ const Profile = () => {
                   </Pressable>
                   <Pressable
                     onPress={handleSecurityDetails}
-                    style={{marginLeft: 30}}>
+                    style={{ marginLeft: 30 }}>
                     <Text
                       style={{
                         borderBottomWidth: 3,
@@ -519,7 +519,7 @@ const Profile = () => {
                       Use at least one capital letter in the combination
                     </Text>
                     <TextField
-                      style={{marginBottom: 10}}
+                      style={{ marginBottom: 10 }}
                       label="Current Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showCurrentPassword ? false : true}
@@ -534,13 +534,13 @@ const Profile = () => {
                               {showCurrentPassword ? (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/eyeOpen.png')}
                                 />
                               ) : (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/Hide.png')}
                                 />
                               )}
@@ -550,7 +550,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{marginBottom: 10}}
+                      style={{ marginBottom: 10 }}
                       label="New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword ? false : true}
@@ -565,13 +565,13 @@ const Profile = () => {
                               {showNewPassword ? (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/eyeOpen.png')}
                                 />
                               ) : (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/Hide.png')}
                                 />
                               )}
@@ -581,7 +581,7 @@ const Profile = () => {
                       }
                     />
                     <TextField
-                      style={{marginBottom: 5}}
+                      style={{ marginBottom: 5 }}
                       label="Retype New Password"
                       outlineColor="#1f2067"
                       secureTextEntry={showNewPassword2 ? false : true}
@@ -596,13 +596,13 @@ const Profile = () => {
                               {showNewPassword2 ? (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/eyeOpen.png')}
                                 />
                               ) : (
                                 <Image
                                   resizeMode="contain"
-                                  style={{width: 25}}
+                                  style={{ width: 25 }}
                                   source={require('../images/Hide.png')}
                                 />
                               )}
@@ -630,7 +630,7 @@ const Profile = () => {
                       }}>
                       <Image
                         resizeMode="contain"
-                        style={{width: 25, height: 25}}
+                        style={{ width: 25, height: 25 }}
                         source={require('../images/check.png')}
                       />
                       <Text

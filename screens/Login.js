@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://192.168.0.104:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.103:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
