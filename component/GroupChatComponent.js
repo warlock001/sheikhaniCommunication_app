@@ -1,10 +1,10 @@
-import { View, Image, Text, Pressable } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../utils/styles';
+import {View, Image, Text, Pressable} from 'react-native';
+import React, {useLayoutEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const GroupChatComponent = ({ item, username }) => {
+const GroupChatComponent = ({item, username}) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -26,12 +26,12 @@ const GroupChatComponent = ({ item, username }) => {
       setMessages(item.lastMessage);
 
       axios
-        .get(`http://18.144.29.58:3001/user?id=${item.user}`)
+        .get(`http://192.168.0.103:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://18.144.29.58:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(

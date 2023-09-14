@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,21 +12,20 @@ import {
   Dimensions,
   Modal,
 } from 'react-native';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import {ScrollView, FlatList} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 // import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
 
-
-function Item({ props, item }) {
+function Item({props, item}) {
   const [image, setImage] = useState(false);
 
   useLayoutEffect(() => {
@@ -53,12 +52,12 @@ function Item({ props, item }) {
     // }}
     >
       <View style={style.item}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {image ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
-              source={{ uri: image }}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
+              source={{uri: image}}
               width={30}
             />
           ) : (
@@ -73,11 +72,11 @@ function Item({ props, item }) {
                 borderRadius: 500,
               }}></View>
           )}
-          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+          <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
             {props.title}
           </Text>
         </View>
-        <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+        <Text style={{color: '#8f8f8f', marginRight: 40}}>
           {props.designation}
         </Text>
       </View>
@@ -85,8 +84,8 @@ function Item({ props, item }) {
   );
 }
 
-const DirectMessageDetails = ({ route, navigation }) => {
-  const { id, image } = route.params;
+const DirectMessageDetails = ({route, navigation}) => {
+  const {id, image} = route.params;
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [department, setDepartment] = useState('');
@@ -111,40 +110,39 @@ const DirectMessageDetails = ({ route, navigation }) => {
     }
   };
 
-
   useLayoutEffect(() => {
     async function loadImages() {
-      let imagearr = []
+      let imagearr = [];
 
       const myId = await AsyncStorage.getItem('@id');
-      roomId = createRoomId(id, myId)
-      console.log("roomId", roomId)
+      roomId = createRoomId(id, myId);
+      console.log('roomId', roomId);
       await axios
-        .get(`http://18.144.29.58:3001/getMessage?roomid=${roomId}`)
+        .get(`http://192.168.0.103:3001/getMessage?roomid=${roomId}`)
         .then(async res => {
           await res.data.messages.forEach(async (message, index) => {
             if (message.isPicture) {
-              setMediaLength(index)
-              await axios.get(`http://18.144.29.58:3001/files/${message.message}/true`).then(image => {
-                imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`)
-              })
+              setMediaLength(index);
+              await axios
+                .get(`http://192.168.0.103:3001/files/${message.message}/true`)
+                .then(image => {
+                  imagearr.push(
+                    `data:${image.headers['content-type']};base64,${image.data}`,
+                  );
+                });
             }
-          })
-        })
+          });
+        });
 
-
-      setChatImages(imagearr)
-
+      setChatImages(imagearr);
     }
-    loadImages()
-
-  }, [])
+    loadImages();
+  }, []);
 
   useLayoutEffect(() => {
     async function groupDetails() {
-
       await axios
-        .get(`http://18.144.29.58:3001/user?id=${id}`)
+        .get(`http://192.168.0.103:3001/user?id=${id}`)
         .then(async res => {
           setLoader(true);
           setGroupName(res.data.user.firstName + ' ' + res.data.user.lastName);
@@ -158,11 +156,12 @@ const DirectMessageDetails = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -200,7 +199,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
             height: '9%',
             backgroundColor: '#1f2067',
           }}> */}
-          <View style={{ alignItems: 'center' }}>
+          <View style={{alignItems: 'center'}}>
             <View
               style={
                 {
@@ -228,7 +227,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
                 }}>
                 <Image
                   resizeMode="cover"
-                  style={{ width: 15 }}
+                  style={{width: 15}}
                   source={require('../images/arrow_back.png')}
                 />
               </Pressable>
@@ -253,8 +252,8 @@ const DirectMessageDetails = ({ route, navigation }) => {
                   {image ? (
                     <Image
                       resizeMode="cover"
-                      style={{ width: 150, height: 150, borderRadius: 100 }}
-                      source={{ uri: image }}
+                      style={{width: 150, height: 150, borderRadius: 100}}
+                      source={{uri: image}}
                     />
                   ) : (
                     <View
@@ -316,11 +315,11 @@ const DirectMessageDetails = ({ route, navigation }) => {
               {/* Sheikhani */}
               {groupName}
             </Text>
-            <Text style={{ fontSize: 16, color: '#1f1f1f' }}>
+            <Text style={{fontSize: 16, color: '#1f1f1f'}}>
               {designation} - {department}
             </Text>
 
-            <Text style={{ fontSize: 16, color: '#8F8F8F' }}>{email}</Text>
+            <Text style={{fontSize: 16, color: '#8F8F8F'}}>{email}</Text>
 
             <View
               style={{
@@ -363,18 +362,19 @@ const DirectMessageDetails = ({ route, navigation }) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={true}
                   alwaysBounceHorizontal={true}
-                  style={{ flex: 1, paddingLeft: 0 }}>
+                  style={{flex: 1, paddingLeft: 0}}>
                   <FlatList
                     keyboardShouldPersistTaps="handled"
                     horizontal={true} // Enable horizontal scrolling
                     showsHorizontalScrollIndicator={true}
                     scrollEnabled={true}
                     data={chatImage}
-                    renderItem={({ item }) => (
-                      <Pressable onPress={() => {
-                        setModalImage(item)
-                        toggleModal()
-                      }}>
+                    renderItem={({item}) => (
+                      <Pressable
+                        onPress={() => {
+                          setModalImage(item);
+                          toggleModal();
+                        }}>
                         <Image
                           resizeMode="cover"
                           style={{
@@ -385,10 +385,9 @@ const DirectMessageDetails = ({ route, navigation }) => {
                             borderWidth: 0.5,
                             borderColor: '#000',
                           }}
-                          source={{ uri: item }}
+                          source={{uri: item}}
                           width={30}
                         />
-
                       </Pressable>
                       // <Item
                       //   props={{
@@ -400,11 +399,11 @@ const DirectMessageDetails = ({ route, navigation }) => {
                       // />
                     )}
                     keyExtractor={item => item._id}
-                    style={{ width: Dimensions.get('window').width }}
+                    style={{width: Dimensions.get('window').width}}
                   />
                   <ImageModal
                     visible={isModalVisible}
-                    profileImage={{ uri: modalImage }}
+                    profileImage={{uri: modalImage}}
                     onClose={toggleModal}
                   />
                 </ScrollView>
@@ -416,7 +415,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
                   justifyContent: 'center',
                 }}>
                 <Image
-                  style={{ width: 180, height: 180, alignSelf: 'center' }}
+                  style={{width: 180, height: 180, alignSelf: 'center'}}
                   source={require('../images/sheikhani.png')}
                 />
                 {/* <Text

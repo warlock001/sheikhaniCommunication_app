@@ -10,14 +10,14 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { TextInput } from 'react-native-paper';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
-import { styles } from '../utils/styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {styles} from '../utils/styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const CreateNewChat = ({ navigation }) => {
+const CreateNewChat = ({navigation}) => {
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(false);
   const [search, setSearch] = useState('');
@@ -34,7 +34,7 @@ const CreateNewChat = ({ navigation }) => {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://18.144.29.58:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);
@@ -48,14 +48,14 @@ const CreateNewChat = ({ navigation }) => {
     getUsers();
   }, [search]);
 
-  function Item({ props }) {
+  function Item({props}) {
     const [image, setImage] = useState(false);
 
     useLayoutEffect(() => {
       async function getImage() {
         await axios
           .get(
-            `http://18.144.29.58:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -79,19 +79,19 @@ const CreateNewChat = ({ navigation }) => {
           {image != '' ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
-              source={{ uri: image }}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
+              source={{uri: image}}
               width={30}
             />
           ) : (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
               source={require('../images/myaccount.png')}
               width={30}
             />
           )}
-          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+          <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
             {props.title}
           </Text>
         </View>
@@ -102,14 +102,14 @@ const CreateNewChat = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback accessible={false}>
       <SafeAreaView style={styles.chatscreen}>
-        <View style={{ marginTop: 13 }}>
+        <View style={{marginTop: 13}}>
           <KeyboardAvoidingView>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);
               }}
               onBlur={() => setSearchedUsersVisible(false)}
-              style={{ marginBottom: 5, color: '#000' }}
+              style={{marginBottom: 5, color: '#000'}}
               label="Search by name"
               onChangeText={text => {
                 setSearch(text);
@@ -121,14 +121,14 @@ const CreateNewChat = ({ navigation }) => {
                       <Pressable onPress={Keyboard.dismiss}>
                         <Image
                           resizeMode="contain"
-                          style={{ width: 25 }}
+                          style={{width: 25}}
                           source={require('../images/close.png')}
                         />
                       </Pressable>
                     ) : (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 25 }}
+                        style={{width: 25}}
                         source={require('../images/search.png')}
                       />
                     )
@@ -137,8 +137,8 @@ const CreateNewChat = ({ navigation }) => {
               }
             />
           </KeyboardAvoidingView>
-          <View style={[styles.optionBox, { display: 'flex' }]}>
-            <Text style={{ marginBottom: 10 }}>
+          <View style={[styles.optionBox, {display: 'flex'}]}>
+            <Text style={{marginBottom: 10}}>
               Search users in your department
             </Text>
             {searchedUsers ? (
@@ -146,7 +146,7 @@ const CreateNewChat = ({ navigation }) => {
                 keyboardShouldPersistTaps="handled"
                 showsVerticalScrollIndicator={true}
                 data={searchedUsers}
-                renderItem={({ item }) => (
+                renderItem={({item}) => (
                   <Item
                     props={{
                       title: item.firstName,

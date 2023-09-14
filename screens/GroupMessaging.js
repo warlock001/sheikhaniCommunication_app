@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -11,24 +11,24 @@ import {
   Button,
   Dimensions,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from '../component/AddMemberModal';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import ReadReceipts from '../component/ReadReceipts';
 let flatlistRef;
 let textInputRef; // Define the ref
 const mime = require('mime');
-const GroupMessaging = ({ route, navigation }) => {
+const GroupMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -43,15 +43,16 @@ const GroupMessaging = ({ route, navigation }) => {
   const [tagsVisible, setTagsVisible] = useState(false);
   const [tags, setTags] = useState([]);
 
-  function Item({ props, item }) {
+  function Item({props, item}) {
     const [image, setImage] = useState(false);
     const navigation = useNavigation();
 
     useLayoutEffect(() => {
       async function getImage() {
-
         await axios
-          .get(`http://18.144.29.58:3001/files/${props.profilePicture[0]}/true`)
+          .get(
+            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
+          )
           .then(image => {
             setImage(
               `data:${image.headers['content-type']};base64,${image.data}`,
@@ -66,10 +67,10 @@ const GroupMessaging = ({ route, navigation }) => {
     });
 
     const handleTag = async (id, image, title) => {
-      setTagsVisible(false)
-      let tempMessage = message
-      tempMessage = tempMessage + title + ' '
-      setMessage(tempMessage)
+      setTagsVisible(false);
+      let tempMessage = message;
+      tempMessage = tempMessage + title + ' ';
+      setMessage(tempMessage);
       setTags(tags => [...tags, id]);
     };
 
@@ -80,12 +81,12 @@ const GroupMessaging = ({ route, navigation }) => {
             handleTag(props.id, image, props.title);
           }}>
           <View style={style.item}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {image ? (
                 <Image
                   resizeMode="cover"
-                  style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{ uri: image }}
+                  style={[styles.mavatar, {marginTop: 'auto'}]}
+                  source={{uri: image}}
                   width={30}
                 />
               ) : (
@@ -111,20 +112,18 @@ const GroupMessaging = ({ route, navigation }) => {
                   </Text>
                 </View>
               )}
-              <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+              <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
                 {props.title}
               </Text>
             </View>
-            <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+            <Text style={{color: '#8f8f8f', marginRight: 40}}>
               {props.designation}
             </Text>
           </View>
         </TouchableOpacity>
       );
     }
-
   }
-
 
   const getUsername = async () => {
     try {
@@ -132,7 +131,7 @@ const GroupMessaging = ({ route, navigation }) => {
       const myId = await AsyncStorage.getItem('@id');
       if (value !== null) {
         setUser(value);
-        setMyId(myId)
+        setMyId(myId);
       }
     } catch (e) {
       console.error('Error while loading username!');
@@ -159,12 +158,12 @@ const GroupMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://18.144.29.58:3001/saveMessage', {
+      .post('http://192.168.0.103:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: id,
         title: user,
-        tags: tags
+        tags: tags,
       })
       .then(res => {
         console.log('message send - ', res.data);
@@ -186,7 +185,7 @@ const GroupMessaging = ({ route, navigation }) => {
         };
         socket.emit('send_message_group', data);
         setMessage('');
-        setTags([])
+        setTags([]);
       })
       .catch(err => {
         console.log('error in sending message - ', err);
@@ -199,7 +198,7 @@ const GroupMessaging = ({ route, navigation }) => {
       navigation.setOptions({
         headerTitle: () => (
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => {
               handleDetailNavigation(id);
             }}>
@@ -263,7 +262,7 @@ const GroupMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://18.144.29.58:3001/getMessage?roomid=${id}`)
+          .get(`http://192.168.0.103:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -344,7 +343,7 @@ const GroupMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://18.144.29.58:3001/group?roomid=${id}`)
+        .get(`http://192.168.0.103:3001/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -358,11 +357,12 @@ const GroupMessaging = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -422,48 +422,50 @@ const GroupMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://18.144.29.58:3001/files`,
+          url: `http://192.168.0.103:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
             'Content-Type': 'multipart/form-data',
           },
-        }).then(async result => {
-
-          await axios.post('http://18.144.29.58:3001/saveMessage', {
-            senderid: myId,
-            message: result.data.id,
-            roomid: id,
-            isPicture: true,
-            title: user
-          })
-            .then(res => {
-              console.log('message send - ', res.data);
-              let data = {
-                roomId: id,
-                message: {
-                  _id: res.data.id,
-                  senderid: myId,
-                  message: result.data.id,
-                  roomid: id,
-                  recieverid: id,
-                  isPicture: true,
-                  seen: false,
-                  title: name,
-                  user: user,
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-              };
-              socket.emit('send_message_group', data);
-              setMessage('');
-            }).catch(err => {
-              console.log('error in sending message - ', err);
-            })
-        }).catch(err => {
-          console.log("Error in uploading image", err)
         })
-
+          .then(async result => {
+            await axios
+              .post('http://192.168.0.103:3001/saveMessage', {
+                senderid: myId,
+                message: result.data.id,
+                roomid: id,
+                isPicture: true,
+                title: user,
+              })
+              .then(res => {
+                console.log('message send - ', res.data);
+                let data = {
+                  roomId: id,
+                  message: {
+                    _id: res.data.id,
+                    senderid: myId,
+                    message: result.data.id,
+                    roomid: id,
+                    recieverid: id,
+                    isPicture: true,
+                    seen: false,
+                    title: name,
+                    user: user,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  },
+                };
+                socket.emit('send_message_group', data);
+                setMessage('');
+              })
+              .catch(err => {
+                console.log('error in sending message - ', err);
+              });
+          })
+          .catch(err => {
+            console.log('Error in uploading image', err);
+          });
       }
     });
   };
@@ -473,7 +475,7 @@ const GroupMessaging = ({ route, navigation }) => {
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -483,7 +485,7 @@ const GroupMessaging = ({ route, navigation }) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <DirectMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -499,7 +501,7 @@ const GroupMessaging = ({ route, navigation }) => {
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
@@ -508,41 +510,43 @@ const GroupMessaging = ({ route, navigation }) => {
       </View>
 
       <View>
-
-        {
-          tagsVisible ?
-            <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', position: 'absolute', bottom: 70 }}>
-              <FlatList
-                keyboardShouldPersistTaps="handled"
-                showsVerticalScrollIndicator={true}
-                data={members}
-                renderItem={({ item }) => (
-                  <Item
-                    props={{
-                      title: item.firstName + ' ' + item.lastName,
-                      id: item._id,
-                      designation: item.designation,
-                      profilePicture: item.profilePicture,
-                    }}
-                  />
-                )}
-                keyExtractor={item => item._id}
-                style={{
-                  width: Dimensions.get('window').width,
-                  marginLeft: 20,
-                }}
-              />
-            </View>
-            :
-            ''
-
-        }
+        {tagsVisible ? (
+          <View
+            style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              position: 'absolute',
+              bottom: 70,
+            }}>
+            <FlatList
+              keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={true}
+              data={members}
+              renderItem={({item}) => (
+                <Item
+                  props={{
+                    title: item.firstName + ' ' + item.lastName,
+                    id: item._id,
+                    designation: item.designation,
+                    profilePicture: item.profilePicture,
+                  }}
+                />
+              )}
+              keyExtractor={item => item._id}
+              style={{
+                width: Dimensions.get('window').width,
+                marginLeft: 20,
+              }}
+            />
+          </View>
+        ) : (
+          ''
+        )}
         <View style={styles.messaginginputContainer}>
           <Pressable onPress={chooseImage}>
             <View>
               <Image
                 resizeMode="contain"
-                style={{ width: 25, height: 25, marginRight: 5 }}
+                style={{width: 25, height: 25, marginRight: 5}}
                 source={require('../images/attach_file.png')}
               />
             </View>
@@ -555,11 +559,11 @@ const GroupMessaging = ({ route, navigation }) => {
             }}
             style={styles.messaginginput}
             onChangeText={value => {
-              setMessage(value)
+              setMessage(value);
               if (value.charAt(value.length - 1) == '@') {
-                setTagsVisible(true)
+                setTagsVisible(true);
               } else {
-                setTagsVisible(false)
+                setTagsVisible(false);
               }
             }}
             placeholder="Write Message..."
@@ -571,7 +575,7 @@ const GroupMessaging = ({ route, navigation }) => {
             <View>
               <Image
                 resizeMode="contain"
-                style={{ width: 30, height: 30, marginRight: 5 }}
+                style={{width: 30, height: 30, marginRight: 5}}
                 source={require('../images/send.png')}
               />
               {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}

@@ -1,9 +1,9 @@
-import { View, Text, Image, Pressable } from 'react-native';
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { styles } from '../utils/styles';
+import {View, Text, Image, Pressable} from 'react-native';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useFocusEffect} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 import ImageModal from './ImageModal';
 export default function DirectMessageComponent({
@@ -32,12 +32,12 @@ export default function DirectMessageComponent({
   useLayoutEffect(() => {
     async function getImage() {
       await axios
-        .get(`http://18.144.29.58:3001/user?id=${item.senderid}`)
+        .get(`http://192.168.0.103:3001/user?id=${item.senderid}`)
         .then(async result => {
           console.log('image ->', result.data.user.profilePicture[0]);
           await axios
             .get(
-              `http://18.144.29.58:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -56,7 +56,7 @@ export default function DirectMessageComponent({
     async function loadImage() {
       if (item.isPicture) {
         await axios
-          .get(`http://18.144.29.58:3001/files/${item.message}/true`)
+          .get(`http://192.168.0.103:3001/files/${item.message}/true`)
           .then(result => {
             setMediaImage(
               `data:${result.headers['content-type']};base64,${result.data}`,
@@ -90,9 +90,9 @@ export default function DirectMessageComponent({
           style={
             status
               ? [styles.mmessageWrapper]
-              : [styles.mmessageWrapper, { alignItems: 'flex-end' }]
+              : [styles.mmessageWrapper, {alignItems: 'flex-end'}]
           }>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
             {status ? (
               image ? (
                 <Image
@@ -106,7 +106,7 @@ export default function DirectMessageComponent({
                     marginRight: 2,
                     marginTop: 'auto',
                   }}
-                  source={{ uri: image }}
+                  source={{uri: image}}
                 />
               ) : (
                 // <Text>{image}</Text>
@@ -129,24 +129,24 @@ export default function DirectMessageComponent({
                 <Image
                   resizeMode="cover"
                   // style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{ uri: mediaImage }}
+                  source={{uri: mediaImage}}
                   width={300}
                   height={300}
-                  style={{ borderRadius: 30 }}
+                  style={{borderRadius: 30}}
                 />
               </Pressable>
             ) : (
               <View
                 style={
                   status
-                    ? [styles.mmessage, { borderBottomRightRadius: 10 }]
+                    ? [styles.mmessage, {borderBottomRightRadius: 10}]
                     : [
-                      styles.mmessage,
-                      {
-                        backgroundColor: '#1F2067',
-                        borderBottomLeftRadius: 10,
-                      },
-                    ]
+                        styles.mmessage,
+                        {
+                          backgroundColor: '#1F2067',
+                          borderBottomLeftRadius: 10,
+                        },
+                      ]
                 }>
                 {status && item.title ? (
                   <Text
@@ -161,32 +161,32 @@ export default function DirectMessageComponent({
                 ) : (
                   ''
                 )}
-                <Text style={status ? [{ color: '#000' }] : [{ color: '#FFF' }]}>
+                <Text style={status ? [{color: '#000'}] : [{color: '#FFF'}]}>
                   {item.message}
                 </Text>
                 <Text
                   style={
                     status
                       ? [
-                        {
-                          position: 'absolute',
-                          bottom: 0,
-                          right: 7,
-                          fontSize: 10,
-                          fontWeight: '400',
-                          color: '#1F2067',
-                        },
-                      ]
+                          {
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 7,
+                            fontSize: 10,
+                            fontWeight: '400',
+                            color: '#1F2067',
+                          },
+                        ]
                       : [
-                        {
-                          position: 'absolute',
-                          bottom: 0,
-                          right: 7,
-                          fontSize: 10,
-                          fontWeight: '400',
-                          color: '#fff',
-                        },
-                      ]
+                          {
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 7,
+                            fontSize: 10,
+                            fontWeight: '400',
+                            color: '#fff',
+                          },
+                        ]
                   }>
                   {hour + ':' + mins}
                 </Text>
@@ -227,7 +227,7 @@ export default function DirectMessageComponent({
         </View>
         <ImageModal
           visible={isModalVisible}
-          profileImage={{ uri: mediaImage }}
+          profileImage={{uri: mediaImage}}
           onClose={toggleModal}
         />
       </View>
