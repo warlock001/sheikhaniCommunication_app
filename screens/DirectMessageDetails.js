@@ -103,7 +103,8 @@ const DirectMessageDetails = ({ route, navigation }) => {
   const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
   const [email, setEmail] = useState('');
-  const [chatImage, setChatImages] = useState('');
+  const [chatImage, setChatImages] = useState([]);
+  const [modalImage, setModalImage] = useState('');
   //   const [memberSize, setMemberSize] = useState(0);
   //   const [members, setMembers] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
@@ -113,9 +114,27 @@ const DirectMessageDetails = ({ route, navigation }) => {
   };
 
   useLayoutEffect(() => {
+    async function loadImages() {
+      let imagearr = []
+      console.log("chatMessages", chatMessages)
+      await chatMessages.forEach(async message => {
+        if (message.isPicture) {
+          await axios.get(`http://192.168.0.103:3001/files/${message.message}/true`).then(image => {
+
+            imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`)
+          })
+        }
+      })
+      setChatImages(imagearr)
+      console.log(imagearr)
+    }
+    loadImages()
+
+  }, [])
+
+  useLayoutEffect(() => {
     async function groupDetails() {
-      // setLoader(true);
-      console.log('first');
+
       await axios
         .get(`http://192.168.0.103:3001/user?id=${id}`)
         .then(async res => {
@@ -142,6 +161,13 @@ const DirectMessageDetails = ({ route, navigation }) => {
 
     groupDetails();
   }, []);
+
+  const handleNavigation = () => {
+    navigation.navigate('DirectMessaging', {
+      id: id,
+      name: groupName,
+    });
+  };
 
   return (
     <SafeAreaView
@@ -214,38 +240,58 @@ const DirectMessageDetails = ({ route, navigation }) => {
               style={{
                 marginTop: 20,
               }}>
-              <Pressable>
-                {image ? (
-                  <Image
-                    resizeMode="cover"
-                    style={{ width: 150, height: 150, borderRadius: 100 }}
-                    source={{ uri: image }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 150,
-                      height: 150,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor: '#1f2067',
-                      borderRadius: 100,
-                      elevation: 10,
-                    }}>
-                    <Text
+              <View>
+                <Pressable>
+                  {image ? (
+                    <Image
+                      resizeMode="cover"
+                      style={{ width: 150, height: 150, borderRadius: 100 }}
+                      source={{ uri: image }}
+                    />
+                  ) : (
+                    <View
                       style={{
-                        textAlign: 'center',
-                        textAlignVertical: 'center',
-                        fontSize: 85,
-                        lineHeight: 100,
-                        color: '#fff',
-                        fontWeight: '600',
+                        width: 150,
+                        height: 150,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#1f2067',
+                        borderRadius: 100,
+                        elevation: 10,
                       }}>
-                      A{/* {name.charAt(0).toUpperCase()} */}
-                    </Text>
-                  </View>
-                )}
-              </Pressable>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          textAlignVertical: 'center',
+                          fontSize: 85,
+                          lineHeight: 100,
+                          color: '#fff',
+                          fontWeight: '600',
+                        }}>
+                        A{/* {name.charAt(0).toUpperCase()} */}
+                      </Text>
+                    </View>
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handleNavigation}
+                  style={{
+                    position: 'absolute',
+                    bottom: -20,
+                    right: -20,
+                    // borderWidth: 3,
+                    // borderColor: "#fff",
+                    width: '33%',
+                    height: '33%',
+                    borderRadius: 100,
+                  }}>
+                  <Image
+                    id="editprofile"
+                    resizeMode="contain"
+                    source={require('../images/chat-person.png')}
+                  />
+                </Pressable>
+              </View>
             </View>
             <Text
               style={{
@@ -315,9 +361,12 @@ const DirectMessageDetails = ({ route, navigation }) => {
                     horizontal={true} // Enable horizontal scrolling
                     showsHorizontalScrollIndicator={true}
                     scrollEnabled={true}
-                    data={datta}
+                    data={chatImage}
                     renderItem={({ item }) => (
-                      <Pressable onPress={toggleModal}>
+                      <Pressable onPress={() => {
+                        setModalImage(item)
+                        toggleModal()
+                      }}>
                         <Image
                           resizeMode="cover"
                           style={{
@@ -328,9 +377,10 @@ const DirectMessageDetails = ({ route, navigation }) => {
                             borderWidth: 0.5,
                             borderColor: '#000',
                           }}
-                          source={require('../images/groupmediademo.jpg')}
+                          source={{ uri: item }}
                           width={30}
                         />
+
                       </Pressable>
                       // <Item
                       //   props={{
@@ -346,7 +396,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
                   />
                   <ImageModal
                     visible={isModalVisible}
-                    profileImage={require('../images/groupmediademo.jpg')}
+                    profileImage={{ uri: modalImage }}
                     onClose={toggleModal}
                   />
                 </ScrollView>

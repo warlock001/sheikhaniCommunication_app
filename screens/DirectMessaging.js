@@ -95,7 +95,8 @@ const DirectMessaging = ({ route, navigation }) => {
       });
   };
 
-  const handleDetailNavigation = (id, image) => {
+  const handleDetailNavigation = (id, image, chatMessages) => {
+    console.log(chatMessages)
     navigation.navigate('DirectMessageDetails', {
       id: id,
       image: image,
@@ -117,7 +118,7 @@ const DirectMessaging = ({ route, navigation }) => {
         <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center' }}
           onPress={() => {
-            handleDetailNavigation(id, image);
+            handleDetailNavigation(id, image, chatMessages);
           }}>
 
 
