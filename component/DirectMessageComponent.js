@@ -4,6 +4,7 @@ import { styles } from "../utils/styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import axios from "axios";
 export default function DirectMessageComponent({
   onRendered,
   lastItem,
@@ -15,15 +16,8 @@ export default function DirectMessageComponent({
 }) {
 
   const [status, setStatus] = useState('');
+  const [image, setImage] = useState('');
   const date = new Date(item.createdAt);
-
-
-  // useEffect(() => {
-  //   // console.log('lastItem', lastItem);
-  //   // console.log('item._id', item._id);
-
-  //   lastItem === item._id ? onRendered() : ''
-  // }, [])
 
   useLayoutEffect(() => {
     async function getStatus() {
@@ -32,6 +26,21 @@ export default function DirectMessageComponent({
     }
 
     getStatus()
+  }, [])
+
+
+  useLayoutEffect(() => {
+    async function getImage() {
+      await axios.get(`http://192.168.0.103:3001/user?id=${item.senderid}`).then(async result => {
+        console.log("image ->", result.data.user.profilePicture[0])
+        await axios.get(`http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`).then(image => {
+          setImage(`data:${image.headers['content-type']};base64,${image.data}`)
+        })
+      }).catch(err => {
+        console.log("err", err)
+      })
+    }
+    getImage()
   }, [])
   const hour =
     date.getHours() < 10
@@ -55,24 +64,37 @@ export default function DirectMessageComponent({
           style={
             status
               ? [styles.mmessageWrapper]
-              : [styles.mmessageWrapper, { alignItems: "flex-end" }]
+              : [styles.mmessageWrapper, { alignItems: "flex-end", }]
           }
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {status ? (
+            {status ?
+              image ?
+                <Image
+                  resizeMode="cover"
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginTop: 'auto'
+                  }}
+                  source={{ uri: image }}
+                />
 
-              <Image
-                resizeMode="cover"
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginTop: 'auto'
-                }}
-                source={require("../images/myaccount2.png")}
-              />
-            ) : (
-              ""
-            )}
+                // <Text>{image}</Text>
+                :
+                < Image
+                  resizeMode="cover"
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginTop: 'auto'
+                  }}
+                  source={require("../images/myaccount2.png")}
+                />
+
+              : (
+                ""
+              )}
 
             <View
               style={
@@ -84,6 +106,7 @@ export default function DirectMessageComponent({
                   ]
               }
             >
+              {(status && item.title) ? <Text style={{ color: '#1F2067', marginBottom: 5, fontWeight: '500', fontSize: 14 }}>{item.title}</Text> : ''}
               <Text style={status ? [{ color: "#000" }] : [{ color: "#FFF" }]}>
                 {item.message}
               </Text>

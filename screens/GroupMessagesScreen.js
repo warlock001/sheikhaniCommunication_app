@@ -66,6 +66,8 @@ export default function GroupMessagesScreen({ navigation }) {
 
       getImage();
     });
+
+
     return (
       <TouchableOpacity
         onPress={() => {

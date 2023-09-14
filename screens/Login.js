@@ -64,11 +64,10 @@ export default function SignIn({ navigation }) {
       await AsyncStorage.setItem('@role', res.data.role);
       await AsyncStorage.setItem('@email', res.data.email);
       await AsyncStorage.setItem('@department', res.data.department);
-      await AsyncStorage.setItem('@designation', res.data.designation);
       await AsyncStorage.setItem('@username', res.data.firstName);
       await AsyncStorage.setItem('@lastName', res.data.lastName);
       await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
-
+      await AsyncStorage.setItem('@designation', res.data.designation);
       const value = await AsyncStorage.getItem('@username');
       console.log(value);
 

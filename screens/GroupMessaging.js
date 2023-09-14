@@ -69,6 +69,7 @@ const GroupMessaging = ({ route, navigation }) => {
         senderid: myId,
         message: message,
         roomid: id,
+        title: user
       })
       .then(res => {
         console.log('message send - ', res.data);
