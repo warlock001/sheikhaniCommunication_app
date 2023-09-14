@@ -9,19 +9,19 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://192.168.0.103:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.104:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Hide from '../images/Hide.png';
-export default function SignIn({ navigation }) {
+export default function SignIn({navigation}) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [loader, setLoader] = useState(false);
@@ -42,7 +42,7 @@ export default function SignIn({ navigation }) {
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{ name: 'Home' }],
+          routes: [{name: 'Home'}],
         }),
       );
     }
@@ -54,63 +54,67 @@ export default function SignIn({ navigation }) {
     console.log(REACT_APP_BASE_URL);
     setLoader(true);
 
-    await axios.post(`${REACT_APP_BASE_URL}/login`, {
-      email: email,
-      password: password,
-    }).then(async res => {
-      console.log(res.data);
-      await AsyncStorage.setItem('@id', res.data._id);
-      await AsyncStorage.setItem('@jwt', res.data.token);
-      await AsyncStorage.setItem('@role', res.data.role);
-      await AsyncStorage.setItem('@email', res.data.email);
-      await AsyncStorage.setItem('@department', res.data.department);
-      await AsyncStorage.setItem('@designation', res.data.designation);
-      await AsyncStorage.setItem('@username', res.data.firstName);
-      await AsyncStorage.setItem('@lastName', res.data.lastName);
-      await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
+    await axios
+      .post(`${REACT_APP_BASE_URL}/login`, {
+        email: email,
+        password: password,
+      })
+      .then(async res => {
+        console.log(res.data);
+        await AsyncStorage.setItem('@id', res.data._id);
+        await AsyncStorage.setItem('@jwt', res.data.token);
+        await AsyncStorage.setItem('@role', res.data.role);
+        await AsyncStorage.setItem('@email', res.data.email);
+        await AsyncStorage.setItem('@department', res.data.department);
+        await AsyncStorage.setItem('@designation', res.data.designation);
+        await AsyncStorage.setItem('@username', res.data.firstName);
+        await AsyncStorage.setItem('@lastName', res.data.lastName);
+        await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
 
-      const value = await AsyncStorage.getItem('@username');
-      console.log(value);
+        const value = await AsyncStorage.getItem('@username');
+        console.log(value);
 
-      // console.log(res.data.firstName)
-      setLoader(false);
-      if (res.data.role == 'employee') {
-        navigation.navigate('Home');
-      } else {
-        navigation.navigate('RescueCenter');
-      }
-    }).catch(async er => {
-      setLoader(false);
-      // console.log(er.response.data);
+        // console.log(res.data.firstName)
+        setLoader(false);
+        if (res.data.role == 'employee') {
+          navigation.navigate('Home');
+        } else {
+          navigation.navigate('RescueCenter');
+        }
+      })
+      .catch(async er => {
+        setLoader(false);
+        // console.log(er.response.data);
 
-      Alert.alert(
-        'Failed',
-        `${er.response.data.message
-          ? er.response.data.message
-          : 'Something went wrong'
-        }`,
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-      );
-    })
+        Alert.alert(
+          'Failed',
+          `${
+            er.response.data.message
+              ? er.response.data.message
+              : 'Something went wrong'
+          }`,
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+        );
+      });
   }
 
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{height: '100%'}}>
       {!loader ? (
-        <View style={{ height: '100%' }}>
+        <View style={{height: '100%'}}>
           <ImageBackground
             source={require('../images/onboarding1.png')}
-            style={{ width: '100%', height: 250 }}>
+            style={{width: '100%', height: 250}}>
             <LinearGradient
               colors={['#CF333900', '#000000']}
               style={styles.gradientStyle}
-              start={{ x: 0.5, y: 0.5 }}
-              end={{ x: 0.5, y: 1.5 }}
+              start={{x: 0.5, y: 0.5}}
+              end={{x: 0.5, y: 1.5}}
             />
             <View style={styles.topheader}>
               <View style={styles.textView}>
                 <Text style={styles.textStyle}>Sign In</Text>
-                <Text style={[styles.textStyle, { paddingBottom: 20 }]}>
+                <Text style={[styles.textStyle, {paddingBottom: 20}]}>
                   To Your Account
                 </Text>
                 <Text style={styles.textStyle2}>
@@ -121,10 +125,10 @@ export default function SignIn({ navigation }) {
           </ImageBackground>
           <ScrollView style={styles.bottomSection}>
             <View
-              style={{ height: '100%', padding: 24, justifyContent: 'center' }}>
-              <View style={{ paddingBottom: 20 }}>
+              style={{height: '100%', padding: 24, justifyContent: 'center'}}>
+              <View style={{paddingBottom: 20}}>
                 <TextField
-                  style={{ marginBottom: 5 }}
+                  style={{marginBottom: 5}}
                   label="Email Address"
                   onChangeText={text => setEmail(text)}
                   left={
@@ -132,18 +136,17 @@ export default function SignIn({ navigation }) {
                       name={() => (
                         <Image
                           resizeMode="contain"
-                          style={{ width: 25 }}
+                          style={{width: 25}}
                           source={EnvelopeClosed}
                         />
                       )}
                     />
                   }
                 />
-
               </View>
-              <View style={{ paddingBottom: 20 }}>
+              <View style={{paddingBottom: 20}}>
                 <TextField
-                  style={{ marginBottom: 5 }}
+                  style={{marginBottom: 5}}
                   label="Password"
                   secureTextEntry={showPassword ? false : true}
                   onChangeText={text => {
@@ -154,7 +157,7 @@ export default function SignIn({ navigation }) {
                       name={() => (
                         <Image
                           resizeMode="contain"
-                          style={{ width: 25 }}
+                          style={{width: 25}}
                           source={require('../images/password_icon.png')}
                         />
                       )}
@@ -167,26 +170,25 @@ export default function SignIn({ navigation }) {
                           onPress={() => {
                             setShowPassword(!showPassword);
                           }}>
-                          {
-                            showPassword ?
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={require("../images/eyeOpen.png")}
-                              />
-                              :
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={Hide}
-                              />
-                          }
+                          {showPassword ? (
+                            <Image
+                              resizeMode="contain"
+                              style={{width: 25}}
+                              source={require('../images/eyeOpen.png')}
+                            />
+                          ) : (
+                            <Image
+                              resizeMode="contain"
+                              style={{width: 25}}
+                              source={Hide}
+                            />
+                          )}
                         </TouchableOpacity>
                       )}
                     />
                   }
                 />
-                <TouchableOpacity style={{ alignSelf: 'flex-end' }}>
+                <TouchableOpacity style={{alignSelf: 'flex-end'}}>
                   <Text style={styles.forgotButtonStyle}>Forgot Password?</Text>
                 </TouchableOpacity>
               </View>
@@ -199,11 +201,11 @@ export default function SignIn({ navigation }) {
                   }
                 }}>
                 <Text
-                  style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
+                  style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
                   Sign In
                 </Text>
               </TouchableOpacity>
-              <View style={{ width: '100%', justifyContent: 'center' }}>
+              <View style={{width: '100%', justifyContent: 'center'}}>
                 <View
                   style={{
                     marginTop: 25,
@@ -211,7 +213,7 @@ export default function SignIn({ navigation }) {
                     justifyContent: 'center',
                   }}>
                   <Image
-                    style={{ width: 150, height: 150, alignSelf: 'center' }}
+                    style={{width: 150, height: 150, alignSelf: 'center'}}
                     source={require('../images/sheikhani.png')}
                   />
                   <Text
@@ -225,7 +227,6 @@ export default function SignIn({ navigation }) {
                     Sheikhani Group Communication
                   </Text>
                 </View>
-
               </View>
             </View>
           </ScrollView>

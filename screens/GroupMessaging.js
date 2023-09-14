@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
@@ -21,9 +21,9 @@ import ReadReceipts from '../component/ReadReceipts';
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const GroupMessaging = ({ route, navigation }) => {
+const GroupMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -31,8 +31,8 @@ const GroupMessaging = ({ route, navigation }) => {
   const [roomId, setRoomId] = useState('');
   const [addMember, setAddMember] = useState(false);
   const [receiptsModalVisible, setReceiptsModalVisible] = useState(false);
-  const [seen, setSeen] = useState('')
-  const [delivered, setDelivered] = useState('')
+  const [seen, setSeen] = useState('');
+  const [delivered, setDelivered] = useState('');
 
   const getUsername = async () => {
     try {
@@ -45,9 +45,9 @@ const GroupMessaging = ({ route, navigation }) => {
     }
   };
 
-  const handleDetailNavigation = (id) => {
+  const handleDetailNavigation = id => {
     navigation.navigate('GroupChatDetails', {
-      roomid: id
+      roomid: id,
     });
   };
 
@@ -87,7 +87,7 @@ const GroupMessaging = ({ route, navigation }) => {
             updatedAt: new Date(),
           },
         };
-        socket.emit('send_message_group', data)
+        socket.emit('send_message_group', data);
         setMessage('');
       })
       .catch(err => {
@@ -96,14 +96,12 @@ const GroupMessaging = ({ route, navigation }) => {
       });
   };
 
-
-
   useLayoutEffect(props => {
     async function setup() {
       navigation.setOptions({
         headerTitle: () => (
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => {
               handleDetailNavigation(id);
             }}>
@@ -134,7 +132,7 @@ const GroupMessaging = ({ route, navigation }) => {
                 fontSize: 18,
                 fontFamily: 'Roboto-Medium',
               }}>
-              {name.length > 24 ? name.slice(0, 21) + "..." : name}
+              {name.length > 24 ? name.slice(0, 21) + '...' : name}
             </Text>
           </TouchableOpacity>
         ),
@@ -220,30 +218,28 @@ const GroupMessaging = ({ route, navigation }) => {
   }, []);
 
   useEffect(() => {
-
     async function updateMessageReciepts() {
       let temp = chatMessages;
       await socket.on('update_read_receipt', data => {
         // console.log("idr aa gya")
         temp.forEach((item, index) => {
-          temp[index].seen = true
-        })
+          temp[index].seen = true;
+        });
         // console.log("Temp messages -> ", temp)
-        setChatMessages(temp)
+        setChatMessages(temp);
         // setShouldUpdate(!shouldUpdate);
         // setTimeout(() => {
         //   setShouldUpdate(!shouldUpdate)
         // }, 5000);
-
       });
     }
 
-    updateMessageReciepts()
+    updateMessageReciepts();
 
     return () => {
       socket.off('update_read_receipt'); // Remove the event listener
     };
-  }, [chatMessages])
+  }, [chatMessages]);
 
   const chooseImage = async () => {
     if (Platform.OS === 'android') {
@@ -284,14 +280,12 @@ const GroupMessaging = ({ route, navigation }) => {
     });
   };
 
-
-
   return (
     <View style={styles.messagingscreen}>
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -301,12 +295,23 @@ const GroupMessaging = ({ route, navigation }) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({ item }) => (
-              <DirectMessageComponent setSeen={setSeen} setDelivered={setDelivered} setReceiptsModalVisible={setReceiptsModalVisible} lastItem={chatMessages[chatMessages.length - 1]._id} onRendered={() => { setRendered(true); console.log(true) }} item={item} user={user} />
+            renderItem={({item}) => (
+              <DirectMessageComponent
+                setSeen={setSeen}
+                setDelivered={setDelivered}
+                setReceiptsModalVisible={setReceiptsModalVisible}
+                lastItem={chatMessages[chatMessages.length - 1]._id}
+                onRendered={() => {
+                  setRendered(true);
+                  console.log(true);
+                }}
+                item={item}
+                user={user}
+              />
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
@@ -319,7 +324,7 @@ const GroupMessaging = ({ route, navigation }) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{ width: 25, height: 25, marginRight: 5 }}
+              style={{width: 25, height: 25, marginRight: 5}}
               source={require('../images/attach_file.png')}
             />
           </View>
@@ -341,17 +346,22 @@ const GroupMessaging = ({ route, navigation }) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{ width: 30, height: 30, marginRight: 5 }}
+              style={{width: 30, height: 30, marginRight: 5}}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
           </View>
         </Pressable>
       </View>
-      {receiptsModalVisible ?
-        <ReadReceipts setReceiptsModalVisible={setReceiptsModalVisible} seen={seen} delivered={delivered} />
-        : ""
-      }
+      {receiptsModalVisible ? (
+        <ReadReceipts
+          setReceiptsModalVisible={setReceiptsModalVisible}
+          seen={seen}
+          delivered={delivered}
+        />
+      ) : (
+        ''
+      )}
       {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
     </View>
   );

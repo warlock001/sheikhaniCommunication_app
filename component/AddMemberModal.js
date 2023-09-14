@@ -10,15 +10,15 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, {useState, useEffect, useLayoutEffect} from 'react';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TextField from '../component/inputField';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
-const Modal = ({ setVisible, roomid }) => {
+const Modal = ({setVisible, roomid}) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState('');
   const [searchedUsersVisible, setSearchedUsersVisible] = useState(true);
@@ -27,7 +27,7 @@ const Modal = ({ setVisible, roomid }) => {
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
     await axios
-      .post('http://192.168.0.103:3001/group', {
+      .post('http://192.168.0.104:3001/group', {
         title: groupName,
         id: id,
       })
@@ -50,7 +50,7 @@ const Modal = ({ setVisible, roomid }) => {
       console.log('ye3h raaha');
       axios
         .get(
-          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -63,7 +63,7 @@ const Modal = ({ setVisible, roomid }) => {
   //zabalon will edit this
   async function handleAdd() {
     await axios
-      .post('http://192.168.0.103:3001/groupMember', {
+      .post('http://192.168.0.104:3001/groupMember', {
         id: checkedItems,
         roomid: roomid,
       })
@@ -77,13 +77,13 @@ const Modal = ({ setVisible, roomid }) => {
 
   const [checkedItems, setCheckedItems] = useState([]);
 
-  function Item({ props }) {
+  function Item({props}) {
     const [image, setImage] = useState(false);
     useLayoutEffect(() => {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.0.104:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -143,19 +143,19 @@ const Modal = ({ setVisible, roomid }) => {
             {image ? (
               <Image
                 resizeMode="cover"
-                style={[styles.mavatar, { marginTop: 'auto' }]}
-                source={{ uri: image }}
+                style={[styles.mavatar, {marginTop: 'auto'}]}
+                source={{uri: image}}
                 width={30}
               />
             ) : (
               ''
             )}
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+            <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
               {props.title}
             </Text>
           </View>
           <Checkbox
-            style={{ backgroundColor: 'yellow' }}
+            style={{backgroundColor: 'yellow'}}
             status={isChecked(props.id) ? 'checked' : 'unchecked'}
             color="#1F2067"
             onPress={() => toggleItem(props.id)}
@@ -201,7 +201,7 @@ const Modal = ({ setVisible, roomid }) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 20, height: 20 }}
+          style={{width: 20, height: 20}}
           source={require('../images/close.png')}
         />
       </Pressable>
@@ -242,14 +242,14 @@ const Modal = ({ setVisible, roomid }) => {
           display: searchedUsersVisible ? 'flex' : 'none',
           marginTop: 33,
           maxHeight: 400,
-          flex: 1
+          flex: 1,
         }}>
         {/* <Text style={{ marginBottom: 10 }}>Search Users</Text> */}
         <FlatList
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={true}
           data={searchedUsers}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <Item
               props={{
                 title: item.firstName,
