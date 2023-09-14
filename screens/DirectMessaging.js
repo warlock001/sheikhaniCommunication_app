@@ -98,7 +98,8 @@ const DirectMessaging = ({ route, navigation }) => {
   const handleDetailNavigation = (id, image) => {
     navigation.navigate('DirectMessageDetails', {
       id: id,
-      image: image
+      image: image,
+      chatMessages: chatMessages
     });
   };
 

@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,32 +12,32 @@ import {
   Dimensions,
   Modal,
 } from 'react-native';
-import {ScrollView, FlatList} from 'react-native-gesture-handler';
+import { ScrollView, FlatList } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
+import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
 // import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import ImageModal from '../component/ImageModal';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
 
 const datta = [
-  {_id: '1', firstName: 'John Doe', designation: 'Software Engineer'},
-  {_id: '2', firstName: 'Jane Smith', designation: 'UI/UX Designer'},
-  {_id: '3', firstName: 'Bob Johnson', designation: 'Product Manager'},
-  {_id: '4', firstName: 'Alice Williams', designation: 'Mobile Developer'},
-  {_id: '5', firstName: 'Eva Davis', designation: 'Frontend Developer'},
-  {_id: '6', firstName: 'Harry Baker', designation: 'QA Tester'},
-  {_id: '7', firstName: 'Natalie Suzie', designation: 'QA Maseter'},
-  {_id: '8', firstName: 'Chris Brown', designation: 'QA Doer'},
-  {_id: '9', firstName: 'Bryce Walker', designation: 'QA Manager'},
+  { _id: '1', firstName: 'John Doe', designation: 'Software Engineer' },
+  { _id: '2', firstName: 'Jane Smith', designation: 'UI/UX Designer' },
+  { _id: '3', firstName: 'Bob Johnson', designation: 'Product Manager' },
+  { _id: '4', firstName: 'Alice Williams', designation: 'Mobile Developer' },
+  { _id: '5', firstName: 'Eva Davis', designation: 'Frontend Developer' },
+  { _id: '6', firstName: 'Harry Baker', designation: 'QA Tester' },
+  { _id: '7', firstName: 'Natalie Suzie', designation: 'QA Maseter' },
+  { _id: '8', firstName: 'Chris Brown', designation: 'QA Doer' },
+  { _id: '9', firstName: 'Bryce Walker', designation: 'QA Manager' },
 ];
 
-function Item({props, item}) {
+function Item({ props, item }) {
   const [image, setImage] = useState(false);
 
   useLayoutEffect(() => {
@@ -64,12 +64,12 @@ function Item({props, item}) {
     // }}
     >
       <View style={style.item}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {image ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, {marginTop: 'auto'}]}
-              source={{uri: image}}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
+              source={{ uri: image }}
               width={30}
             />
           ) : (
@@ -84,11 +84,11 @@ function Item({props, item}) {
                 borderRadius: 500,
               }}></View>
           )}
-          <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
+          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
             {props.title}
           </Text>
         </View>
-        <Text style={{color: '#8f8f8f', marginRight: 40}}>
+        <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
           {props.designation}
         </Text>
       </View>
@@ -96,13 +96,14 @@ function Item({props, item}) {
   );
 }
 
-const DirectMessageDetails = ({route, navigation}) => {
-  const {id, image} = route.params;
+const DirectMessageDetails = ({ route, navigation }) => {
+  const { id, image, chatMessages } = route.params;
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
   const [email, setEmail] = useState('');
+  const [chatImage, setChatImages] = useState('');
   //   const [memberSize, setMemberSize] = useState(0);
   //   const [members, setMembers] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
@@ -130,12 +131,11 @@ const DirectMessageDetails = ({route, navigation}) => {
 
           Alert.alert(
             'Failed',
-            `${
-              er.response.data.message
-                ? er.response.data.message
-                : 'Something went wrong'
+            `${er.response.data.message
+              ? er.response.data.message
+              : 'Something went wrong'
             }`,
-            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
           );
         });
     }
@@ -166,7 +166,7 @@ const DirectMessageDetails = ({route, navigation}) => {
             height: '9%',
             backgroundColor: '#1f2067',
           }}> */}
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <View
               style={
                 {
@@ -194,7 +194,7 @@ const DirectMessageDetails = ({route, navigation}) => {
                 }}>
                 <Image
                   resizeMode="cover"
-                  style={{width: 15}}
+                  style={{ width: 15 }}
                   source={require('../images/arrow_back.png')}
                 />
               </Pressable>
@@ -218,8 +218,8 @@ const DirectMessageDetails = ({route, navigation}) => {
                 {image ? (
                   <Image
                     resizeMode="cover"
-                    style={{width: 150, height: 150, borderRadius: 100}}
-                    source={{uri: image}}
+                    style={{ width: 150, height: 150, borderRadius: 100 }}
+                    source={{ uri: image }}
                   />
                 ) : (
                   <View
@@ -262,11 +262,11 @@ const DirectMessageDetails = ({route, navigation}) => {
               {/* Sheikhani */}
               {groupName}
             </Text>
-            <Text style={{fontSize: 16, color: '#1f1f1f'}}>
+            <Text style={{ fontSize: 16, color: '#1f1f1f' }}>
               {designation} - {department}
             </Text>
 
-            <Text style={{fontSize: 16, color: '#8F8F8F'}}>{email}</Text>
+            <Text style={{ fontSize: 16, color: '#8F8F8F' }}>{email}</Text>
 
             <View
               style={{
@@ -309,14 +309,14 @@ const DirectMessageDetails = ({route, navigation}) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={true}
                   alwaysBounceHorizontal={true}
-                  style={{flex: 1, paddingLeft: 0}}>
+                  style={{ flex: 1, paddingLeft: 0 }}>
                   <FlatList
                     keyboardShouldPersistTaps="handled"
                     horizontal={true} // Enable horizontal scrolling
                     showsHorizontalScrollIndicator={true}
                     scrollEnabled={true}
                     data={datta}
-                    renderItem={({item}) => (
+                    renderItem={({ item }) => (
                       <Pressable onPress={toggleModal}>
                         <Image
                           resizeMode="cover"
@@ -342,7 +342,7 @@ const DirectMessageDetails = ({route, navigation}) => {
                       // />
                     )}
                     keyExtractor={item => item._id}
-                    style={{width: Dimensions.get('window').width}}
+                    style={{ width: Dimensions.get('window').width }}
                   />
                   <ImageModal
                     visible={isModalVisible}
@@ -358,7 +358,7 @@ const DirectMessageDetails = ({route, navigation}) => {
                   justifyContent: 'center',
                 }}>
                 <Image
-                  style={{width: 180, height: 180, alignSelf: 'center'}}
+                  style={{ width: 180, height: 180, alignSelf: 'center' }}
                   source={require('../images/sheikhani.png')}
                 />
                 {/* <Text

@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -7,23 +7,25 @@ import {
   Text,
   FlatList,
   Pressable,
+  PermissionsAndroid,
   Button,
   TouchableOpacity,
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Modal from '../component/AddMemberModal';
 import ReadReceipts from '../component/ReadReceipts';
 let flatlistRef;
 let textInputRef; // Define the ref
-
-const GroupMessaging = ({route, navigation}) => {
+const mime = require('mime');
+const GroupMessaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
-  const {name, id} = route.params;
+  const { name, id } = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -102,7 +104,7 @@ const GroupMessaging = ({route, navigation}) => {
       navigation.setOptions({
         headerTitle: () => (
           <TouchableOpacity
-            style={{flexDirection: 'row', alignItems: 'center'}}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
             onPress={() => {
               handleDetailNavigation(id);
             }}>
@@ -243,6 +245,8 @@ const GroupMessaging = ({route, navigation}) => {
   }, [chatMessages]);
 
   const chooseImage = async () => {
+    const user = await AsyncStorage.getItem('@username');
+    const myId = await AsyncStorage.getItem('@id');
     if (Platform.OS === 'android') {
       await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -269,14 +273,71 @@ const GroupMessaging = ({route, navigation}) => {
         console.log('ImagePicker Error: ', response.error);
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
-        alert(response.customButton);
+        Alert.alert(response.customButton);
       } else {
-        setImageName(response.assets[0].uri);
-        setImage({
+        // setImageName(response.assets[0].uri);
+        // setImage({
+        //   uri: response.assets[0].uri,
+        //   name: `${new Date()}_profilePicture.jpg`,
+        //   type: mime.getType(response.assets[0].uri),
+        // });
+        let image = {
           uri: response.assets[0].uri,
-          name: `${new Date()}_profilePicture.jpg`,
+          name: `${new Date()}_message.jpg`,
           type: mime.getType(response.assets[0].uri),
+        };
+        const form = new FormData();
+        form.append('image', {
+          uri: image.uri,
+          name: `${new Date()}_message.jpg`,
+          type: mime.getType(image.uri),
         });
+
+        await axios({
+          timeout: 20000,
+          method: 'POST',
+          url: `http://192.168.0.103:3001/files`,
+          data: form,
+          headers: {
+            accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(async result => {
+
+          await axios.post('http://192.168.0.103:3001/saveMessage', {
+            senderid: myId,
+            message: result.data.id,
+            roomid: id,
+            isPicture: true,
+            title: user
+          })
+            .then(res => {
+              console.log('message send - ', res.data);
+              let data = {
+                roomId: id,
+                message: {
+                  _id: res.data.id,
+                  senderid: myId,
+                  message: result.data.id,
+                  roomid: id,
+                  recieverid: id,
+                  isPicture: true,
+                  seen: false,
+                  title: name,
+                  user: user,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                },
+              };
+              socket.emit('send_message_group', data);
+              setMessage('');
+            }).catch(err => {
+              console.log('error in sending message - ', err);
+            })
+        }).catch(err => {
+          console.log("Error in uploading image", err)
+        })
+
       }
     });
   };
@@ -286,7 +347,7 @@ const GroupMessaging = ({route, navigation}) => {
       <View
         style={[
           styles.messagingscreen,
-          {paddingVertical: 15, paddingHorizontal: 10},
+          { paddingVertical: 15, paddingHorizontal: 10 },
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -296,7 +357,7 @@ const GroupMessaging = ({route, navigation}) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <DirectMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -312,7 +373,7 @@ const GroupMessaging = ({route, navigation}) => {
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({animated: false})
+              flatlistRef.scrollToEnd({ animated: false })
             }
           />
         ) : (
@@ -325,7 +386,7 @@ const GroupMessaging = ({route, navigation}) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{width: 25, height: 25, marginRight: 5}}
+              style={{ width: 25, height: 25, marginRight: 5 }}
               source={require('../images/attach_file.png')}
             />
           </View>
@@ -347,7 +408,7 @@ const GroupMessaging = ({route, navigation}) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{width: 30, height: 30, marginRight: 5}}
+              style={{ width: 30, height: 30, marginRight: 5 }}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
