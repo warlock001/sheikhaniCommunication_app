@@ -128,7 +128,6 @@ const AnnouncementPreview = () => {
             <Pressable
               onPress={() => navigation.goBack()}
               style={{
-                padding: 10,
                 backgroundColor: '#F5F7F9',
                 borderRadius: 100,
                 marginLeft: 'auto',
@@ -140,8 +139,8 @@ const AnnouncementPreview = () => {
                 alignItems: 'center',
               }}>
               <Image
-                resizeMode="cover"
-                style={{width: 25}}
+                resizeMode="contain"
+                style={{width: 20}}
                 source={require('../images/close.png')}
               />
             </Pressable>

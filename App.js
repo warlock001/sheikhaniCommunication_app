@@ -99,7 +99,7 @@ function MyTabBar({state, descriptors, navigation}) {
             {isFocused ? (
               <Image
                 resizeMode="contain"
-                style={{width: 25}}
+                style={{width: 30, height: 30}}
                 source={
                   label == 'Workspace'
                     ? require('./images/workspace.png')
@@ -113,7 +113,7 @@ function MyTabBar({state, descriptors, navigation}) {
             ) : (
               <Image
                 resizeMode="contain"
-                style={{width: 25}}
+                style={{width: 30, height: 30}}
                 source={
                   label == 'Workspace'
                     ? require('./images/workspace_inactive.png')
@@ -322,10 +322,10 @@ export default function App() {
 
 const style = StyleSheet.create({
   bottonTabText: {
-    fontSize: 12,
-    fontWeight: '500',
+    fontFamily: 'TitilliumWeb-Bold',
+    fontSize: 13,
+    marginTop: 5,
     textAlign: 'center',
-    marginTop: 10,
     color: '#1f2067',
   },
   sectionContainer: {
