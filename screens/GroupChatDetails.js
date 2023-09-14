@@ -24,7 +24,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
-
 const datta = [
   {_id: '1', firstName: 'John Doe', designation: 'Software Engineer'},
   {_id: '2', firstName: 'Jane Smith', designation: 'UI/UX Designer'},
@@ -39,11 +38,12 @@ const datta = [
 
 function Item({props, item}) {
   const [image, setImage] = useState(false);
+  const navigation = useNavigation();
 
   useLayoutEffect(() => {
     async function getImage() {
       axios
-        .get(`http://54.151.83.85:3001/files/${props.profilePicture[0]}/true`)
+        .get(`http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`,
@@ -57,12 +57,18 @@ function Item({props, item}) {
     getImage();
   });
 
+  const handleDetailNavigation = (id, image) => {
+    navigation.navigate('DirectMessageDetails', {
+      id: id,
+      image: image,
+    });
+  };
+
   return (
     <TouchableOpacity
-    // onPress={() => {
-    //   handleNavigation(props.id, props.title);
-    // }}
-    >
+      onPress={() => {
+        handleDetailNavigation(props.id, image);
+      }}>
       <View style={style.item}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {image ? (
@@ -390,7 +396,7 @@ const GroupChatDetails = ({route, navigation}) => {
                         title: item.firstName + ' ' + item.lastName,
                         id: item._id,
                         designation: item.designation,
-                        // profilePicture: item.profilePicture,
+                        profilePicture: item.profilePicture,
                       }}
                     />
                   )}
