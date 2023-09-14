@@ -103,7 +103,7 @@ export default function Chat({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://18.144.29.58:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           // console.log(res.data.user)

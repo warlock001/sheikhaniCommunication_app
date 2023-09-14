@@ -63,7 +63,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.103:3001/saveMessage', {
+      .post('http://18.144.29.58:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -95,11 +95,11 @@ const DirectMessaging = ({ route, navigation }) => {
       });
   };
 
-  const handleDetailNavigation = async (id, image, chatMessages) => {
-    console.log("first")
+  const handleDetailNavigation = async (id, image) => {
+    console.log(chatMessages)
     console.log("sfd")
+
     await navigation.navigate('DirectMessageDetails', {
-      chatMessages: chatMessages,
       id: id,
       image: image,
     });
@@ -120,7 +120,7 @@ const DirectMessaging = ({ route, navigation }) => {
         <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center' }}
           onPress={() => {
-            handleDetailNavigation(id, image, chatMessages);
+            handleDetailNavigation(id, image);
           }}>
 
 
@@ -155,8 +155,8 @@ const DirectMessaging = ({ route, navigation }) => {
 
   useLayoutEffect(() => {
     async function setup() {
-      await axios.get(`http://192.168.0.103:3001/user?id=${id}`).then(async result => {
-        await axios.get(`http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`).then(image => {
+      await axios.get(`http://18.144.29.58:3001/user?id=${id}`).then(async result => {
+        await axios.get(`http://18.144.29.58:3001/files/${result.data.user.profilePicture[0]}/true`).then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`
           );
@@ -190,7 +190,7 @@ const DirectMessaging = ({ route, navigation }) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.103:3001/getMessage?roomid=${roomid}`)
+          .get(`http://18.144.29.58:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
             let data = {
@@ -316,7 +316,7 @@ const DirectMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://192.168.0.103:3001/files`,
+          url: `http://18.144.29.58:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -324,7 +324,7 @@ const DirectMessaging = ({ route, navigation }) => {
           },
         }).then(async result => {
 
-          await axios.post('http://192.168.0.103:3001/saveMessage', {
+          await axios.post('http://18.144.29.58:3001/saveMessage', {
             senderid: myId,
             message: result.data.id,
             roomid: roomId,
@@ -387,7 +387,7 @@ const DirectMessaging = ({ route, navigation }) => {
   //     await axios({
   //       timeout: 20000,
   //       method: 'POST',
-  //       url: `http://192.168.0.103:3001/`,
+  //       url: `http://18.144.29.58:3001/`,
   //       data: form,
   //       headers: {
   //         accept: 'application/json',
@@ -399,7 +399,7 @@ const DirectMessaging = ({ route, navigation }) => {
   //         console.log('response: ', res.data);
   //         await AsyncStorage.setItem('@profilepicture', res.data.id);
   //         await axios
-  //           .get(`http://192.168.0.103:3001/files/${res.data.id}/true`)
+  //           .get(`http://18.144.29.58:3001/files/${res.data.id}/true`)
   //           .then(res => {
   //             setprofilepictureURL(
   //               `data:${res.headers['content-type']};base64,${res.data}`,

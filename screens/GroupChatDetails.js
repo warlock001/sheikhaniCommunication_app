@@ -24,17 +24,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
-const datta = [
-  { _id: '1', firstName: 'John Doe', designation: 'Software Engineer' },
-  { _id: '2', firstName: 'Jane Smith', designation: 'UI/UX Designer' },
-  { _id: '3', firstName: 'Bob Johnson', designation: 'Product Manager' },
-  { _id: '4', firstName: 'Alice Williams', designation: 'Mobile Developer' },
-  { _id: '5', firstName: 'Eva Davis', designation: 'Frontend Developer' },
-  { _id: '6', firstName: 'Harry Baker', designation: 'QA Tester' },
-  { _id: '7', firstName: 'Natalie Suzie', designation: 'QA Maseter' },
-  { _id: '8', firstName: 'Chris Brown', designation: 'QA Doer' },
-  { _id: '9', firstName: 'Bryce Walker', designation: 'QA Manager' },
-];
+
 
 function Item({ props, item }) {
   const [image, setImage] = useState(false);
@@ -43,7 +33,7 @@ function Item({ props, item }) {
   useLayoutEffect(() => {
     async function getImage() {
       axios
-        .get(`http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`)
+        .get(`http://18.144.29.58:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`,
@@ -124,7 +114,9 @@ const GroupChatDetails = ({ route, navigation }) => {
   const [memberSize, setMemberSize] = useState(0);
   const [members, setMembers] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
-
+  const [chatImage, setChatImages] = useState([]);
+  const [modalImage, setModalImage] = useState('');
+  const [mediaLength, setMediaLength] = useState(0);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -134,7 +126,7 @@ const GroupChatDetails = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://192.168.0.103:3001/group?roomid=${roomid}`)
+        .get(`http://18.144.29.58:3001/group?roomid=${roomid}`)
         .then(async res => {
           console.log(res.data.group.title);
           setLoader(true);
@@ -159,6 +151,33 @@ const GroupChatDetails = ({ route, navigation }) => {
 
     groupDetails();
   }, []);
+
+  useLayoutEffect(() => {
+    async function loadImages() {
+      let imagearr = []
+
+
+      console.log("roomId", roomid)
+      await axios
+        .get(`http://18.144.29.58:3001/getMessage?roomid=${roomid}`)
+        .then(async res => {
+          await res.data.messages.forEach(async (message, index) => {
+            if (message.isPicture) {
+              setMediaLength(index)
+              await axios.get(`http://18.144.29.58:3001/files/${message.message}/true`).then(image => {
+                imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`)
+              })
+            }
+          })
+        })
+
+
+      setChatImages(imagearr)
+
+    }
+    loadImages()
+
+  }, [])
 
   return (
     <SafeAreaView
@@ -339,9 +358,12 @@ const GroupChatDetails = ({ route, navigation }) => {
                     horizontal={true} // Enable horizontal scrolling
                     showsHorizontalScrollIndicator={true}
                     scrollEnabled={true}
-                    data={datta}
+                    data={chatImage}
                     renderItem={({ item }) => (
-                      <Pressable onPress={toggleModal}>
+                      <Pressable onPress={() => {
+                        setModalImage(item)
+                        toggleModal()
+                      }}>
                         <Image
                           resizeMode="cover"
                           style={{
@@ -352,7 +374,7 @@ const GroupChatDetails = ({ route, navigation }) => {
                             borderWidth: 0.8,
                             borderColor: '#D9D9D9',
                           }}
-                          source={require('../images/groupmediademo.jpg')}
+                          source={{ uri: item }}
                           width={30}
                         />
                       </Pressable>
@@ -370,7 +392,7 @@ const GroupChatDetails = ({ route, navigation }) => {
                   />
                   <ImageModal
                     visible={isModalVisible}
-                    profileImage={require('../images/groupmediademo.jpg')}
+                    profileImage={{ uri: modalImage }}
                     onClose={toggleModal}
                   />
                 </ScrollView>

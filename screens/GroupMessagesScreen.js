@@ -52,7 +52,7 @@ export default function GroupMessagesScreen({ navigation }) {
       async function getImage() {
         axios
           .get(
-            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
+            `http://18.144.29.58:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -111,7 +111,7 @@ export default function GroupMessagesScreen({ navigation }) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.103:3001/group?id=${id}`)
+          .get(`http://18.144.29.58:3001/group?id=${id}`)
           .then(results => {
             setRooms(results.data.user.groups);
           });
@@ -126,7 +126,7 @@ export default function GroupMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://18.144.29.58:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);

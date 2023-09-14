@@ -26,12 +26,12 @@ const GroupChatComponent = ({ item, username }) => {
       setMessages(item.lastMessage);
 
       axios
-        .get(`http://192.168.0.103:3001/user?id=${item.user}`)
+        .get(`http://18.144.29.58:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://18.144.29.58:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(

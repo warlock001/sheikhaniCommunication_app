@@ -13,7 +13,7 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
     await axios
-      .post('http://192.168.0.103:3001/group', {
+      .post('http://18.144.29.58:3001/group', {
         title: groupName,
         id: id,
       })

@@ -70,15 +70,37 @@ export default function DirectMessagesScreen({ navigation }) {
     }
   }
 
+  function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+      sortOrder = -1;
+      property = property.substr(1);
+    }
+    return function (a, b) {
+      /* next line works with strings and numbers, 
+       * and you may want to customize it to your needs
+       */
+      var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    }
+  }
+
   useFocusEffect(
     React.useCallback(() => {
       async function listen() {
         socket.on('receive_message', async data => {
           const id = await AsyncStorage.getItem('@id');
           await axios
-            .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
+            .get(`http://18.144.29.58:3001/recentChats?id=${id}`)
             .then(results => {
-              console.log(results.data.recentChats[0].chats);
+              results.data.recentChats[0].chats.sort((a, b) => {
+                const timeA = new Date(a.time);
+                const timeB = new Date(b.time);
+
+                // Use timeA - timeB to sort in ascending order (oldest to newest)
+                // Use timeB - timeA to sort in descending order (newest to oldest)
+                return timeB - timeA;
+              });
               setRooms(results.data.recentChats[0].chats);
             });
         });
@@ -94,7 +116,7 @@ export default function DirectMessagesScreen({ navigation }) {
       async function getImage() {
         await axios
           .get(
-            `http://192.168.0.103:3001/files/${props.profilePicture[0]}/true`,
+            `http://18.144.29.58:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -153,9 +175,17 @@ export default function DirectMessagesScreen({ navigation }) {
         console.log('firstttt');
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.103:3001/recentChats?id=${id}`)
+          .get(`http://18.144.29.58:3001/recentChats?id=${id}`)
           .then(results => {
             console.log(results.data.recentChats[0].chats);
+            results.data.recentChats[0].chats.sort((a, b) => {
+              const timeA = new Date(a.time);
+              const timeB = new Date(b.time);
+
+              // Use timeA - timeB to sort in ascending order (oldest to newest)
+              // Use timeB - timeA to sort in descending order (newest to oldest)
+              return timeB - timeA;
+            });
             setRooms(results.data.recentChats[0].chats);
             setAllRooms(results.data.recentChats[0].chats);
           })
@@ -184,7 +214,7 @@ export default function DirectMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.103:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://18.144.29.58:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);

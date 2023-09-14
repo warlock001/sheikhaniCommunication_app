@@ -25,17 +25,6 @@ import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
 
-const datta = [
-  { _id: '1', firstName: 'John Doe', designation: 'Software Engineer' },
-  { _id: '2', firstName: 'Jane Smith', designation: 'UI/UX Designer' },
-  { _id: '3', firstName: 'Bob Johnson', designation: 'Product Manager' },
-  { _id: '4', firstName: 'Alice Williams', designation: 'Mobile Developer' },
-  { _id: '5', firstName: 'Eva Davis', designation: 'Frontend Developer' },
-  { _id: '6', firstName: 'Harry Baker', designation: 'QA Tester' },
-  { _id: '7', firstName: 'Natalie Suzie', designation: 'QA Maseter' },
-  { _id: '8', firstName: 'Chris Brown', designation: 'QA Doer' },
-  { _id: '9', firstName: 'Bryce Walker', designation: 'QA Manager' },
-];
 
 function Item({ props, item }) {
   const [image, setImage] = useState(false);
@@ -97,7 +86,7 @@ function Item({ props, item }) {
 }
 
 const DirectMessageDetails = ({ route, navigation }) => {
-  const { id, image, chatMessages } = route.params;
+  const { id, image } = route.params;
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [department, setDepartment] = useState('');
@@ -105,6 +94,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
   const [email, setEmail] = useState('');
   const [chatImage, setChatImages] = useState([]);
   const [modalImage, setModalImage] = useState('');
+  const [mediaLength, setMediaLength] = useState(0);
   //   const [memberSize, setMemberSize] = useState(0);
   //   const [members, setMembers] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
@@ -113,20 +103,38 @@ const DirectMessageDetails = ({ route, navigation }) => {
     setModalVisible(!isModalVisible);
   };
 
+  const createRoomId = (id, myId) => {
+    if (id > myId) {
+      return id + myId;
+    } else {
+      return myId + id;
+    }
+  };
+
+
   useLayoutEffect(() => {
     async function loadImages() {
       let imagearr = []
-      console.log("chatMessages", chatMessages)
-      await chatMessages.forEach(async message => {
-        if (message.isPicture) {
-          await axios.get(`http://192.168.0.103:3001/files/${message.message}/true`).then(image => {
 
-            imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`)
+      const myId = await AsyncStorage.getItem('@id');
+      roomId = createRoomId(id, myId)
+      console.log("roomId", roomId)
+      await axios
+        .get(`http://18.144.29.58:3001/getMessage?roomid=${roomId}`)
+        .then(async res => {
+          await res.data.messages.forEach(async (message, index) => {
+            if (message.isPicture) {
+              setMediaLength(index)
+              await axios.get(`http://18.144.29.58:3001/files/${message.message}/true`).then(image => {
+                imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`)
+              })
+            }
           })
-        }
-      })
+        })
+
+
       setChatImages(imagearr)
-      console.log(imagearr)
+
     }
     loadImages()
 
@@ -136,7 +144,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
     async function groupDetails() {
 
       await axios
-        .get(`http://192.168.0.103:3001/user?id=${id}`)
+        .get(`http://18.144.29.58:3001/user?id=${id}`)
         .then(async res => {
           setLoader(true);
           setGroupName(res.data.user.firstName + ' ' + res.data.user.lastName);
@@ -342,7 +350,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
                     fontWeight: '400',
                     marginRight: 10,
                   }}>
-                  {chatImage.length} Items
+                  {mediaLength} Items
                 </Text>
               </View>
               <SafeAreaView
