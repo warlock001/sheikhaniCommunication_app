@@ -82,18 +82,7 @@ function Item({props, item}) {
                 justifyContent: 'center',
                 backgroundColor: '#1f2067',
                 borderRadius: 500,
-              }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  textAlignVertical: 'center',
-                  fontSize: 25,
-                  lineHeight: 30,
-                  color: '#fff',
-                }}>
-                {props.title.charAt(0).toUpperCase()}
-              </Text>
-            </View>
+              }}></View>
           )}
           <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
             {props.title}
@@ -107,12 +96,12 @@ function Item({props, item}) {
   );
 }
 
-const GroupChatDetails = ({route, navigation}) => {
-  const {roomid} = route.params;
+const DirectMessageDetails = ({route, navigation}) => {
+  const {name} = route.params;
   const [loader, setLoader] = useState(true);
-  const [groupName, setGroupName] = useState('');
-  const [memberSize, setMemberSize] = useState(0);
-  const [members, setMembers] = useState([]);
+  //   const [groupName, setGroupName] = useState('');
+  //   const [memberSize, setMemberSize] = useState(0);
+  //   const [members, setMembers] = useState([]);
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
   const toggleModal = () => {
@@ -128,9 +117,9 @@ const GroupChatDetails = ({route, navigation}) => {
         .then(async res => {
           console.log(res.data.group.title);
           setLoader(true);
-          setGroupName(res.data.group.title);
-          setMemberSize(res.data.group.members.length);
-          setMembers(res.data.group.members);
+          //   setGroupName(res.data.group.title);
+          //   setMemberSize(res.data.group.members.length);
+          //   setMembers(res.data.group.members);
         })
         .catch(async er => {
           setLoader(true);
@@ -148,7 +137,7 @@ const GroupChatDetails = ({route, navigation}) => {
         });
     }
 
-    groupDetails();
+    // groupDetails();
   }, []);
 
   return (
@@ -230,7 +219,8 @@ const GroupChatDetails = ({route, navigation}) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     backgroundColor: '#1f2067',
-                    borderRadius: 500,
+                    borderRadius: 100,
+                    elevation: 10,
                   }}>
                   <Text
                     style={{
@@ -241,32 +231,15 @@ const GroupChatDetails = ({route, navigation}) => {
                       color: '#fff',
                       fontWeight: '600',
                     }}>
-                    {groupName.charAt(0).toUpperCase()}
+                    A{/* {name.charAt(0).toUpperCase()} */}
                   </Text>
                 </View>
               </Pressable>
-              {/* <Pressable
-              // Open the edit modal
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                right: 0,
-                // borderWidth: 3,
-                // borderColor: "#fff",
-                width: '33%',
-                height: '33%',
-                borderRadius: 100,
-              }}>
-              <Image
-                id="editprofile"
-                resizeMode="contain"
-                source={require('../images/EditProfile.png')}
-              />
-            </Pressable> */}
             </View>
             <Text
               style={{
-                marginTop: 18,
+                marginTop: 12,
+                marginBottom: 10,
                 //adasdfad
                 textAlign: 'center',
                 fontFamily: 'Roboto',
@@ -275,14 +248,15 @@ const GroupChatDetails = ({route, navigation}) => {
                 //   fontWeight: '600',
                 fontFamily: 'Roboto-Bold',
               }}>
-              {groupName}
+              Sheikhani
+              {/* {name} */}
             </Text>
-            <Text style={{fontSize: 16, color: '#8F8F8F'}}>
-              Group -{' '}
-              <Text style={{fontSize: 16, color: '#8F8F8F'}}>
-                {memberSize} participants
-              </Text>
+            <Text style={{fontSize: 16, color: '#1f1f1f'}}>
+              Head of Dept - Finance
             </Text>
+
+            <Text style={{fontSize: 16, color: '#8F8F8F'}}>abc@email.com</Text>
+
             <View
               style={{
                 flex: 1,
@@ -300,7 +274,7 @@ const GroupChatDetails = ({route, navigation}) => {
                     color: '#1f1f1f',
                     fontSize: 12,
                     fontWeight: '600',
-                    marginLeft: 30,
+                    marginLeft: 10,
                   }}>
                   Media, Links and Docs
                 </Text>
@@ -309,7 +283,7 @@ const GroupChatDetails = ({route, navigation}) => {
                     color: '#8f8f8f',
                     fontSize: 12,
                     fontWeight: '400',
-                    marginRight: 30,
+                    marginRight: 10,
                   }}>
                   9 Items
                 </Text>
@@ -324,7 +298,7 @@ const GroupChatDetails = ({route, navigation}) => {
                   horizontal={true}
                   showsHorizontalScrollIndicator={true}
                   alwaysBounceHorizontal={true}
-                  style={{flex: 1, paddingLeft: 30}}>
+                  style={{flex: 1, paddingLeft: 0}}>
                   <FlatList
                     keyboardShouldPersistTaps="handled"
                     horizontal={true} // Enable horizontal scrolling
@@ -340,8 +314,8 @@ const GroupChatDetails = ({route, navigation}) => {
                             height: 100,
                             marginHorizontal: 10,
                             borderRadius: 10,
-                            borderWidth: 0.8,
-                            borderColor: '#D9D9D9',
+                            borderWidth: 0.5,
+                            borderColor: '#000',
                           }}
                           source={require('../images/groupmediademo.jpg')}
                           width={30}
@@ -366,6 +340,27 @@ const GroupChatDetails = ({route, navigation}) => {
                   />
                 </ScrollView>
               </SafeAreaView>
+              <View
+                style={{
+                  marginTop: 35,
+                  alignSelf: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  style={{width: 180, height: 180, alignSelf: 'center'}}
+                  source={require('../images/sheikhani.png')}
+                />
+                {/* <Text
+                  style={{
+                    marginTop: 20,
+                    fontSize: 19,
+                    fontWeight: '600',
+                    color: '#000',
+                    fontFamily: 'Pacifico-Regular',
+                  }}>
+                  Sheikhani Group Communication
+                </Text> */}
+              </View>
 
               {/* <Image
                   resizeMode="contain"
@@ -376,9 +371,9 @@ const GroupChatDetails = ({route, navigation}) => {
                   }}
                   source={require('../images/onboarding2.png')}
                 /> */}
-              <View style={{marginHorizontal: 20, marginTop: 40}}>
+              {/* <View style={{marginHorizontal: 20, marginTop: 40}}>
                 <Text style={{marginLeft: 20, color: '#8f8f8f'}}>
-                  {memberSize} participants
+                   participants
                 </Text>
                 <FlatList
                   keyboardShouldPersistTaps="handled"
@@ -400,7 +395,7 @@ const GroupChatDetails = ({route, navigation}) => {
                     marginLeft: 20,
                   }}
                 />
-              </View>
+              </View> */}
             </View>
           </View>
           {/* </View> */}
@@ -419,7 +414,7 @@ const GroupChatDetails = ({route, navigation}) => {
   );
 };
 
-export default GroupChatDetails;
+export default DirectMessageDetails;
 
 const style = StyleSheet.create({
   item: {

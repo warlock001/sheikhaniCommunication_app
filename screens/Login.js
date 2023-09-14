@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://192.168.0.103:3001';
+const REACT_APP_BASE_URL = 'http://192.168.0.104:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
@@ -78,19 +78,20 @@ export default function SignIn({ navigation }) {
       } else {
         navigation.navigate('RescueCenter');
       }
-    }).catch(async er => {
-      setLoader(false);
-      // console.log(er.response.data);
-
-      Alert.alert(
-        'Failed',
-        `${er.response.data.message
-          ? er.response.data.message
-          : 'Something went wrong'
-        }`,
-        [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
-      );
     })
+      .catch(async er => {
+        setLoader(false);
+        // console.log(er.response.data);
+
+        Alert.alert(
+          'Failed',
+          `${er.response.data.message
+            ? er.response.data.message
+            : 'Something went wrong'
+          }`,
+          [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+        );
+      });
   }
 
   return (
@@ -138,7 +139,6 @@ export default function SignIn({ navigation }) {
                     />
                   }
                 />
-
               </View>
               <View style={{ paddingBottom: 20 }}>
                 <TextField
@@ -166,20 +166,19 @@ export default function SignIn({ navigation }) {
                           onPress={() => {
                             setShowPassword(!showPassword);
                           }}>
-                          {
-                            showPassword ?
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={require("../images/eyeOpen.png")}
-                              />
-                              :
-                              <Image
-                                resizeMode="contain"
-                                style={{ width: 25 }}
-                                source={Hide}
-                              />
-                          }
+                          {showPassword ? (
+                            <Image
+                              resizeMode="contain"
+                              style={{ width: 25 }}
+                              source={require('../images/eyeOpen.png')}
+                            />
+                          ) : (
+                            <Image
+                              resizeMode="contain"
+                              style={{ width: 25 }}
+                              source={Hide}
+                            />
+                          )}
                         </TouchableOpacity>
                       )}
                     />
@@ -224,7 +223,6 @@ export default function SignIn({ navigation }) {
                     Sheikhani Group Communication
                   </Text>
                 </View>
-
               </View>
             </View>
           </ScrollView>

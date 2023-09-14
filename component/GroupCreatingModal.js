@@ -1,27 +1,30 @@
-import { View, Text, Pressable, Alert, Image } from 'react-native';
-import React, { useState } from 'react';
+import {View, Text, Pressable, Alert, Image} from 'react-native';
+import React, {useState} from 'react';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import TextField from '../component/inputField';
-import { TextInput } from 'react-native-paper';
-const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
+import {TextInput} from 'react-native-paper';
+const Modal = ({setShouldUpdate, shouldUpdate, setVisible}) => {
   const closeModal = () => setVisible(false);
   const [groupName, setGroupName] = useState('');
 
   const handleCreateRoom = async () => {
     const id = await AsyncStorage.getItem('@id');
-    await axios.post("http://192.168.0.103:3001/group", {
-      title: groupName,
-      id: id
-    }).then((res) => {
-      setGroupName('')
-      Alert.alert("", "Group Created Successfully")
-      setShouldUpdate(!shouldUpdate)
-    }).catch(err => {
-      console.log(err)
-    })
+    await axios
+      .post('http://192.168.0.104:3001/group', {
+        title: groupName,
+        id: id,
+      })
+      .then(res => {
+        setGroupName('');
+        Alert.alert('', 'Group Created Successfully');
+        setShouldUpdate(!shouldUpdate);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     closeModal();
   };
   return (
@@ -60,7 +63,7 @@ const Modal = ({ setShouldUpdate, shouldUpdate, setVisible }) => {
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 20, height: 20 }}
+          style={{width: 20, height: 20}}
           source={require('../images/close.png')}
         />
       </Pressable>

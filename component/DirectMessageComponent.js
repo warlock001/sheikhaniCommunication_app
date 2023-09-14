@@ -12,17 +12,24 @@ export default function DirectMessageComponent({
   user,
   setReceiptsModalVisible,
   setSeen,
-  setDelivered
+  setDelivered,
 }) {
-
   const [status, setStatus] = useState('');
   const [image, setImage] = useState('');
   const date = new Date(item.createdAt);
 
+
+  // useEffect(() => {
+  //   // console.log('lastItem', lastItem);
+  //   // console.log('item._id', item._id);
+
+  //   lastItem === item._id ? onRendered() : ''
+  // }, [])
+
   useLayoutEffect(() => {
     async function getStatus() {
-      const myId = await AsyncStorage.getItem("@id");
-      setStatus(item.senderid !== myId)
+      const myId = await AsyncStorage.getItem('@id');
+      setStatus(item.senderid !== myId);
     }
 
     getStatus()
@@ -43,22 +50,18 @@ export default function DirectMessageComponent({
     getImage()
   }, [])
   const hour =
-    date.getHours() < 10
-      ? `0${date.getHours()}`
-      : `${date.getHours()}`;
+    date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`;
 
   const mins =
-    date.getMinutes() < 10
-      ? `0${date.getMinutes()}`
-      : `${date.getMinutes()}`;
-
+    date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`;
 
   return (
-    <TouchableOpacity onLongPress={() => {
-      setDelivered(item.createdAt)
-      setSeen(item.updatedAt)
-      setReceiptsModalVisible(true)
-    }}>
+    <TouchableOpacity
+      onLongPress={() => {
+        setDelivered(item.createdAt);
+        setSeen(item.updatedAt);
+        setReceiptsModalVisible(true);
+      }}>
       <View key={item._id}>
         <View
           style={
@@ -115,58 +118,61 @@ export default function DirectMessageComponent({
                   status
                     ? [
                       {
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 0,
                         right: 7,
                         fontSize: 10,
-                        fontWeight: "400",
-                        color: "#1F2067",
+                        fontWeight: '400',
+                        color: '#1F2067',
                       },
                     ]
                     : [
                       {
-                        position: "absolute",
+                        position: 'absolute',
                         bottom: 0,
                         right: 7,
                         fontSize: 10,
-                        fontWeight: "400",
-                        color: "#fff",
+                        fontWeight: '400',
+                        color: '#fff',
                       },
                     ]
-                }
-              >
-                {hour + ":" + mins}
+                }>
+                {hour + ':' + mins}
               </Text>
             </View>
             {status ? (
-              ""
+              ''
             ) : (
-              <View style={{ marginTop: 'auto', alignItems: 'center', marginHorizontal: 3 }}>
-                {item.seen ?
+              <View
+                style={{
+                  marginTop: 'auto',
+                  alignItems: 'center',
+                  marginHorizontal: 3,
+                }}>
+                {item.seen ? (
                   <Image
                     resizeMode="contain"
                     style={{
                       display: 'flex',
-                      marginTop: 'auto'
+                      marginTop: 'auto',
                     }}
-                    source={require("../images/seen.png")}
+                    source={require('../images/seen.png')}
                   />
-                  : <Image
+                ) : (
+                  <Image
                     resizeMode="contain"
                     style={{
                       display: 'flex',
-                      marginTop: 'auto'
+                      marginTop: 'auto',
                     }}
-                    source={require("../images/delivered.png")}
+                    source={require('../images/delivered.png')}
                   />
-                }
-
-
+                )}
               </View>
             )}
           </View>
         </View>
-      </View >
+      </View>
     </TouchableOpacity>
   );
 }
