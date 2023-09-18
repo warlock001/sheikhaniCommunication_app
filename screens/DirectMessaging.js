@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -14,19 +14,19 @@ import {
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import ReadReceipts from '../component/ReadReceipts';
 const mime = require('mime');
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const DirectMessaging = ({route, navigation}) => {
+const DirectMessaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
-  const {name, id} = route.params;
+  const { name, id } = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -61,7 +61,7 @@ const DirectMessaging = ({route, navigation}) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.103:3001/saveMessage', {
+      .post('http://192.168.0.104:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -115,21 +115,21 @@ const DirectMessaging = ({route, navigation}) => {
     navigation.setOptions({
       headerTitle: () => (
         <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
+          style={{ flexDirection: 'row', alignItems: 'center' }}
           onPress={() => {
             handleDetailNavigation(id, image);
           }}>
           {image != '' ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, {marginTop: 'auto'}]}
-              source={{uri: image}}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
+              source={{ uri: image }}
               width={30}
             />
           ) : (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, {marginTop: 'auto'}]}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
               source={require('../images/myaccount.png')}
               width={30}
             />
@@ -151,11 +151,11 @@ const DirectMessaging = ({route, navigation}) => {
   useLayoutEffect(() => {
     async function setup() {
       await axios
-        .get(`http://192.168.0.103:3001/user?id=${id}`)
+        .get(`http://192.168.0.104:3001/user?id=${id}`)
         .then(async result => {
           await axios
             .get(
-              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.104:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -188,7 +188,7 @@ const DirectMessaging = ({route, navigation}) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.103:3001/getMessage?roomid=${roomid}`)
+          .get(`http://192.168.0.104:3001/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
             let data = {
@@ -313,7 +313,7 @@ const DirectMessaging = ({route, navigation}) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://192.168.0.103:3001/files`,
+          url: `http://192.168.0.104:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -322,7 +322,7 @@ const DirectMessaging = ({route, navigation}) => {
         })
           .then(async result => {
             await axios
-              .post('http://192.168.0.103:3001/saveMessage', {
+              .post('http://192.168.0.104:3001/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: roomId,
@@ -382,7 +382,7 @@ const DirectMessaging = ({route, navigation}) => {
   //     await axios({
   //       timeout: 20000,
   //       method: 'POST',
-  //       url: `http://192.168.0.103:3001/`,
+  //       url: `http://192.168.0.104:3001/`,
   //       data: form,
   //       headers: {
   //         accept: 'application/json',
@@ -394,7 +394,7 @@ const DirectMessaging = ({route, navigation}) => {
   //         console.log('response: ', res.data);
   //         await AsyncStorage.setItem('@profilepicture', res.data.id);
   //         await axios
-  //           .get(`http://192.168.0.103:3001/files/${res.data.id}/true`)
+  //           .get(`http://192.168.0.104:3001/files/${res.data.id}/true`)
   //           .then(res => {
   //             setprofilepictureURL(
   //               `data:${res.headers['content-type']};base64,${res.data}`,
@@ -429,7 +429,7 @@ const DirectMessaging = ({route, navigation}) => {
       <View
         style={[
           styles.messagingscreen,
-          {paddingVertical: 15, paddingHorizontal: 10},
+          { paddingVertical: 15, paddingHorizontal: 10 },
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -440,7 +440,7 @@ const DirectMessaging = ({route, navigation}) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <DirectMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -458,7 +458,7 @@ const DirectMessaging = ({route, navigation}) => {
             // inverted
             // initialScrollIndex={1}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({animated: false})
+              flatlistRef.scrollToEnd({ animated: false })
             }
           />
         ) : (
@@ -471,7 +471,7 @@ const DirectMessaging = ({route, navigation}) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{width: 25, height: 25, marginRight: 5}}
+              style={{ width: 25, height: 25, marginRight: 5 }}
               source={require('../images/attach_file.png')}
             />
           </View>
@@ -493,7 +493,7 @@ const DirectMessaging = ({route, navigation}) => {
           <View>
             <Image
               resizeMode="contain"
-              style={{width: 30, height: 30, marginRight: 5}}
+              style={{ width: 30, height: 30, marginRight: 5 }}
               source={require('../images/send.png')}
             />
             {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}

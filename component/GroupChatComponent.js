@@ -1,23 +1,23 @@
-import {View, Image, Text, Pressable} from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from '../utils/styles';
+import { View, Image, Text, Pressable } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const GroupChatComponent = ({item, username}) => {
+const GroupChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const hour =
-    new Date(item.updatedAt).getHours() < 10
-      ? `0${new Date(item.updatedAt).getHours()}`
-      : `${new Date(item.updatedAt).getHours()}`;
+    new Date(item.time).getHours() < 10
+      ? `0${new Date(item.time).getHours()}`
+      : `${new Date(item.time).getHours()}`;
 
   const mins =
-    new Date(item.updatedAt).getMinutes() < 10
-      ? `0${new Date(item.updatedAt).getMinutes()}`
-      : `${new Date(item.updatedAt).getMinutes()}`;
+    new Date(item.time).getMinutes() < 10
+      ? `0${new Date(item.time).getMinutes()}`
+      : `${new Date(item.time).getMinutes()}`;
 
   useLayoutEffect(() => {
     async function getUserName() {
@@ -26,12 +26,12 @@ const GroupChatComponent = ({item, username}) => {
       setMessages(item.lastMessage);
 
       axios
-        .get(`http://192.168.0.103:3001/user?id=${item.user}`)
+        .get(`http://192.168.0.104:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.104:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -45,7 +45,7 @@ const GroupChatComponent = ({item, username}) => {
 
   const handleNavigation = () => {
     navigation.navigate('GroupMessaging', {
-      id: item.roomid,
+      id: item.user,
       name: item.title,
     });
   };
@@ -93,7 +93,7 @@ const GroupChatComponent = ({item, username}) => {
           <Text style={styles.ctime}>
             {hour && mins ? hour + ':' + mins : 'now'}
           </Text>
-          {/* {item.newMessages !== 0 ? (
+          {item.newMessages !== 0 ? (
             <View
               style={{
                 marginTop: 'auto',
@@ -113,7 +113,7 @@ const GroupChatComponent = ({item, username}) => {
             </View>
           ) : (
             ''
-          )} */}
+          )}
         </View>
       </View>
     </Pressable>

@@ -1,11 +1,11 @@
-import {View, Image, Text, Pressable} from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from '../utils/styles';
+import { View, Image, Text, Pressable } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import socket from '../utils/socket';
-const DirectChatComponent = ({item, username}) => {
+const DirectChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -45,12 +45,12 @@ const DirectChatComponent = ({item, username}) => {
     async function getUserName() {
       setMessages(item.lastMessage);
       axios
-        .get(`http://192.168.0.103:3001/user?id=${item.user}`)
+        .get(`http://192.168.0.104:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://192.168.0.103:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.0.104:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -71,7 +71,7 @@ const DirectChatComponent = ({item, username}) => {
 
   return (
     <Pressable style={styles.cchat} onPress={handleNavigation}>
-      <View style={{width: 65, height: 65, marginRight: 15}}>
+      <View style={{ width: 65, height: 65, marginRight: 15 }}>
         <Image
           resizeMode="cover"
           style={{
@@ -79,7 +79,7 @@ const DirectChatComponent = ({item, username}) => {
             height: '100%',
             borderRadius: 100,
           }}
-          source={{uri: image}}
+          source={{ uri: image }}
         />
       </View>
       <View style={styles.crightContainer}>
@@ -90,10 +90,10 @@ const DirectChatComponent = ({item, username}) => {
             {item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
               ? 'Image'
               : item.lastMessage
-              ? JSON.stringify(item.lastMessage).length > 30
-                ? item.lastMessage.substring(0, 25) + '...'
-                : item.lastMessage
-              : 'Tap to start chatting'}
+                ? JSON.stringify(item.lastMessage).length > 30
+                  ? item.lastMessage.substring(0, 25) + '...'
+                  : item.lastMessage
+                : 'Tap to start chatting'}
           </Text>
         </View>
         <View>
@@ -114,7 +114,7 @@ const DirectChatComponent = ({item, username}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{textAlign: 'center', color: '#fff'}}>
+              <Text style={{ textAlign: 'center', color: '#fff' }}>
                 {item.newMessages}
               </Text>
             </View>
