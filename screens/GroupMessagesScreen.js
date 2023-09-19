@@ -248,6 +248,9 @@ export default function GroupMessagesScreen({ navigation }) {
             setShouldUpdate={setShouldUpdate}
             shouldUpdate={shouldUpdate}
             setShiftVisible={setShiftVisible}
+            shiftId={shiftId}
+            setRefresh={setRefresh}
+            refresh={refresh}
           />
         ) : (
           ''

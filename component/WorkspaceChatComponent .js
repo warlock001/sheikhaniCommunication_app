@@ -5,7 +5,7 @@ import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => {
+const WorkspaceChatComponent = ({ item, username, }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -45,17 +45,14 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
   }, []);
 
   const handleNavigation = () => {
-    navigation.navigate('GroupMessaging', {
+    navigation.navigate('WorkspaceMessaging', {
       id: item.user,
       name: item.title,
     });
   };
 
   return (
-    <TouchableOpacity style={styles.cchat} onLongPress={() => {
-      setShiftId(item.user)
-      setShiftVisible(true)
-    }} onPress={handleNavigation}>
+    <TouchableOpacity style={styles.cchat} onPress={handleNavigation}>
       <View
         style={{
           width: 55,
@@ -94,7 +91,7 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
                     height: 20,
 
                   }} source={require('../images/image_message.png')} />
-                  <Text srtle={{ color: '#000' }}>Image</Text>
+                  <Text>Image</Text>
                 </View>
               )
               :
@@ -136,4 +133,4 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
   );
 };
 
-export default GroupChatComponent;
+export default WorkspaceChatComponent;

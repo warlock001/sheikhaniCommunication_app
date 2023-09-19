@@ -213,6 +213,7 @@ export const styles = StyleSheet.create({
   },
   ctime: {
     opacity: 0.5,
+    color: '#000'
   },
   pageHeading: {
     fontSize: 23,

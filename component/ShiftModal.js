@@ -1,23 +1,41 @@
-import { StyleSheet, Text, Image, View, Pressable } from 'react-native'
+import { StyleSheet, Text, Image, View, Pressable, Alert } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import axios from 'axios';
 
 export default function ShiftModal({
   setShiftVisible,
   seen,
-  delivered
+  delivered,
+  shiftId,
+  setRefresh,
+  refresh
 }) {
 
   const closeModal = () => {
     setShiftVisible(false)
-
   };
+
+  const shiftGroup = async () => {
+    await axios.post('http://192.168.0.104:3001/shiftGroup', {
+      roomid: shiftId
+    }).then(res => {
+      setRefresh(!refresh)
+      Alert.alert("", "Group Transfered To Workspace Successfully")
+      setShiftVisible(false)
+    }).catch(err => {
+      Alert.alert("", "Unknown error occured")
+      setShiftVisible(false)
+    })
+  };
+
   return (
     <View
       style={{
         width: '100%',
         borderColor: '#ddd',
         borderWidth: 5,
+        borderRadius: 25,
         elevation: 1,
         height: 150,
         justifyContent: 'center',
@@ -47,7 +65,7 @@ export default function ShiftModal({
         />
       </Pressable>
 
-      <Pressable
+      <TouchableOpacity
         style={{
           alignSelf: 'center',
           width: '100%',
@@ -58,7 +76,9 @@ export default function ShiftModal({
           justifyContent: 'center',
           color: '#fff',
         }}
-      // onPress={handleCreateRoom}
+        onPress={() => {
+          shiftGroup()
+        }}
       >
         <Text
           style={{
@@ -69,7 +89,7 @@ export default function ShiftModal({
           }}>
           Shift To Workspace
         </Text>
-      </Pressable>
+      </TouchableOpacity>
 
 
     </View>

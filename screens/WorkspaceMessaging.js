@@ -25,7 +25,7 @@ import GroupMessageComponent from '../component/GroupMessageComponent';
 let flatlistRef;
 let textInputRef; // Define the ref
 const mime = require('mime');
-const GroupMessaging = ({ route, navigation }) => {
+const WorkspaceMessaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
   const { name, id } = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -138,7 +138,7 @@ const GroupMessaging = ({ route, navigation }) => {
   };
 
   const handleDetailNavigation = id => {
-    navigation.navigate('GroupChatDetails', {
+    navigation.navigate('WorkspaceChatDetails', {
       roomid: id,
     });
   };
@@ -182,7 +182,7 @@ const GroupMessaging = ({ route, navigation }) => {
             updatedAt: new Date(),
           },
         };
-        socket.emit('send_message_group', data);
+        socket.emit('send_message_workspace', data);
         setMessage('');
         setTags([]);
       })
@@ -448,7 +448,7 @@ const GroupMessaging = ({ route, navigation }) => {
                     updatedAt: new Date(),
                   },
                 };
-                socket.emit('send_message_group', data);
+                socket.emit('send_message_workspace', data);
                 setMessage('');
               })
               .catch(err => {
@@ -590,7 +590,7 @@ const GroupMessaging = ({ route, navigation }) => {
   );
 };
 
-export default GroupMessaging;
+export default WorkspaceMessaging;
 const style = StyleSheet.create({
   item: {
     // width: '100%',
