@@ -4,7 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-const GroupChatComponent = ({ item, username }) => {
+import { TouchableOpacity } from 'react-native-gesture-handler';
+const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -51,7 +52,10 @@ const GroupChatComponent = ({ item, username }) => {
   };
 
   return (
-    <Pressable style={styles.cchat} onPress={handleNavigation}>
+    <TouchableOpacity style={styles.cchat} onLongPress={() => {
+      setShiftId(item.user)
+      setShiftVisible(true)
+    }} onPress={handleNavigation}>
       <View
         style={{
           width: 55,
@@ -81,12 +85,24 @@ const GroupChatComponent = ({ item, username }) => {
               : item.title}
           </Text>
 
-          <Text style={styles.cmessage}>
-            {item.lastMessage
-              ? JSON.stringify(item.lastMessage).length > 30
-                ? item.lastMessage.substring(0, 25) + '...'
-                : item.lastMessage
-              : 'Tap to start chatting'}
+          <Text style={[styles.cmessage, { width: '100%' }]}>
+            {item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
+              ? (
+                <View style={{ flexDirection: 'row', display: 'flex', gap: 5 }}>
+                  <Image style={{
+                    width: 20,
+                    height: 20,
+
+                  }} source={require('../images/image_message.png')} />
+                  <Text>Image</Text>
+                </View>
+              )
+              :
+              item.lastMessage
+                ? JSON.stringify(item.lastMessage).length > 30
+                  ? item.lastMessage.substring(0, 25) + '...'
+                  : item.lastMessage
+                : 'Tap to start chatting'}
           </Text>
         </View>
         <View>
@@ -116,7 +132,7 @@ const GroupChatComponent = ({ item, username }) => {
           )}
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

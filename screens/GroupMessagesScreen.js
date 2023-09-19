@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from '../component/GroupCreatingModal';
+import ShiftModal from '../component/ShiftModal';
 import { styles } from '../utils/styles';
 import { TextInput } from 'react-native-paper';
 import TextField from '../component/inputField';
@@ -33,7 +34,8 @@ export default function GroupMessagesScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [shouldUpdate, setShouldUpdate] = useState('');
   const [refresh, setRefresh] = useState(false);
-
+  const [shiftVisible, setShiftVisible] = useState(false);
+  const [shiftId, setShiftId] = useState('');
   const [department, setDepartment] = useState('');
 
   async function searchObjectByName(array, name) {
@@ -188,7 +190,7 @@ export default function GroupMessagesScreen({ navigation }) {
                       <Pressable onPress={() => {
                         setRefresh(!refresh);
                         setSearchedUsersVisible(false);
-                        Keyboard.dismiss
+                        Keyboard.dismiss();
                       }
                       }>
                         <Image
@@ -222,7 +224,7 @@ export default function GroupMessagesScreen({ navigation }) {
               extraData={rooms}
               data={rooms}
               renderItem={({ item }) => (
-                <GroupChatComponent item={item} username={username} />
+                <GroupChatComponent item={item} username={username} setShiftVisible={setShiftVisible} setShiftId={setShiftId} />
               )}
               keyExtractor={item => item.user}
             />
@@ -237,6 +239,15 @@ export default function GroupMessagesScreen({ navigation }) {
             setShouldUpdate={setShouldUpdate}
             shouldUpdate={shouldUpdate}
             setVisible={setVisible}
+          />
+        ) : (
+          ''
+        )}
+        {shiftVisible ? (
+          <ShiftModal
+            setShouldUpdate={setShouldUpdate}
+            shouldUpdate={shouldUpdate}
+            setShiftVisible={setShiftVisible}
           />
         ) : (
           ''

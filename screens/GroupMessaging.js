@@ -318,16 +318,10 @@ const GroupMessaging = ({ route, navigation }) => {
     async function updateMessageReciepts() {
       let temp = chatMessages;
       await socket.on('update_read_receipt', data => {
-        // console.log("idr aa gya")
         temp.forEach((item, index) => {
           temp[index].seen = true;
         });
-        // console.log("Temp messages -> ", temp)
         setChatMessages(temp);
-        // setShouldUpdate(!shouldUpdate);
-        // setTimeout(() => {
-        //   setShouldUpdate(!shouldUpdate)
-        // }, 5000);
       });
     }
 

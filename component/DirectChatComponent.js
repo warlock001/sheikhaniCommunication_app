@@ -88,7 +88,16 @@ const DirectChatComponent = ({ item, username }) => {
 
           <Text style={styles.cmessage}>
             {item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
-              ? 'Image'
+              ? (
+                <View style={{ flexDirection: 'row', display: 'flex', gap: 5 }}>
+                  <Image style={{
+                    width: 20,
+                    height: 20,
+
+                  }} source={require('../images/image_message.png')} />
+                  <Text>Image</Text>
+                </View>
+              )
               : item.lastMessage
                 ? JSON.stringify(item.lastMessage).length > 30
                   ? item.lastMessage.substring(0, 25) + '...'
