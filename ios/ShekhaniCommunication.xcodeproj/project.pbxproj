@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* ShekhaniCommunicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ShekhaniCommunicationTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-ShekhaniCommunication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ShekhaniCommunication.a */; };
+		00E356F31AD99517003FC87E /* SheikhaniGroupCommunicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SheikhaniGroupCommunicationTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-SheikhaniGroupCommunication.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-SheikhaniGroupCommunication.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		7699B88040F8A987B510C191 /* libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		912D50640B9148A3BA57FC7D /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89E84BC7D5024617BFE5FAC9 /* Roboto-Black.ttf */; };
 		813BA6A3C00F47F7B278232D /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF7EA455A48540798EAB7E51 /* Roboto-BlackItalic.ttf */; };
@@ -38,27 +38,27 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = ShekhaniCommunication;
+			remoteInfo = "SheikhaniGroupCommunication";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* ShekhaniCommunicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShekhaniCommunicationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* SheikhaniGroupCommunicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SheikhaniGroupCommunicationTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* ShekhaniCommunicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShekhaniCommunicationTests.m; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* ShekhaniCommunication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShekhaniCommunication.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ShekhaniCommunication/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = ShekhaniCommunication/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ShekhaniCommunication/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ShekhaniCommunication/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ShekhaniCommunication/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B4392A12AC88292D35C810B /* Pods-ShekhaniCommunication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShekhaniCommunication.debug.xcconfig"; path = "Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication.debug.xcconfig"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-ShekhaniCommunication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShekhaniCommunication.release.xcconfig"; path = "Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShekhaniCommunication-ShekhaniCommunicationTests.debug.xcconfig"; path = "Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-ShekhaniCommunication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShekhaniCommunication.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ShekhaniCommunication/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShekhaniCommunication-ShekhaniCommunicationTests.release.xcconfig"; path = "Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests.release.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* SheikhaniGroupCommunicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SheikhaniGroupCommunicationTests.m"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* SheikhaniGroupCommunication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SheikhaniGroupCommunication.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "SheikhaniGroupCommunication/AppDelegate.h"; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = "SheikhaniGroupCommunication/AppDelegate.mm"; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "SheikhaniGroupCommunication/Images.xcassets"; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "SheikhaniGroupCommunication/Info.plist"; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "SheikhaniGroupCommunication/main.m"; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B4392A12AC88292D35C810B /* Pods-SheikhaniGroupCommunication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SheikhaniGroupCommunication.debug.xcconfig"; path = "Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication.debug.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-SheikhaniGroupCommunication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SheikhaniGroupCommunication.release.xcconfig"; path = "Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.debug.xcconfig"; path = "Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-SheikhaniGroupCommunication.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SheikhaniGroupCommunication.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "SheikhaniGroupCommunication/LaunchScreen.storyboard"; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.release.xcconfig"; path = "Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		89E84BC7D5024617BFE5FAC9 /* Roboto-Black.ttf */ = {isa = PBXFileReference; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		CF7EA455A48540798EAB7E51 /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-BlackItalic.ttf"; path = "../assets/fonts/Roboto-BlackItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,20 +91,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-ShekhaniCommunication.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-SheikhaniGroupCommunication.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* ShekhaniCommunicationTests */ = {
+		00E356EF1AD99517003FC87E /* SheikhaniGroupCommunicationTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* ShekhaniCommunicationTests.m */,
+				00E356F21AD99517003FC87E /* SheikhaniGroupCommunicationTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = ShekhaniCommunicationTests;
+			path = "SheikhaniGroupCommunicationTests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -115,7 +115,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* ShekhaniCommunication */ = {
+		13B07FAE1A68108700A75B9A /* SheikhaniGroupCommunication */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -125,15 +125,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = ShekhaniCommunication;
+			name = "SheikhaniGroupCommunication";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-ShekhaniCommunication.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-ShekhaniCommunication-ShekhaniCommunicationTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-SheikhaniGroupCommunication.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -148,9 +148,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* ShekhaniCommunication */,
+				13B07FAE1A68108700A75B9A /* SheikhaniGroupCommunication */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* ShekhaniCommunicationTests */,
+				00E356EF1AD99517003FC87E /* SheikhaniGroupCommunicationTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -164,8 +164,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* ShekhaniCommunication.app */,
-				00E356EE1AD99517003FC87E /* ShekhaniCommunicationTests.xctest */,
+				13B07F961A680F5B00A75B9A /* SheikhaniGroupCommunication.app */,
+				00E356EE1AD99517003FC87E /* SheikhaniGroupCommunicationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -173,10 +173,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-ShekhaniCommunication.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-ShekhaniCommunication.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-SheikhaniGroupCommunication.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-SheikhaniGroupCommunication.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -208,9 +208,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* ShekhaniCommunicationTests */ = {
+		00E356ED1AD99517003FC87E /* SheikhaniGroupCommunicationTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ShekhaniCommunicationTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SheikhaniGroupCommunicationTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -224,14 +224,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = ShekhaniCommunicationTests;
-			productName = ShekhaniCommunicationTests;
-			productReference = 00E356EE1AD99517003FC87E /* ShekhaniCommunicationTests.xctest */;
+			name = SheikhaniGroupCommunicationTests;
+			productName = SheikhaniGroupCommunicationTests;
+			productReference = 00E356EE1AD99517003FC87E /* SheikhaniGroupCommunicationTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* ShekhaniCommunication */ = {
+		13B07F861A680F5B00A75B9A /* SheikhaniGroupCommunication */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ShekhaniCommunication" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SheikhaniGroupCommunication" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -246,9 +246,9 @@
 			);
 			dependencies = (
 			);
-			name = ShekhaniCommunication;
-			productName = ShekhaniCommunication;
-			productReference = 13B07F961A680F5B00A75B9A /* ShekhaniCommunication.app */;
+			name = "SheikhaniGroupCommunication";
+			productName = "SheikhaniGroupCommunication";
+			productReference = 13B07F961A680F5B00A75B9A /* SheikhaniGroupCommunication.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -268,7 +268,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ShekhaniCommunication" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SheikhaniGroupCommunication" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -281,8 +281,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* ShekhaniCommunication */,
-				00E356ED1AD99517003FC87E /* ShekhaniCommunicationTests */,
+				13B07F861A680F5B00A75B9A /* SheikhaniGroupCommunication */,
+				00E356ED1AD99517003FC87E /* SheikhaniGroupCommunicationTests */,
 			);
 		};
 /* End PBXProject section */
@@ -345,15 +345,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -371,7 +371,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -393,7 +393,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ShekhaniCommunication-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SheikhaniGroupCommunication-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -406,15 +406,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -423,15 +423,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication/Pods-ShekhaniCommunication-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication/Pods-SheikhaniGroupCommunication-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -440,15 +440,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShekhaniCommunication-ShekhaniCommunicationTests/Pods-ShekhaniCommunication-ShekhaniCommunicationTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests/Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -477,7 +477,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* ShekhaniCommunicationTests.m in Sources */,
+				00E356F31AD99517003FC87E /* SheikhaniGroupCommunicationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +495,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* ShekhaniCommunication */;
+			target = 13B07F861A680F5B00A75B9A /* SheikhaniGroupCommunication */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -503,14 +503,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = ShekhaniCommunicationTests/Info.plist;
+				INFOPLIST_FILE = "SheikhaniGroupCommunicationTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,19 +522,19 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShekhaniCommunication.app/ShekhaniCommunication";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SheikhaniGroupCommunication.app/SheikhaniGroupCommunication";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-ShekhaniCommunication-ShekhaniCommunicationTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-SheikhaniGroupCommunication-SheikhaniGroupCommunicationTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = ShekhaniCommunicationTests/Info.plist;
+				INFOPLIST_FILE = "SheikhaniGroupCommunicationTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,21 +546,22 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ShekhaniCommunication.app/ShekhaniCommunication";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SheikhaniGroupCommunication.app/SheikhaniGroupCommunication";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-ShekhaniCommunication.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SheikhaniGroupCommunication.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = ShekhaniCommunication/Info.plist;
+				INFOPLIST_FILE = "SheikhaniGroupCommunication/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "Sheikhani Group Communication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -571,8 +572,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ShekhaniCommunication;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_NAME = "SheikhaniGroupCommunication";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -581,12 +582,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-ShekhaniCommunication.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SheikhaniGroupCommunication.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = ShekhaniCommunication/Info.plist;
+				INFOPLIST_FILE = "SheikhaniGroupCommunication/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "Sheikhani Group Communication";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -597,8 +599,8 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ShekhaniCommunication;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_NAME = "SheikhaniGroupCommunication";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -742,7 +744,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ShekhaniCommunicationTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SheikhaniGroupCommunicationTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -751,7 +753,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ShekhaniCommunication" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SheikhaniGroupCommunication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -760,7 +762,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ShekhaniCommunication" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SheikhaniGroupCommunication" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

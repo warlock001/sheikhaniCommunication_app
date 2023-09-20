@@ -1,5 +1,5 @@
 {
-  "name": "ShekhaniCommunication",
+  "name": "sheikhanigroupcommunication",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -27,7 +27,6 @@
     "react-native-btr": "^2.2.0",
     "react-native-gesture-handler": "^2.13.1",
     "react-native-image-picker": "^5.6.1",
-    "react-native-ionicons": "^4.6.5",
     "react-native-linear-gradient": "^2.8.2",
     "react-native-paper": "^4.12.2",
     "react-native-safe-area-context": "^4.7.1",
