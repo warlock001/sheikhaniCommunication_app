@@ -27,7 +27,7 @@ function Item({ props, item }) {
   useLayoutEffect(() => {
     async function getImage() {
       axios
-        .get(`http://192.168.0.104:3001/files/${props.profilePicture[0]}/true`)
+        .get(`http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`,
@@ -119,7 +119,7 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://192.168.0.104:3001/workspace?roomid=${roomid}`)
+        .get(`http://52.9.129.21:3001/workspace?roomid=${roomid}`)
         .then(async res => {
           console.log(res.data.group.title);
           setLoader(true);
@@ -151,13 +151,13 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
 
       console.log('roomId', roomid);
       await axios
-        .get(`http://192.168.0.104:3001/getMessage?roomid=${roomid}`)
+        .get(`http://52.9.129.21:3001/getMessage?roomid=${roomid}`)
         .then(async res => {
           await res.data.messages.forEach(async (message, index) => {
             if (message.isPicture) {
               setMediaLength(index);
               await axios
-                .get(`http://192.168.0.104:3001/files/${message.message}/true`)
+                .get(`http://52.9.129.21:3001/files/${message.message}/true`)
                 .then(image => {
                   imagearr.push(
                     `data:${image.headers['content-type']};base64,${image.data}`,

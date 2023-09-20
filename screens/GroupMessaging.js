@@ -50,7 +50,7 @@ const GroupMessaging = ({ route, navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://192.168.0.104:3001/files/${props.profilePicture[0]}/true`,
+            `http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -157,7 +157,7 @@ const GroupMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://192.168.0.104:3001/saveMessage', {
+      .post('http://52.9.129.21:3001/saveMessage', {
         senderid: myId,
         message: message,
         roomid: id,
@@ -261,7 +261,7 @@ const GroupMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.0.104:3001/getMessage?roomid=${id}`)
+          .get(`http://52.9.129.21:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -336,7 +336,7 @@ const GroupMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://192.168.0.104:3001/group?roomid=${id}`)
+        .get(`http://52.9.129.21:3001/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -414,7 +414,7 @@ const GroupMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://192.168.0.104:3001/files`,
+          url: `http://52.9.129.21:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -423,7 +423,7 @@ const GroupMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://192.168.0.104:3001/saveMessage', {
+              .post('http://52.9.129.21:3001/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: id,

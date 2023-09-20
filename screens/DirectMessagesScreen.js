@@ -66,7 +66,7 @@ export default function DirectMessagesScreen({ navigation }) {
         socket.on('receive_message', async data => {
           const id = await AsyncStorage.getItem('@id');
           await axios
-            .get(`http://192.168.0.104:3001/recentChats?id=${id}`)
+            .get(`http://52.9.129.21:3001/recentChats?id=${id}`)
             .then(results => {
               results.data.recentChats[0].chats.sort((a, b) => {
                 const timeA = new Date(a.time);
@@ -104,7 +104,7 @@ export default function DirectMessagesScreen({ navigation }) {
         console.log('firstttt');
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.0.104:3001/recentChats?id=${id}`)
+          .get(`http://52.9.129.21:3001/recentChats?id=${id}`)
           .then(results => {
             console.log(results.data.recentChats[0].chats);
             results.data.recentChats[0].chats.sort((a, b) => {
@@ -135,7 +135,7 @@ export default function DirectMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.0.104:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://52.9.129.21:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);
