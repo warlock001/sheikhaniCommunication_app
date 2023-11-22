@@ -14,6 +14,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import socket from '../utils/socket';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -40,6 +41,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
   const [members, setMembers] = useState([]);
   const [myId, setMyId] = useState('');
   const [tagsVisible, setTagsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState([]);
 
   function Item({ props, item }) {
@@ -50,7 +52,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`,
+            `http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -144,52 +146,72 @@ const WorkspaceMessaging = ({ route, navigation }) => {
   };
 
   const handleNewMessage = async () => {
-    const user = await AsyncStorage.getItem('@username');
-    const hour =
-      new Date().getHours() < 10
-        ? `0${new Date().getHours()}`
-        : `${new Date().getHours()}`;
 
-    const mins =
-      new Date().getMinutes() < 10
-        ? `0${new Date().getMinutes()}`
-        : `${new Date().getMinutes()}`;
+    if (message !== '') {
 
-    const myId = await AsyncStorage.getItem('@id');
-    axios
-      .post('http://52.9.129.21:3001/saveMessage', {
+
+      const myId = await AsyncStorage.getItem('@id');
+      var localMessage = message
+      let tempData = {
+        _id: new Date(),
         senderid: myId,
-        message: message,
+        message: localMessage,
         roomid: id,
-        title: user,
+        recieverid: id,
+        seen: false,
+        title: name,
+        user: user,
         tags: tags,
-      })
-      .then(res => {
-        console.log('message send - ', res.data);
-        let data = {
-          roomId: id,
-          message: {
-            _id: res.data.id,
-            senderid: myId,
-            message: message,
-            roomid: id,
-            recieverid: id,
-            seen: false,
-            title: name,
-            user: user,
-            tags: tags,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        };
-        socket.emit('send_message_workspace', data);
-        setMessage('');
-        setTags([]);
-      })
-      .catch(err => {
-        console.log('error in sending message - ', err);
-        setMessage('');
-      });
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      setChatMessages(chatMessages => [...chatMessages, tempData]);
+      setMessage('');
+      const user = await AsyncStorage.getItem('@username');
+      const hour =
+        new Date().getHours() < 10
+          ? `0${new Date().getHours()}`
+          : `${new Date().getHours()}`;
+      const mins =
+        new Date().getMinutes() < 10
+          ? `0${new Date().getMinutes()}`
+          : `${new Date().getMinutes()}`;
+      axios
+        .post('http://192.168.100.26:3001/saveMessage', {
+          senderid: myId,
+          message: localMessage,
+          roomid: id,
+          title: user,
+          tags: tags,
+        })
+        .then(res => {
+          console.log('message send - ', res.data);
+          let data = {
+            roomId: id,
+            message: {
+              _id: res.data.id,
+              senderid: myId,
+              message: localMessage,
+              roomid: id,
+              recieverid: id,
+              seen: false,
+              title: name,
+              user: user,
+              tags: tags,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          };
+          socket.emit('send_message_workspace', data);
+          setMessage('');
+          setTags([]);
+        })
+        .catch(err => {
+          console.log('error in sending message - ', err);
+          setMessage('');
+        });
+    }
+
   };
 
   useLayoutEffect(props => {
@@ -254,7 +276,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://52.9.129.21:3001/getMessage?roomid=${id}`)
+          .get(`http://192.168.100.26:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -287,7 +309,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
           recipient: id,
           id: myId,
         };
-        socket.emit('read_receipt', data);
+        socket.emit('read_receipt_workspace', data);
       }
 
       readReceipt();
@@ -296,11 +318,14 @@ const WorkspaceMessaging = ({ route, navigation }) => {
 
   useEffect(() => {
     async function listen() {
+      const myId = await AsyncStorage.getItem('@id');
       console.log('listining to incoming messages');
       await socket.off('receive_message');
       socket.on('receive_message', async data => {
-        console.log('message recieved - ', data.message.message);
-        setChatMessages(chatMessages => [...chatMessages, data.message]);
+        console.log('message recieved - ', data.message);
+        if (myId !== data.message.senderid || data.message.isPicture) {
+          setChatMessages(chatMessages => [...chatMessages, data.message]);
+        }
       });
     }
     listen();
@@ -329,7 +354,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://52.9.129.21:3001/group?roomid=${id}`)
+        .get(`http://192.168.100.26:3001/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -407,7 +432,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://52.9.129.21:3001/files`,
+          url: `http://192.168.100.26:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -416,7 +441,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://52.9.129.21:3001/saveMessage', {
+              .post('http://192.168.100.26:3001/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: id,
@@ -578,8 +603,16 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       ) : (
         ''
       )}
+
+      {isLoading ?
+        <View style={{ position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, .2)' }}>
+          <ActivityIndicator animating={true} color={'#0000ff'} />
+        </View>
+        : ''
+      }
+
       {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
-    </View>
+    </View >
   );
 };
 

@@ -17,7 +17,7 @@ export default function ShiftModal({
   };
 
   const shiftGroup = async () => {
-    await axios.post('http://52.9.129.21:3001/shiftGroup', {
+    await axios.post('http://192.168.100.26:3001/shiftGroup', {
       roomid: shiftId
     }).then(res => {
       setRefresh(!refresh)

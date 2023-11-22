@@ -31,7 +31,7 @@ function Item({ props, item }) {
   useLayoutEffect(() => {
     async function getImage() {
       axios
-        .get(`http://54.151.83.85:3001/files/${props.profilePicture[0]}/true`)
+        .get(`http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`,
@@ -118,13 +118,13 @@ const DirectMessageDetails = ({ route, navigation }) => {
       roomId = createRoomId(id, myId);
       console.log('roomId', roomId);
       await axios
-        .get(`http://52.9.129.21:3001/getMessage?roomid=${roomId}`)
+        .get(`http://192.168.100.26:3001/getMessage?roomid=${roomId}`)
         .then(async res => {
           await res.data.messages.forEach(async (message, index) => {
             if (message.isPicture) {
               setMediaLength(index);
               await axios
-                .get(`http://52.9.129.21:3001/files/${message.message}/true`)
+                .get(`http://192.168.100.26:3001/files/${message.message}/true`)
                 .then(image => {
                   imagearr.push(
                     `data:${image.headers['content-type']};base64,${image.data}`,
@@ -142,7 +142,7 @@ const DirectMessageDetails = ({ route, navigation }) => {
   useLayoutEffect(() => {
     async function groupDetails() {
       await axios
-        .get(`http://52.9.129.21:3001/user?id=${id}`)
+        .get(`http://192.168.100.26:3001/user?id=${id}`)
         .then(async res => {
           setLoader(true);
           setGroupName(res.data.user.firstName + ' ' + res.data.user.lastName);

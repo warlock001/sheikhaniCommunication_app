@@ -27,12 +27,12 @@ const WorkspaceChatComponent = ({ item, username, }) => {
       setMessages(item.lastMessage);
 
       await axios
-        .get(`http://52.9.129.21:3001/user?id=${item.user}`)
+        .get(`http://192.168.100.26:3001/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://52.9.129.21:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.100.26:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(

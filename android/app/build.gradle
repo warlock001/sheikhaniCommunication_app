@@ -73,13 +73,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.sheikhanigroup.chatapp"
+    namespace "com.sheikhanigroup.communication"
     defaultConfig {
-        applicationId "com.sheikhanigroup.chatapp"
+        applicationId "com.sheikhanigroup.communication"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 11
+        versionName "0.0.10"
     }
     signingConfigs {
         release {

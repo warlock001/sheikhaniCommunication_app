@@ -73,7 +73,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://52.9.129.21:3001/recentChats?id=${id}`)
+          .get(`http://192.168.100.26:3001/recentChats?id=${id}`)
           .then(results => {
             results.data.recentChats[0].workspaces.sort((a, b) => {
               const timeA = new Date(a.time);
@@ -107,7 +107,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       await axios
         .get(
-          `http://52.9.129.21:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);

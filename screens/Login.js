@@ -16,7 +16,7 @@ import axios from 'axios';
 import EnvelopeClosed from '../images/EnvelopeClosed.png';
 import { CommonActions } from '@react-navigation/native';
 //import { REACT_APP_BASE_URL } from '@env';
-const REACT_APP_BASE_URL = 'http://52.9.129.21:3001';
+const REACT_APP_BASE_URL = 'http://192.168.100.26:3001';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native';
@@ -61,17 +61,23 @@ export default function SignIn({ navigation }) {
       })
       .then(async res => {
         console.log(res.data);
-        await AsyncStorage.setItem('@id', res.data._id);
-        await AsyncStorage.setItem('@jwt', res.data.token);
-        await AsyncStorage.setItem('@role', res.data.role);
-        await AsyncStorage.setItem('@email', res.data.email);
-        await AsyncStorage.setItem('@department', res.data.department);
-        await AsyncStorage.setItem('@username', res.data.firstName);
-        await AsyncStorage.setItem('@lastName', res.data.lastName);
-        await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
-        await AsyncStorage.setItem('@designation', res.data.designation);
-        const value = await AsyncStorage.getItem('@username');
-        console.log(value);
+
+        try {
+          await AsyncStorage.setItem('@id', res.data._id);
+          await AsyncStorage.setItem('@jwt', res.data.token);
+          await AsyncStorage.setItem('@role', res.data.role);
+          await AsyncStorage.setItem('@email', res.data.email);
+          await AsyncStorage.setItem('@department', res.data.department);
+          await AsyncStorage.setItem('@username', res.data.firstName);
+          await AsyncStorage.setItem('@lastName', res.data.lastName);
+          await AsyncStorage.setItem('@profilepicture', res.data.profilePicture);
+          await AsyncStorage.setItem('@designation', res.data.designation);
+          const value = await AsyncStorage.getItem('@username');
+          console.log(value);
+        } catch (err) {
+          console.log(err)
+        }
+
 
         // console.log(res.data.firstName)
         setLoader(false);
@@ -88,7 +94,7 @@ export default function SignIn({ navigation }) {
         Alert.alert(
           'Failed',
           `${er.response.data.message
-            ? er.response.data.message
+            ? JSON.stringify(er.response.data)
             : 'Something went wrong'
           }`,
           [{ text: 'OK', onPress: () => console.log('OK Pressed') }],

@@ -1,4 +1,4 @@
-package com.sheikhanigroup.chatapp;
+package com.sheikhanigroup.communication;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

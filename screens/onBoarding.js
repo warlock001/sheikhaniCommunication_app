@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -41,7 +42,7 @@ export default function OnBoarding({ navigation }) {
   getMyStringValue();
 
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
       <Swiper
         ref={swiper}
         style={{ height: '100%' }}
@@ -53,7 +54,7 @@ export default function OnBoarding({ navigation }) {
               width: 60,
               height: 5,
               borderRadius: 20,
-              marginBottom: 80,
+              marginBottom: 100,
               marginLeft: 5,
               marginRight: 5,
             }}
@@ -67,12 +68,13 @@ export default function OnBoarding({ navigation }) {
               width: 60,
               height: 5,
               borderRadius: 20,
-              marginBottom: 80,
+              marginBottom: 100,
               marginLeft: 5,
               marginRight: 5,
             }}
           />
         }>
+
         <View>
           <ImageBackground
             source={require('../images/onboarding1.png')}
@@ -112,8 +114,11 @@ export default function OnBoarding({ navigation }) {
                 </Text>
               </View>
             </View>
+
           </ImageBackground>
+
         </View>
+
         <View style={{ display: 'flex' }}>
           <ImageBackground
             resizeMode={'cover'}
@@ -151,13 +156,14 @@ export default function OnBoarding({ navigation }) {
             </View>
           </ImageBackground>
         </View>
+
         <View>
           <ImageBackground
             resizeMode={'cover'}
             source={require('../images/onboarding3.png')}
             style={{ width: '100%', height: '100%' }}>
             <LinearGradient
-              colors={['#CF333900', '#CF3339']}
+              colors={['#00000000', '#000000']}
               style={styles.gradientStyle}
               start={{ x: 0.5, y: 0.2 }}
               end={{ x: 0.5, y: 1 }}
@@ -191,6 +197,8 @@ export default function OnBoarding({ navigation }) {
             </View>
           </ImageBackground>
         </View>
+
+
       </Swiper>
       <TouchableOpacity
         style={styles.SignupButtonStyle}
@@ -201,6 +209,7 @@ export default function OnBoarding({ navigation }) {
           Login
         </Text>
       </TouchableOpacity>
+      <Text style={{ position: 'absolute', bottom: 10, textAlign: 'center', color: '#8F8F8F' }}>By continuing, you agree to our app’s Terms Of Service and acknowledge that you’ve read our <Text style={{ color: '#fff' }} onPress={() => { Linking.openURL('https://sheikhanigroup.com/privacy-policy-for-communication-app/').catch(err => console.error("Couldn't load page", err)); }}>Privacy Policy</Text></Text>
     </View>
   );
 }
@@ -215,8 +224,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     padding: 24,
-
-    paddingBottom: 125,
+    paddingBottom: 155,
   },
   gradientStyle: {
     width: '100%',
@@ -248,7 +256,7 @@ const styles = StyleSheet.create({
     marginTop: 26,
     marginBottom: 10,
     paddingVertical: 15,
-    bottom: 20,
+    bottom: 45,
     position: 'absolute',
   },
 

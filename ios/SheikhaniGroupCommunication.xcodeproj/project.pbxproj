@@ -522,7 +522,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.communication";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SheikhaniGroupCommunication.app/SheikhaniGroupCommunication";
 			};
@@ -546,7 +546,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.communication";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SheikhaniGroupCommunication.app/SheikhaniGroupCommunication";
 			};
@@ -572,7 +572,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.communication";
 				PRODUCT_NAME = "SheikhaniGroupCommunication";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -599,7 +599,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.chatapp";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sheikhanigroup.communication";
 				PRODUCT_NAME = "SheikhaniGroupCommunication";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

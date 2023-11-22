@@ -32,12 +32,12 @@ export default function GroupMessageComponent({
   useLayoutEffect(() => {
     async function getImage() {
       await axios
-        .get(`http://52.9.129.21:3001/user?id=${item.senderid}`)
+        .get(`http://192.168.100.26:3001/user?id=${item.senderid}`)
         .then(async result => {
           console.log('image ->', result.data.user.profilePicture[0]);
           await axios
             .get(
-              `http://52.9.129.21:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `http://192.168.100.26:3001/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
@@ -56,7 +56,7 @@ export default function GroupMessageComponent({
     async function loadImage() {
       if (item.isPicture) {
         await axios
-          .get(`http://52.9.129.21:3001/files/${item.message}/true`)
+          .get(`http://192.168.100.26:3001/files/${item.message}/true`)
           .then(result => {
             setMediaImage(
               `data:${result.headers['content-type']};base64,${result.data}`,

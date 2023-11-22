@@ -1,4 +1,4 @@
-package com.sheikhanigroup.chatapp;
+package com.sheikhanigroup.communication;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
