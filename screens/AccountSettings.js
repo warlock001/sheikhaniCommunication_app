@@ -129,7 +129,7 @@ const Profile = () => {
         console.log(NewPassword);
         console.log(CurrentPassword);
         await axios
-          .put('http://192.168.100.26:3001/password', {
+          .put('http://api.sheikhanigroup.com:3001/password', {
             id: id,
             currectPassword: CurrentPassword,
             newPassword: NewPassword,
@@ -156,7 +156,7 @@ const Profile = () => {
   const updateUser = async () => {
     const id = await AsyncStorage.getItem('@id');
     await axios
-      .put('http://192.168.100.26:3001/user', {
+      .put('http://api.sheikhanigroup.com:3001/user', {
         id: id,
         firstName: firstName,
         lastName: lastName,

@@ -36,7 +36,7 @@ const Announcements = () => {
     React.useCallback(() => {
       async function fetchAnnouncements() {
 
-        await axios.get(`http://192.168.100.26:3001/announcement`).then(res => {
+        await axios.get(`http://api.sheikhanigroup.com:3001/announcement`).then(res => {
           setAllAnnouncements(res.data.announcemnet)
         }).catch(err => {
           setAllAnnouncements([])

@@ -73,7 +73,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.100.26:3001/recentChats?id=${id}`)
+          .get(`http://api.sheikhanigroup.com:3001/recentChats?id=${id}`)
           .then(results => {
             results.data.recentChats[0].workspaces.sort((a, b) => {
               const timeA = new Date(a.time);
@@ -107,7 +107,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       await axios
         .get(
-          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://api.sheikhanigroup.com:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -142,7 +142,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
             <Text style={styles.pageHeading}>Welcome To Your Workspace</Text>
           </View>
           <Text style={styles.pageSubHeading}>
-            Chats moved to workspace are snoozed outside your work hours. <Text style={[styles.pageSubHeading, { fontWeight: '700', textDecorationLine: 'underline' }]}>Manage work hours</Text>
+            Sort Groups with vendors and clients external to Sheikhani Group in this tab.
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
         </View>
@@ -196,6 +196,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
           ]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
+              style={{ flex: 1 }}
               extraData={rooms}
               data={rooms}
               renderItem={({ item }) => (

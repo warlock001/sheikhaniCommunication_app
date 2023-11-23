@@ -95,9 +95,9 @@ const AnnouncementPreview = ({ route }) => {
               style={{
                 backgroundColor: '#F5F7F9',
                 flexDirection: 'row',
-                marginBottom: 20,
                 padding: 16,
                 borderRadius: 10,
+                height: '80%'
               }}>
               <ScrollView>
                 <Text

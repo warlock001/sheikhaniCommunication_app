@@ -78,7 +78,7 @@ export default function GroupMessagesScreen({ navigation }) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://192.168.100.26:3001/recentChats?id=${id}`)
+          .get(`http://api.sheikhanigroup.com:3001/recentChats?id=${id}`)
           .then(results => {
             results.data.recentChats[0].groups.sort((a, b) => {
               const timeA = new Date(a.time);
@@ -112,7 +112,7 @@ export default function GroupMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       await axios
         .get(
-          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://api.sheikhanigroup.com:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -221,6 +221,8 @@ export default function GroupMessagesScreen({ navigation }) {
           ]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
+              style={{ flex: 1 }}
+              scrollEnabled
               extraData={rooms}
               data={rooms}
               renderItem={({ item }) => (

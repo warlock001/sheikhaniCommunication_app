@@ -34,7 +34,7 @@ const CreateNewChat = ({ navigation }) => {
       const id = await AsyncStorage.getItem('@id');
       axios
         .get(
-          `http://192.168.100.26:3001/user?department=${department}&query=${search}&id=${id}`,
+          `http://api.sheikhanigroup.com:3001/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           console.log('userssssssss', res.data.user);
@@ -55,7 +55,7 @@ const CreateNewChat = ({ navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`,
+            `http://api.sheikhanigroup.com:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(

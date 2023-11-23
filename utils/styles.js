@@ -83,14 +83,17 @@ export const styles = StyleSheet.create({
   messagingscreen: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingBottom: 10
   },
   messaginginputContainer: {
     width: '100%',
     // Height: 60,
-    // backgroundColor: "white",
+    backgroundColor: "white",
     paddingBottom: 15,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     alignItems: 'center',
+
     justifyContent: 'center',
     flexDirection: 'row',
   },
@@ -99,6 +102,7 @@ export const styles = StyleSheet.create({
     // borderColor: "#1F1F1F",
     padding: 10,
     flex: 1,
+    minHeight: 50,
     maxHeight: 110,
     color: '#000',
     backgroundColor: '#EFEFEF',

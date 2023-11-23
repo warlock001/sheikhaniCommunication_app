@@ -52,7 +52,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`,
+            `http://api.sheikhanigroup.com:3001/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
@@ -177,7 +177,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
           ? `0${new Date().getMinutes()}`
           : `${new Date().getMinutes()}`;
       axios
-        .post('http://192.168.100.26:3001/saveMessage', {
+        .post('http://api.sheikhanigroup.com:3001/saveMessage', {
           senderid: myId,
           message: localMessage,
           roomid: id,
@@ -276,7 +276,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://192.168.100.26:3001/getMessage?roomid=${id}`)
+          .get(`http://api.sheikhanigroup.com:3001/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -354,7 +354,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://192.168.100.26:3001/group?roomid=${id}`)
+        .get(`http://api.sheikhanigroup.com:3001/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -432,7 +432,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://192.168.100.26:3001/files`,
+          url: `http://api.sheikhanigroup.com:3001/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -441,7 +441,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://192.168.100.26:3001/saveMessage', {
+              .post('http://api.sheikhanigroup.com:3001/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: id,

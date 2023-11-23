@@ -27,7 +27,7 @@ function Item({ props, item }) {
   useLayoutEffect(() => {
     async function getImage() {
       axios
-        .get(`http://192.168.100.26:3001/files/${props.profilePicture[0]}/true`)
+        .get(`http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
             `data:${image.headers['content-type']};base64,${image.data}`,
@@ -89,7 +89,9 @@ function Item({ props, item }) {
             </View>
           )}
           <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
-            {props.title}
+            {props.title.length > 21
+              ? props.title.slice(0, 21) + '...'
+              : props.title}
           </Text>
         </View>
         <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
@@ -119,7 +121,7 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://192.168.100.26:3001/workspace?roomid=${roomid}`)
+        .get(`http://52.9.129.21:3001/workspace?roomid=${roomid}`)
         .then(async res => {
           console.log(res.data.group.title);
           setLoader(true);
@@ -144,31 +146,26 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
 
     groupDetails();
   }, []);
-
   useLayoutEffect(() => {
     async function loadImages() {
       let imagearr = [];
 
       console.log('roomId', roomid);
-      await axios
-        .get(`http://192.168.100.26:3001/getMessage?roomid=${roomid}`)
-        .then(async res => {
-          await res.data.messages.forEach(async (message, index) => {
-            if (message.isPicture) {
-              setMediaLength(index);
-              await axios
-                .get(`http://192.168.100.26:3001/files/${message.message}/true`)
-                .then(image => {
-                  imagearr.push(
-                    `data:${image.headers['content-type']};base64,${image.data}`,
-                  );
-                });
-            }
-          });
-        });
+      const response = await axios.get(`http://52.9.129.21:3001/getMessage?roomid=${roomid}`);
 
-      setChatImages(imagearr);
+      await Promise.all(
+        response.data.messages.map(async (message) => {
+          if (message.isPicture) {
+            const image = await axios.get(`http://52.9.129.21:3001/files/${message.message}/true`);
+            imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`,);
+          }
+        })
+      );
+
+      // console.log(imagearr, "imagearr");
+      // setChatImages(imagearr);
     }
+
     loadImages();
   }, []);
 
@@ -181,14 +178,16 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
         position: 'relative',
       }}>
       {loader ? (
-        <ScrollView
-          nestedScrollEnabled={true} // Enable nested scrolling
-          pagingEnabled={false}
+        <View
+          // nestedScrollEnabled={true} // Enable nested scrolling
+          // pagingEnabled={false}
           style={{
             flex: 1,
-          }}>
 
-          <View style={{ alignItems: 'center' }}>
+          }}
+        >
+
+          <View style={{ alignItems: 'center', flex: 1 }}>
             <View>
               <Pressable
                 onPress={() => navigation.goBack()}
@@ -295,57 +294,54 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                     fontWeight: '400',
                     marginRight: 30,
                   }}>
-                  9 Items
+                  {mediaLength} Items
                 </Text>
               </View>
-              <SafeAreaView
-                style={{
-                  flex: 1,
-                  width: '100%',
-                }}>
-                <ScrollView
-                  nestedScrollEnabled={true}
-                  horizontal={true}
+
+              <View
+                nestedScrollEnabled={true}
+                horizontal={true}
+                showsHorizontalScrollIndicator={true}
+                alwaysBounceHorizontal={true}
+                style={{ flex: 1 }}
+              >
+                <FlatList
+                  keyboardShouldPersistTaps="handled"
+                  horizontal={true} // Enable horizontal scrolling
                   showsHorizontalScrollIndicator={true}
-                  alwaysBounceHorizontal={true}
-                  style={{ flex: 1, paddingLeft: 30, marginRight: -20 }}>
-                  <FlatList
-                    keyboardShouldPersistTaps="handled"
-                    horizontal={true} // Enable horizontal scrolling
-                    showsHorizontalScrollIndicator={true}
-                    scrollEnabled={true}
-                    data={chatImage}
-                    renderItem={({ item }) => (
-                      <Pressable
-                        onPress={() => {
-                          setModalImage(item);
-                          toggleModal();
-                        }}>
-                        <Image
-                          resizeMode="cover"
-                          style={{
-                            width: 100,
-                            height: 100,
-                            marginHorizontal: 10,
-                            borderRadius: 10,
-                            borderWidth: 0.8,
-                            borderColor: '#D9D9D9',
-                          }}
-                          source={{ uri: item }}
-                          width={30}
-                        />
-                      </Pressable>
-                    )}
-                    keyExtractor={item => item._id}
-                    style={{ width: Dimensions.get('window').width }}
-                  />
-                  <ImageModal
-                    visible={isModalVisible}
-                    profileImage={{ uri: modalImage }}
-                    onClose={toggleModal}
-                  />
-                </ScrollView>
-              </SafeAreaView>
+                  scrollEnabled={true}
+                  data={chatImage}
+                  renderItem={({ item }) => (
+                    <Pressable
+                      onPress={() => {
+                        setModalImage(item);
+                        toggleModal();
+                      }}>
+                      {/* <Image
+                        resizeMode="cover"
+                        style={{
+                          width: 100,
+                          height: 100,
+                          marginHorizontal: 10,
+                          borderRadius: 10,
+                          borderWidth: 0.8,
+                          borderColor: '#D9D9D9',
+                        }}
+                        source={{ uri: item }}
+                        width={30}
+                      /> */}
+                    </Pressable>
+                  )}
+                  // keyExtractor={item => item._id}
+                  style={{ width: Dimensions.get('window').width, backgroundColor: 'red', }}
+                />
+                <ImageModal
+                  visible={isModalVisible}
+                  profileImage={{ uri: modalImage }}
+                  onClose={toggleModal}
+                />
+              </View>
+              {/* </SafeAreaView> */}
               <View style={{ marginHorizontal: 20, marginTop: 40 }}>
                 <Text style={{ marginLeft: 20, color: '#8f8f8f' }}>
                   {memberSize} participants
@@ -355,14 +351,18 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                   showsVerticalScrollIndicator={true}
                   data={members}
                   renderItem={({ item }) => (
-                    <Item
-                      props={{
-                        title: item.firstName + ' ' + item.lastName,
-                        id: item._id,
-                        designation: item.designation,
-                        profilePicture: item.profilePicture,
-                      }}
-                    />
+                    <View>
+                      <Item
+                        props={{
+                          title: item.firstName + ' ' + item.lastName,
+                          id: item._id,
+                          designation: item.designation,
+                          profilePicture: item.profilePicture,
+                        }}
+                      />
+
+                    </View>
+
                   )}
                   keyExtractor={item => item._id}
                   style={{
@@ -373,7 +373,7 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
               </View>
             </View>
           </View>
-        </ScrollView>
+        </View>
       ) : (
         <View
           style={{

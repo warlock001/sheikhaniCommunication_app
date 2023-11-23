@@ -55,8 +55,7 @@ const Home = () => {
       <View>
         <Text style={styles.pageHeading}>Welcome to your workspace</Text>
         <Text style={styles.pageSubHeading}>
-          Chats moved to workspace are snoozed after your work hours.
-          <Text style={{ fontWeight: '600' }}>Manage work hours</Text>
+          Sort Groups with vendors and clients external to Sheikhani Group in this tab.
         </Text>
       </View>
       <View style={{ marginTop: 13 }}>
