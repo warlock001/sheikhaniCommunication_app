@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import axios from 'axios';
 import {
   ImageBackground,
@@ -20,11 +20,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Modal from '../component/GroupCreatingModal';
 import ShiftModal from '../component/ShiftModal';
-import { styles } from '../utils/styles';
-import { TextInput } from 'react-native-paper';
+import {styles} from '../utils/styles';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import GroupChatComponent from '../component/GroupChatComponent';
-export default function GroupMessagesScreen({ navigation }) {
+export default function GroupMessagesScreen({navigation}) {
   const [visible, setVisible] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [allRooms, setAllRooms] = useState([]);
@@ -44,7 +44,7 @@ export default function GroupMessagesScreen({ navigation }) {
     if (tempArray.length !== 0) {
       if (name) {
         let matchingObjects = tempArray.filter(obj =>
-          obj.title.toLowerCase().includes(name.toLowerCase())
+          obj.title.toLowerCase().includes(name.toLowerCase()),
         );
         console.log('tempArray', matchingObjects);
         return matchingObjects.length > 0 ? matchingObjects : allRooms;
@@ -78,7 +78,7 @@ export default function GroupMessagesScreen({ navigation }) {
       async function getChats() {
         const id = await AsyncStorage.getItem('@id');
         await axios
-          .get(`http://api.sheikhanigroup.com:3001/recentChats?id=${id}`)
+          .get(`https://api.sheikhanigroup.com/recentChats?id=${id}`)
           .then(results => {
             results.data.recentChats[0].groups.sort((a, b) => {
               const timeA = new Date(a.time);
@@ -112,7 +112,7 @@ export default function GroupMessagesScreen({ navigation }) {
       const id = await AsyncStorage.getItem('@id');
       await axios
         .get(
-          `http://api.sheikhanigroup.com:3001/user?department=${department}&query=${search}&id=${id}`,
+          `https://api.sheikhanigroup.com/user?department=${department}&query=${search}&id=${id}`,
         )
         .then(res => {
           setSearchedUsers(res.data.user);
@@ -145,7 +145,7 @@ export default function GroupMessagesScreen({ navigation }) {
               justifyContent: 'space-between',
             }}>
             <Text style={styles.pageHeading}>My Groups</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
               <Text
                 style={{
                   color: '#1F2067',
@@ -160,7 +160,7 @@ export default function GroupMessagesScreen({ navigation }) {
                   setVisible(true);
                 }}>
                 <Image
-                  style={{ width: 25, height: 25 }}
+                  style={{width: 25, height: 25}}
                   source={require('../images/add.png')}></Image>
               </TouchableOpacity>
             </View>
@@ -171,14 +171,14 @@ export default function GroupMessagesScreen({ navigation }) {
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
         </View>
-        <View style={{ marginTop: 13 }}>
+        <View style={{marginTop: 13}}>
           <KeyboardAvoidingView>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);
               }}
               onBlur={() => setSearchedUsersVisible(false)}
-              style={{ marginBottom: 5, color: '#000' }}
+              style={{marginBottom: 5, color: '#000'}}
               label="Search by name"
               onChangeText={text => {
                 setSearch(text);
@@ -187,22 +187,22 @@ export default function GroupMessagesScreen({ navigation }) {
                 <TextInput.Icon
                   name={() =>
                     searchedUsersVisible ? (
-                      <Pressable onPress={() => {
-                        setRefresh(!refresh);
-                        setSearchedUsersVisible(false);
-                        Keyboard.dismiss();
-                      }
-                      }>
+                      <Pressable
+                        onPress={() => {
+                          setRefresh(!refresh);
+                          setSearchedUsersVisible(false);
+                          Keyboard.dismiss();
+                        }}>
                         <Image
                           resizeMode="contain"
-                          style={{ width: 20 }}
+                          style={{width: 20}}
                           source={require('../images/close.png')}
                         />
                       </Pressable>
                     ) : (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 25 }}
+                        style={{width: 25}}
                         source={require('../images/search.png')}
                       />
                     )
@@ -211,22 +211,22 @@ export default function GroupMessagesScreen({ navigation }) {
               }
             />
           </KeyboardAvoidingView>
-
         </View>
 
-        <View
-          style={[
-            styles.chatlistContainer,
-            { display: 'flex' },
-          ]}>
+        <View style={[styles.chatlistContainer, {display: 'flex'}]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
-              style={{ flex: 1 }}
+              style={{flex: 1}}
               scrollEnabled
               extraData={rooms}
               data={rooms}
-              renderItem={({ item }) => (
-                <GroupChatComponent item={item} username={username} setShiftVisible={setShiftVisible} setShiftId={setShiftId} />
+              renderItem={({item}) => (
+                <GroupChatComponent
+                  item={item}
+                  username={username}
+                  setShiftVisible={setShiftVisible}
+                  setShiftId={setShiftId}
+                />
               )}
               keyExtractor={item => item.user}
             />

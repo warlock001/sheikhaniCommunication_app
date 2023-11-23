@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -14,20 +14,20 @@ import {
   StyleSheet,
 } from 'react-native';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from '../component/AddMemberModal';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import ReadReceipts from '../component/ReadReceipts';
 import GroupMessageComponent from '../component/GroupMessageComponent';
 let flatlistRef;
 let textInputRef; // Define the ref
 const mime = require('mime');
-const GroupMessaging = ({ route, navigation }) => {
+const GroupMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -42,7 +42,7 @@ const GroupMessaging = ({ route, navigation }) => {
   const [tagsVisible, setTagsVisible] = useState(false);
   const [tags, setTags] = useState([]);
 
-  function Item({ props, item }) {
+  function Item({props, item}) {
     const [image, setImage] = useState(false);
     const navigation = useNavigation();
 
@@ -50,11 +50,14 @@ const GroupMessaging = ({ route, navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://api.sheikhanigroup.com:3001/files/${props.profilePicture[0]}/true`,
+            `https://api.sheikhanigroup.com/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
-              `data:${image.headers['content-type']};base64,${image.data}`,
+              `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                ' ',
+                '',
+              ),
             );
           })
           .catch(err => {
@@ -80,12 +83,12 @@ const GroupMessaging = ({ route, navigation }) => {
             handleTag(props.id, image, props.title);
           }}>
           <View style={style.item}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {image ? (
                 <Image
                   resizeMode="cover"
-                  style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{ uri: image }}
+                  style={[styles.mavatar, {marginTop: 'auto'}]}
+                  source={{uri: image}}
                   width={30}
                 />
               ) : (
@@ -111,11 +114,11 @@ const GroupMessaging = ({ route, navigation }) => {
                   </Text>
                 </View>
               )}
-              <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+              <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
                 {props.title}
               </Text>
             </View>
-            <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+            <Text style={{color: '#8f8f8f', marginRight: 40}}>
               {props.designation}
             </Text>
           </View>
@@ -157,7 +160,7 @@ const GroupMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+      .post('https://api.sheikhanigroup.com/saveMessage', {
         senderid: myId,
         message: message,
         roomid: id,
@@ -197,7 +200,7 @@ const GroupMessaging = ({ route, navigation }) => {
       navigation.setOptions({
         headerTitle: () => (
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => {
               handleDetailNavigation(id);
             }}>
@@ -261,7 +264,7 @@ const GroupMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://api.sheikhanigroup.com:3001/getMessage?roomid=${id}`)
+          .get(`https://api.sheikhanigroup.com/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -336,7 +339,7 @@ const GroupMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://api.sheikhanigroup.com:3001/group?roomid=${id}`)
+        .get(`https://api.sheikhanigroup.com/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -350,11 +353,12 @@ const GroupMessaging = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -414,7 +418,7 @@ const GroupMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://api.sheikhanigroup.com:3001/files`,
+          url: `https://api.sheikhanigroup.com/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -423,7 +427,7 @@ const GroupMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+              .post('https://api.sheikhanigroup.com/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: id,
@@ -467,7 +471,7 @@ const GroupMessaging = ({ route, navigation }) => {
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -477,7 +481,7 @@ const GroupMessaging = ({ route, navigation }) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <GroupMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -493,7 +497,7 @@ const GroupMessaging = ({ route, navigation }) => {
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
@@ -513,7 +517,7 @@ const GroupMessaging = ({ route, navigation }) => {
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={true}
               data={members}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <Item
                   props={{
                     title: item.firstName + ' ' + item.lastName,
@@ -538,7 +542,7 @@ const GroupMessaging = ({ route, navigation }) => {
             <View>
               <Image
                 resizeMode="contain"
-                style={{ width: 25, height: 25, marginRight: 5 }}
+                style={{width: 25, height: 25, marginRight: 5}}
                 source={require('../images/attach_file.png')}
               />
             </View>
@@ -567,7 +571,7 @@ const GroupMessaging = ({ route, navigation }) => {
             <View>
               <Image
                 resizeMode="contain"
-                style={{ width: 30, height: 30, marginRight: 5 }}
+                style={{width: 30, height: 30, marginRight: 5}}
                 source={require('../images/send.png')}
               />
               {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}

@@ -1,5 +1,5 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import axios from 'axios';
 import {
   ImageBackground,
@@ -18,11 +18,11 @@ import {
   Keyboard,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { styles } from '../utils/styles';
-import { TextInput } from 'react-native-paper';
+import {styles} from '../utils/styles';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
 import WorkspaceChatComponent from '../component/WorkspaceChatComponent ';
-export default function WorkspaceMessagesScreen({ navigation }) {
+export default function WorkspaceMessagesScreen({navigation}) {
   const [rooms, setRooms] = useState([]);
   const [allRooms, setAllRooms] = useState([]);
   const [searchedUsers, setSearchedUsers] = useState([]);
@@ -39,7 +39,7 @@ export default function WorkspaceMessagesScreen({ navigation }) {
     if (tempArray.length !== 0) {
       if (name) {
         let matchingObjects = tempArray.filter(obj =>
-          obj.title.toLowerCase().includes(name.toLowerCase())
+          obj.title.toLowerCase().includes(name.toLowerCase()),
         );
         console.log('tempArray', matchingObjects);
         return matchingObjects.length > 0 ? matchingObjects : allRooms;
@@ -142,18 +142,19 @@ export default function WorkspaceMessagesScreen({ navigation }) {
             <Text style={styles.pageHeading}>Welcome To Your Workspace</Text>
           </View>
           <Text style={styles.pageSubHeading}>
-            Sort Groups with vendors and clients external to Sheikhani Group in this tab.
+            Sort Groups with vendors and clients external to Sheikhani
+            Group in this tab.
             {/* <Text style={{ fontWeight: "600" }}>Manage work hours</Text> */}
           </Text>
         </View>
-        <View style={{ marginTop: 13 }}>
+        <View style={{marginTop: 13}}>
           <KeyboardAvoidingView>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);
               }}
               onBlur={() => setSearchedUsersVisible(false)}
-              style={{ marginBottom: 5, color: '#000' }}
+              style={{marginBottom: 5, color: '#000'}}
               label="Search by name"
               onChangeText={text => {
                 setSearch(text);
@@ -162,22 +163,22 @@ export default function WorkspaceMessagesScreen({ navigation }) {
                 <TextInput.Icon
                   name={() =>
                     searchedUsersVisible ? (
-                      <Pressable onPress={() => {
-                        setRefresh(!refresh);
-                        setSearchedUsersVisible(false);
-                        Keyboard.dismiss();
-                      }
-                      }>
+                      <Pressable
+                        onPress={() => {
+                          setRefresh(!refresh);
+                          setSearchedUsersVisible(false);
+                          Keyboard.dismiss();
+                        }}>
                         <Image
                           resizeMode="contain"
-                          style={{ width: 20 }}
+                          style={{width: 20}}
                           source={require('../images/close.png')}
                         />
                       </Pressable>
                     ) : (
                       <Image
                         resizeMode="contain"
-                        style={{ width: 25 }}
+                        style={{width: 25}}
                         source={require('../images/search.png')}
                       />
                     )
@@ -186,20 +187,15 @@ export default function WorkspaceMessagesScreen({ navigation }) {
               }
             />
           </KeyboardAvoidingView>
-
         </View>
 
-        <View
-          style={[
-            styles.chatlistContainer,
-            { display: 'flex' },
-          ]}>
+        <View style={[styles.chatlistContainer, {display: 'flex'}]}>
           {Array.isArray(rooms) && rooms.length > 0 ? (
             <FlatList
-              style={{ flex: 1 }}
+              style={{flex: 1}}
               extraData={rooms}
               data={rooms}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <WorkspaceChatComponent item={item} username={username} />
               )}
               keyExtractor={item => item.user}
@@ -210,8 +206,6 @@ export default function WorkspaceMessagesScreen({ navigation }) {
             </View>
           )}
         </View>
-
-
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

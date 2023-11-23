@@ -1,11 +1,11 @@
-import { View, Image, Text, Pressable } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../utils/styles';
+import {View, Image, Text, Pressable} from 'react-native';
+import React, {useLayoutEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import socket from '../utils/socket';
-const DirectChatComponent = ({ item, username }) => {
+const DirectChatComponent = ({item, username}) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -45,16 +45,19 @@ const DirectChatComponent = ({ item, username }) => {
     async function getUserName() {
       setMessages(item.lastMessage);
       axios
-        .get(`http://api.sheikhanigroup.com:3001/user?id=${item.user}`)
+        .get(`https://api.sheikhanigroup.com/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://api.sheikhanigroup.com:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `https://api.sheikhanigroup.com/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
-                `data:${image.headers['content-type']};base64,${image.data}`,
+                `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                  ' ',
+                  '',
+                ),
               );
             });
         });
@@ -71,7 +74,7 @@ const DirectChatComponent = ({ item, username }) => {
 
   return (
     <Pressable style={styles.cchat} onPress={handleNavigation}>
-      <View style={{ width: 65, height: 65, marginRight: 15 }}>
+      <View style={{width: 65, height: 65, marginRight: 15}}>
         <Image
           resizeMode="cover"
           style={{
@@ -79,7 +82,7 @@ const DirectChatComponent = ({ item, username }) => {
             height: '100%',
             borderRadius: 100,
           }}
-          source={{ uri: image }}
+          source={{uri: image}}
         />
       </View>
       <View style={styles.crightContainer}>
@@ -87,22 +90,26 @@ const DirectChatComponent = ({ item, username }) => {
           <Text style={styles.cusername}>{name}</Text>
 
           <Text style={styles.cmessage}>
-            {item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
-              ? (
-                <View style={{ flexDirection: 'row', display: 'flex', gap: 5 }}>
-                  <Image style={{
+            {item.lastMessage.match(/^[0-9a-fA-F]{24}$/) ? (
+              <View style={{flexDirection: 'row', display: 'flex', gap: 5}}>
+                <Image
+                  style={{
                     width: 20,
                     height: 20,
-
-                  }} source={require('../images/image_message.png')} />
-                  <Text>Image</Text>
-                </View>
+                  }}
+                  source={require('../images/image_message.png')}
+                />
+                <Text>Image</Text>
+              </View>
+            ) : item.lastMessage ? (
+              JSON.stringify(item.lastMessage).length > 30 ? (
+                item.lastMessage.substring(0, 25) + '...'
+              ) : (
+                item.lastMessage
               )
-              : item.lastMessage
-                ? JSON.stringify(item.lastMessage).length > 30
-                  ? item.lastMessage.substring(0, 25) + '...'
-                  : item.lastMessage
-                : 'Tap to start chatting'}
+            ) : (
+              'Tap to start chatting'
+            )}
           </Text>
         </View>
         <View>
@@ -123,7 +130,7 @@ const DirectChatComponent = ({ item, username }) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{ textAlign: 'center', color: '#fff' }}>
+              <Text style={{textAlign: 'center', color: '#fff'}}>
                 {item.newMessages}
               </Text>
             </View>

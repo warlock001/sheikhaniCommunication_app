@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,20 +12,20 @@ import {
   Dimensions,
   Modal,
 } from 'react-native';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import {ScrollView, FlatList} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 // import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import axios from 'axios';
 // import ImageSelectModal from '../component/ImageSelectModal';
 const mime = require('mime');
 
-function Item({ props, item }) {
+function Item({props, item}) {
   const [image, setImage] = useState(false);
   const navigation = useNavigation();
 
@@ -35,7 +35,10 @@ function Item({ props, item }) {
         .get(`http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
-            `data:${image.headers['content-type']};base64,${image.data}`,
+            `data:${image.headers['content-type']};base64,${image.data}`.replace(
+              ' ',
+              '',
+            ),
           );
         })
         .catch(err => {
@@ -62,12 +65,12 @@ function Item({ props, item }) {
         handleDetailNavigation(props.id, image);
       }}>
       <View style={style.item}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {image ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
-              source={{ uri: image }}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
+              source={{uri: image}}
               width={30}
             />
           ) : (
@@ -93,14 +96,13 @@ function Item({ props, item }) {
               </Text>
             </View>
           )}
-          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
-
+          <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
             {props.title.length > 21
               ? props.title.slice(0, 21) + '...'
               : props.title}
           </Text>
         </View>
-        <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+        <Text style={{color: '#8f8f8f', marginRight: 40}}>
           {props.designation}
         </Text>
       </View>
@@ -108,8 +110,8 @@ function Item({ props, item }) {
   );
 }
 
-const GroupChatDetails = ({ route, navigation }) => {
-  const { roomid } = route.params;
+const GroupChatDetails = ({route, navigation}) => {
+  const {roomid} = route.params;
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [memberSize, setMemberSize] = useState(0);
@@ -141,11 +143,12 @@ const GroupChatDetails = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -168,7 +171,10 @@ const GroupChatDetails = ({ route, navigation }) => {
                 .get(`http://52.9.129.21:3001/files/${message.message}/true`)
                 .then(image => {
                   imagearr.push(
-                    `data:${image.headers['content-type']};base64,${image.data}`,
+                    `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                      ' ',
+                      '',
+                    ),
                   );
                 });
             }
@@ -195,8 +201,7 @@ const GroupChatDetails = ({ route, navigation }) => {
           style={{
             flex: 1,
           }}>
-
-          <View style={{ alignItems: 'center', flex: 1 }}>
+          <View style={{alignItems: 'center', flex: 1}}>
             <View
               style={
                 {
@@ -224,7 +229,7 @@ const GroupChatDetails = ({ route, navigation }) => {
                 }}>
                 <Image
                   resizeMode="cover"
-                  style={{ width: 15 }}
+                  style={{width: 15}}
                   source={require('../images/arrow_back.png')}
                 />
               </Pressable>
@@ -299,9 +304,9 @@ const GroupChatDetails = ({ route, navigation }) => {
               }}>
               {groupName}
             </Text>
-            <Text style={{ fontSize: 16, color: '#8F8F8F' }}>
+            <Text style={{fontSize: 16, color: '#8F8F8F'}}>
               Group -{' '}
-              <Text style={{ fontSize: 16, color: '#8F8F8F' }}>
+              <Text style={{fontSize: 16, color: '#8F8F8F'}}>
                 {memberSize} participants
               </Text>
             </Text>
@@ -337,21 +342,19 @@ const GroupChatDetails = ({ route, navigation }) => {
                 </Text>
               </View>
 
-
               <View
                 nestedScrollEnabled={true}
                 horizontal={true}
                 showsHorizontalScrollIndicator={true}
                 alwaysBounceHorizontal={true}
-                style={{ flex: 1 }}
-              >
+                style={{flex: 1}}>
                 <FlatList
                   keyboardShouldPersistTaps="handled"
                   horizontal={true} // Enable horizontal scrolling
                   showsHorizontalScrollIndicator={true}
                   scrollEnabled={true}
                   data={chatImage}
-                  renderItem={({ item }) => (
+                  renderItem={({item}) => (
                     <Pressable
                       onPress={() => {
                         setModalImage(item);
@@ -367,7 +370,7 @@ const GroupChatDetails = ({ route, navigation }) => {
                           borderWidth: 0.8,
                           borderColor: '#D9D9D9',
                         }}
-                        source={{ uri: item }}
+                        source={{uri: item}}
                         width={30}
                       />
                     </Pressable>
@@ -381,11 +384,11 @@ const GroupChatDetails = ({ route, navigation }) => {
                     // />
                   )}
                   keyExtractor={item => item._id}
-                  style={{ width: Dimensions.get('window').width }}
+                  style={{width: Dimensions.get('window').width}}
                 />
                 <ImageModal
                   visible={isModalVisible}
-                  profileImage={{ uri: modalImage }}
+                  profileImage={{uri: modalImage}}
                   onClose={toggleModal}
                 />
               </View>
@@ -399,15 +402,15 @@ const GroupChatDetails = ({ route, navigation }) => {
                   }}
                   source={require('../images/onboarding2.png')}
                 /> */}
-              <View style={{ marginHorizontal: 20, marginTop: 40 }}>
-                <Text style={{ marginLeft: 20, color: '#8f8f8f' }}>
+              <View style={{marginHorizontal: 20, marginTop: 40}}>
+                <Text style={{marginLeft: 20, color: '#8f8f8f'}}>
                   {memberSize} participants
                 </Text>
                 <FlatList
                   keyboardShouldPersistTaps="handled"
                   showsVerticalScrollIndicator={true}
                   data={members}
-                  renderItem={({ item }) => (
+                  renderItem={({item}) => (
                     <View>
                       <Item
                         props={{

@@ -1,6 +1,6 @@
-import { StyleSheet, Text, Image, View, Pressable, Alert } from 'react-native'
-import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {StyleSheet, Text, Image, View, Pressable, Alert} from 'react-native';
+import React from 'react';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import axios from 'axios';
 
 export default function ShiftModal({
@@ -9,24 +9,26 @@ export default function ShiftModal({
   delivered,
   shiftId,
   setRefresh,
-  refresh
+  refresh,
 }) {
-
   const closeModal = () => {
-    setShiftVisible(false)
+    setShiftVisible(false);
   };
 
   const shiftGroup = async () => {
-    await axios.post('http://api.sheikhanigroup.com:3001/shiftGroup', {
-      roomid: shiftId
-    }).then(res => {
-      setRefresh(!refresh)
-      Alert.alert("", "Group Transfered To Workspace Successfully")
-      setShiftVisible(false)
-    }).catch(err => {
-      Alert.alert("", "Unknown error occured")
-      setShiftVisible(false)
-    })
+    await axios
+      .post('http://api.sheikhanigroup.com:3001/shiftGroup', {
+        roomid: shiftId,
+      })
+      .then(res => {
+        setRefresh(!refresh);
+        Alert.alert('', 'Group Transfered To Workspace Successfully');
+        setShiftVisible(false);
+      })
+      .catch(err => {
+        Alert.alert('', 'Unknown error occured');
+        setShiftVisible(false);
+      });
   };
 
   return (
@@ -60,7 +62,7 @@ export default function ShiftModal({
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{ width: 20, height: 20 }}
+          style={{width: 20, height: 20}}
           source={require('../images/close.png')}
         />
       </Pressable>
@@ -77,9 +79,8 @@ export default function ShiftModal({
           color: '#fff',
         }}
         onPress={() => {
-          shiftGroup()
-        }}
-      >
+          shiftGroup();
+        }}>
         <Text
           style={{
             color: '#fff',
@@ -90,10 +91,8 @@ export default function ShiftModal({
           Shift To Workspace
         </Text>
       </TouchableOpacity>
-
-
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -101,5 +100,5 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     borderColor: 'grey',
     margin: 5,
-  }
-})
+  },
+});

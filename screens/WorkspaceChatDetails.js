@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -12,15 +12,15 @@ import {
   Dimensions,
   Modal,
 } from 'react-native';
-import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import {ScrollView, FlatList} from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
-import { styles } from '../utils/styles';
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
+import {styles} from '../utils/styles';
 import ImageModal from '../component/ImageModal';
 import axios from 'axios';
 const mime = require('mime');
 
-function Item({ props, item }) {
+function Item({props, item}) {
   const [image, setImage] = useState(false);
   const navigation = useNavigation();
 
@@ -30,7 +30,10 @@ function Item({ props, item }) {
         .get(`http://52.9.129.21:3001/files/${props.profilePicture[0]}/true`)
         .then(image => {
           setImage(
-            `data:${image.headers['content-type']};base64,${image.data}`,
+            `data:${image.headers['content-type']};base64,${image.data}`.replace(
+              ' ',
+              '',
+            ),
           );
         })
         .catch(err => {
@@ -57,12 +60,12 @@ function Item({ props, item }) {
         handleDetailNavigation(props.id, image);
       }}>
       <View style={style.item}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {image ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
-              source={{ uri: image }}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
+              source={{uri: image}}
               width={30}
             />
           ) : (
@@ -88,13 +91,13 @@ function Item({ props, item }) {
               </Text>
             </View>
           )}
-          <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+          <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
             {props.title.length > 21
               ? props.title.slice(0, 21) + '...'
               : props.title}
           </Text>
         </View>
-        <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+        <Text style={{color: '#8f8f8f', marginRight: 40}}>
           {props.designation}
         </Text>
       </View>
@@ -102,8 +105,8 @@ function Item({ props, item }) {
   );
 }
 
-const WorkspaceChatDetails = ({ route, navigation }) => {
-  const { roomid } = route.params;
+const WorkspaceChatDetails = ({route, navigation}) => {
+  const {roomid} = route.params;
   const [loader, setLoader] = useState(true);
   const [groupName, setGroupName] = useState('');
   const [memberSize, setMemberSize] = useState(0);
@@ -135,11 +138,12 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -151,15 +155,24 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
       let imagearr = [];
 
       console.log('roomId', roomid);
-      const response = await axios.get(`http://52.9.129.21:3001/getMessage?roomid=${roomid}`);
+      const response = await axios.get(
+        `http://52.9.129.21:3001/getMessage?roomid=${roomid}`,
+      );
 
       await Promise.all(
-        response.data.messages.map(async (message) => {
+        response.data.messages.map(async message => {
           if (message.isPicture) {
-            const image = await axios.get(`http://52.9.129.21:3001/files/${message.message}/true`);
-            imagearr.push(`data:${image.headers['content-type']};base64,${image.data}`,);
+            const image = await axios.get(
+              `http://52.9.129.21:3001/files/${message.message}/true`,
+            );
+            imagearr.push(
+              `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                ' ',
+                '',
+              ),
+            );
           }
-        })
+        }),
       );
 
       // console.log(imagearr, "imagearr");
@@ -183,11 +196,8 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
           // pagingEnabled={false}
           style={{
             flex: 1,
-
-          }}
-        >
-
-          <View style={{ alignItems: 'center', flex: 1 }}>
+          }}>
+          <View style={{alignItems: 'center', flex: 1}}>
             <View>
               <Pressable
                 onPress={() => navigation.goBack()}
@@ -205,7 +215,7 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                 }}>
                 <Image
                   resizeMode="cover"
-                  style={{ width: 15 }}
+                  style={{width: 15}}
                   source={require('../images/arrow_back.png')}
                 />
               </Pressable>
@@ -260,9 +270,9 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
               }}>
               {groupName}
             </Text>
-            <Text style={{ fontSize: 16, color: '#8F8F8F' }}>
+            <Text style={{fontSize: 16, color: '#8F8F8F'}}>
               Group -{' '}
-              <Text style={{ fontSize: 16, color: '#8F8F8F' }}>
+              <Text style={{fontSize: 16, color: '#8F8F8F'}}>
                 {memberSize} participants
               </Text>
             </Text>
@@ -303,15 +313,14 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={true}
                 alwaysBounceHorizontal={true}
-                style={{ flex: 1 }}
-              >
+                style={{flex: 1}}>
                 <FlatList
                   keyboardShouldPersistTaps="handled"
                   horizontal={true} // Enable horizontal scrolling
                   showsHorizontalScrollIndicator={true}
                   scrollEnabled={true}
                   data={chatImage}
-                  renderItem={({ item }) => (
+                  renderItem={({item}) => (
                     <Pressable
                       onPress={() => {
                         setModalImage(item);
@@ -333,24 +342,27 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                     </Pressable>
                   )}
                   // keyExtractor={item => item._id}
-                  style={{ width: Dimensions.get('window').width, backgroundColor: 'red', }}
+                  style={{
+                    width: Dimensions.get('window').width,
+                    backgroundColor: 'red',
+                  }}
                 />
                 <ImageModal
                   visible={isModalVisible}
-                  profileImage={{ uri: modalImage }}
+                  profileImage={{uri: modalImage}}
                   onClose={toggleModal}
                 />
               </View>
               {/* </SafeAreaView> */}
-              <View style={{ marginHorizontal: 20, marginTop: 40 }}>
-                <Text style={{ marginLeft: 20, color: '#8f8f8f' }}>
+              <View style={{marginHorizontal: 20, marginTop: 40}}>
+                <Text style={{marginLeft: 20, color: '#8f8f8f'}}>
                   {memberSize} participants
                 </Text>
                 <FlatList
                   keyboardShouldPersistTaps="handled"
                   showsVerticalScrollIndicator={true}
                   data={members}
-                  renderItem={({ item }) => (
+                  renderItem={({item}) => (
                     <View>
                       <Item
                         props={{
@@ -360,9 +372,7 @@ const WorkspaceChatDetails = ({ route, navigation }) => {
                           profilePicture: item.profilePicture,
                         }}
                       />
-
                     </View>
-
                   )}
                   keyExtractor={item => item._id}
                   style={{

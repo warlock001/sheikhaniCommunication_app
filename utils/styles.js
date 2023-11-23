@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   loginscreen: {
@@ -40,7 +40,8 @@ export const styles = StyleSheet.create({
   chatscreen: {
     backgroundColor: '#F7F7F7',
     flex: 1,
-    padding: 24,
+    margin: 24,
+    // padding: 24,
     paddingBottom: 0,
     position: 'relative',
   },
@@ -64,9 +65,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   chatlistContainer: {
-    paddingHorizontal: 0,
+    // paddingHorizontal: 20,
     marginTop: 16,
-    flex: 1
+    flex: 1,
   },
   chatemptyContainer: {
     width: '100%',
@@ -83,12 +84,12 @@ export const styles = StyleSheet.create({
   messagingscreen: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   messaginginputContainer: {
     width: '100%',
     // Height: 60,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     paddingBottom: 15,
     paddingVertical: 5,
     paddingHorizontal: 15,
@@ -217,7 +218,7 @@ export const styles = StyleSheet.create({
   },
   ctime: {
     opacity: 0.5,
-    color: '#000'
+    color: '#000',
   },
   pageHeading: {
     fontSize: 23,
@@ -230,7 +231,7 @@ export const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Roboto',
     fontWeight: '400',
-    color: '#1F2067'
+    color: '#1F2067',
   },
   pageSubHeading: {
     fontSize: 15,

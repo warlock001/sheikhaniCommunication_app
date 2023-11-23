@@ -1,11 +1,11 @@
-import { View, Image, Text, Pressable } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { styles } from '../utils/styles';
+import {View, Image, Text, Pressable} from 'react-native';
+import React, {useLayoutEffect, useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => {
+import {TouchableOpacity} from 'react-native-gesture-handler';
+const GroupChatComponent = ({item, username, setShiftVisible, setShiftId}) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -27,16 +27,19 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
       setMessages(item.lastMessage);
 
       await axios
-        .get(`http://api.sheikhanigroup.com:3001/user?id=${item.user}`)
+        .get(`https://api.sheikhanigroup.com/user?id=${item.user}`)
         .then(result => {
           setName(result.data.user.firstName + ' ' + result.data.user.lastName);
           axios
             .get(
-              `http://api.sheikhanigroup.com:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `https://api.sheikhanigroup.com/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
-                `data:${image.headers['content-type']};base64,${image.data}`,
+                `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                  ' ',
+                  '',
+                ),
               );
             });
         });
@@ -52,10 +55,13 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
   };
 
   return (
-    <TouchableOpacity style={styles.cchat} onLongPress={() => {
-      setShiftId(item.user)
-      setShiftVisible(true)
-    }} onPress={handleNavigation}>
+    <TouchableOpacity
+      style={styles.cchat}
+      onLongPress={() => {
+        setShiftId(item.user);
+        setShiftVisible(true);
+      }}
+      onPress={handleNavigation}>
       <View
         style={{
           width: 55,
@@ -85,24 +91,27 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
               : item.title}
           </Text>
 
-          <Text style={[styles.cmessage, { width: '100%' }]}>
-            {item.lastMessage.match(/^[0-9a-fA-F]{24}$/)
-              ? (
-                <View style={{ flexDirection: 'row', display: 'flex', gap: 5 }}>
-                  <Image style={{
+          <Text style={[styles.cmessage, {width: '100%'}]}>
+            {item.lastMessage.match(/^[0-9a-fA-F]{24}$/) ? (
+              <View style={{flexDirection: 'row', display: 'flex', gap: 5}}>
+                <Image
+                  style={{
                     width: 20,
                     height: 20,
-
-                  }} source={require('../images/image_message.png')} />
-                  <Text srtle={{ color: '#000' }}>Image</Text>
-                </View>
+                  }}
+                  source={require('../images/image_message.png')}
+                />
+                <Text srtle={{color: '#000'}}>Image</Text>
+              </View>
+            ) : item.lastMessage ? (
+              JSON.stringify(item.lastMessage).length > 30 ? (
+                item.lastMessage.substring(0, 25) + '...'
+              ) : (
+                item.lastMessage
               )
-              :
-              item.lastMessage
-                ? JSON.stringify(item.lastMessage).length > 30
-                  ? item.lastMessage.substring(0, 25) + '...'
-                  : item.lastMessage
-                : 'Tap to start chatting'}
+            ) : (
+              'Tap to start chatting'
+            )}
           </Text>
         </View>
         <View>
@@ -123,7 +132,7 @@ const GroupChatComponent = ({ item, username, setShiftVisible, setShiftId }) => 
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{ textAlign: 'center', color: '#fff' }}>
+              <Text style={{textAlign: 'center', color: '#fff'}}>
                 {item.newMessages}
               </Text>
             </View>
