@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -18,19 +18,19 @@ import {
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import {styles} from '../utils/styles';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import ReadReceipts from '../component/ReadReceipts';
 const mime = require('mime');
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const DirectMessaging = ({route, navigation}) => {
+const DirectMessaging = ({ route, navigation }) => {
   const [user, setUser] = useState('');
-  const {name, id} = route.params;
+  const { name, id } = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -74,7 +74,6 @@ const DirectMessaging = ({route, navigation}) => {
         recieverid: id,
       })
       .then(res => {
-        console.log('message send - ', res.data);
         let data = {
           roomId: roomId,
           message: {
@@ -100,8 +99,6 @@ const DirectMessaging = ({route, navigation}) => {
   };
 
   const handleDetailNavigation = async (id, image) => {
-    console.log(chatMessages);
-    console.log('sfd');
 
     await navigation.navigate('DirectMessageDetails', {
       id: id,
@@ -121,21 +118,21 @@ const DirectMessaging = ({route, navigation}) => {
     navigation.setOptions({
       headerTitle: () => (
         <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center', height: 45}}
+          style={{ flexDirection: 'row', alignItems: 'center', height: 45 }}
           onPress={() => {
             handleDetailNavigation(id, image);
           }}>
           {image != '' ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, {marginTop: 'auto'}]}
-              source={{uri: image}}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
+              source={{ uri: image }}
               width={30}
             />
           ) : (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, {marginTop: 'auto'}]}
+              style={[styles.mavatar, { marginTop: 'auto' }]}
               source={require('../images/myaccount.png')}
               width={30}
             />
@@ -441,7 +438,7 @@ const DirectMessaging = ({route, navigation}) => {
       <View
         style={[
           styles.messagingscreen,
-          {paddingVertical: 15, paddingHorizontal: 10},
+          { paddingVertical: 15, paddingHorizontal: 10 },
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -452,7 +449,7 @@ const DirectMessaging = ({route, navigation}) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <DirectMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -470,7 +467,7 @@ const DirectMessaging = ({route, navigation}) => {
             // inverted
             // initialScrollIndex={1}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({animated: false})
+              flatlistRef.scrollToEnd({ animated: false })
             }
           />
         ) : (
@@ -478,7 +475,7 @@ const DirectMessaging = ({route, navigation}) => {
         )}
       </View>
       <KeyboardAvoidingView
-        style={{height: 60}}
+        style={{ height: 60 }}
         behavior={'position'}
         enabled
         keyboardVerticalOffset={windowHeight}>
@@ -487,7 +484,7 @@ const DirectMessaging = ({route, navigation}) => {
             <View>
               <Image
                 resizeMode="contain"
-                style={{width: 25, height: 25, marginRight: 5}}
+                style={{ width: 25, height: 25, marginRight: 5 }}
                 source={require('../images/attach_file.png')}
               />
             </View>
@@ -510,7 +507,7 @@ const DirectMessaging = ({route, navigation}) => {
             <View>
               <Image
                 resizeMode="contain"
-                style={{width: 30, height: 30, marginRight: 5}}
+                style={{ width: 30, height: 30, marginRight: 5 }}
                 source={require('../images/send.png')}
               />
               {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}

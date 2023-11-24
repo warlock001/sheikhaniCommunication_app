@@ -1,11 +1,11 @@
-import {View, Image, Text, Pressable} from 'react-native';
-import React, {useLayoutEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from '../utils/styles';
+import { View, Image, Text, Pressable } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import socket from '../utils/socket';
-const DirectChatComponent = ({item, username}) => {
+const DirectChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
   const [name, setName] = useState('');
@@ -37,7 +37,6 @@ const DirectChatComponent = ({item, username}) => {
         roomid: roomid,
       };
       socket.emit('join_room', data);
-      console.log(socket);
     }
     joinroom();
   }, []);
@@ -75,7 +74,7 @@ const DirectChatComponent = ({item, username}) => {
 
   return (
     <Pressable style={styles.cchat} onPress={handleNavigation}>
-      <View style={{width: 65, height: 65, marginRight: 15}}>
+      <View style={{ width: 65, height: 65, marginRight: 15 }}>
         <Image
           resizeMode="cover"
           style={{
@@ -83,7 +82,7 @@ const DirectChatComponent = ({item, username}) => {
             height: '100%',
             borderRadius: 100,
           }}
-          source={{uri: image}}
+          source={{ uri: image }}
         />
       </View>
       <View style={styles.crightContainer}>
@@ -92,7 +91,7 @@ const DirectChatComponent = ({item, username}) => {
 
           <Text style={styles.cmessage}>
             {item.lastMessage.match(/^[0-9a-fA-F]{24}$/) ? (
-              <View style={{flexDirection: 'row', display: 'flex', gap: 5}}>
+              <View style={{ flexDirection: 'row', display: 'flex', gap: 5 }}>
                 <Image
                   style={{
                     width: 20,
@@ -131,7 +130,7 @@ const DirectChatComponent = ({item, username}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <Text style={{textAlign: 'center', color: '#fff'}}>
+              <Text style={{ textAlign: 'center', color: '#fff' }}>
                 {item.newMessages}
               </Text>
             </View>

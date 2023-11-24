@@ -6,11 +6,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ChatComponent = ({ item, username }) => {
   const navigation = useNavigation();
   const [messages, setMessages] = useState({});
-  console.log("item : " + JSON.stringify(item));
 
   useLayoutEffect(() => {
     setMessages(item.messages[item.messages.length - 1]);
-    console.log("item : " + JSON.stringify(item));
     async function getUserName() { }
     getUserName();
   }, []);

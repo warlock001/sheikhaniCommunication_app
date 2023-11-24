@@ -1,9 +1,9 @@
-import {View, Text, Image, Pressable} from 'react-native';
-import React, {useState, useLayoutEffect, useEffect} from 'react';
-import {styles} from '../utils/styles';
+import { View, Text, Image, Pressable } from 'react-native';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { styles } from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 import ImageModal from './ImageModal';
 export default function DirectMessageComponent({
@@ -82,14 +82,13 @@ export default function DirectMessageComponent({
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
   const toggleModal = () => {
-    console.log('hi the modal is availables');
     setModalVisible(!isModalVisible);
   };
   return (
     <TouchableOpacity
       style={{
         shadowColor: '#000',
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.8,
         shadowRadius: 2,
         elevation: 5,
@@ -104,9 +103,9 @@ export default function DirectMessageComponent({
           style={
             status
               ? [styles.mmessageWrapper]
-              : [styles.mmessageWrapper, {alignItems: 'flex-end'}]
+              : [styles.mmessageWrapper, { alignItems: 'flex-end' }]
           }>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {status ? (
               image ? (
                 <Image
@@ -120,7 +119,7 @@ export default function DirectMessageComponent({
                     marginRight: 2,
                     marginTop: 'auto',
                   }}
-                  source={{uri: image}}
+                  source={{ uri: image }}
                 />
               ) : (
                 // <Text>{image}</Text>
@@ -142,24 +141,24 @@ export default function DirectMessageComponent({
                 <Image
                   resizeMode="cover"
                   // style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{uri: mediaImage.replace(' ', '')}}
+                  source={{ uri: mediaImage.replace(' ', '') }}
                   width={300}
                   height={300}
-                  style={{borderRadius: 30}}
+                  style={{ borderRadius: 30 }}
                 />
               </TouchableOpacity>
             ) : (
               <View
                 style={
                   status
-                    ? [styles.mmessage, {borderBottomRightRadius: 10}]
+                    ? [styles.mmessage, { borderBottomRightRadius: 10 }]
                     : [
-                        styles.mmessage,
-                        {
-                          backgroundColor: '#1F2067',
-                          borderBottomLeftRadius: 10,
-                        },
-                      ]
+                      styles.mmessage,
+                      {
+                        backgroundColor: '#1F2067',
+                        borderBottomLeftRadius: 10,
+                      },
+                    ]
                 }>
                 {status && item.title ? (
                   <Text
@@ -174,32 +173,32 @@ export default function DirectMessageComponent({
                 ) : (
                   ''
                 )}
-                <Text style={status ? [{color: '#000'}] : [{color: '#FFF'}]}>
+                <Text style={status ? [{ color: '#000' }] : [{ color: '#FFF' }]}>
                   {item.message}
                 </Text>
                 <Text
                   style={
                     status
                       ? [
-                          {
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 7,
-                            fontSize: 10,
-                            fontWeight: '400',
-                            color: '#1F2067',
-                          },
-                        ]
+                        {
+                          position: 'absolute',
+                          bottom: 0,
+                          right: 7,
+                          fontSize: 10,
+                          fontWeight: '400',
+                          color: '#1F2067',
+                        },
+                      ]
                       : [
-                          {
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 7,
-                            fontSize: 10,
-                            fontWeight: '400',
-                            color: '#fff',
-                          },
-                        ]
+                        {
+                          position: 'absolute',
+                          bottom: 0,
+                          right: 7,
+                          fontSize: 10,
+                          fontWeight: '400',
+                          color: '#fff',
+                        },
+                      ]
                   }>
                   {hour + ':' + mins}
                 </Text>
@@ -240,7 +239,7 @@ export default function DirectMessageComponent({
         </View>
         <ImageModal
           visible={isModalVisible}
-          profileImage={{uri: mediaImage.replace(' ', '')}}
+          profileImage={{ uri: mediaImage.replace(' ', '') }}
           onClose={toggleModal}
         />
       </View>
