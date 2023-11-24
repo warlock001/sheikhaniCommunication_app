@@ -1,6 +1,6 @@
-import {StyleSheet, Text, Image, View, Pressable, Alert} from 'react-native';
+import { StyleSheet, Text, Image, View, Pressable, Alert } from 'react-native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 
 export default function ShiftModal({
@@ -22,7 +22,7 @@ export default function ShiftModal({
       })
       .then(res => {
         setRefresh(!refresh);
-        Alert.alert('', 'Group Transfered To Workspace Successfully');
+        Alert.alert('', 'Group Transfered To External Groups Successfully');
         setShiftVisible(false);
       })
       .catch(err => {
@@ -62,7 +62,7 @@ export default function ShiftModal({
         onPress={closeModal}>
         <Image
           resizeMode="contain"
-          style={{width: 20, height: 20}}
+          style={{ width: 20, height: 20 }}
           source={require('../images/close.png')}
         />
       </Pressable>
