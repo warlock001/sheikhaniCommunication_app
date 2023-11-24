@@ -87,7 +87,7 @@ export default function ShiftModal({
             fontWeight: '600',
             letterSpacing: 4,
           }}>
-          Shift To Workspace
+          Shift To External Groups
         </Text>
       </TouchableOpacity>
 
