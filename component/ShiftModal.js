@@ -17,7 +17,7 @@ export default function ShiftModal({
 
   const shiftGroup = async () => {
     await axios
-      .post('http://api.sheikhanigroup.com:3001/shiftGroup', {
+      .post('https://api.sheikhanigroup.com/shiftGroup', {
         roomid: shiftId,
       })
       .then(res => {
@@ -34,7 +34,7 @@ export default function ShiftModal({
   return (
     <View
       style={{
-        width: '100%',
+        width: '95%',
         borderColor: '#ddd',
         borderWidth: 5,
         borderRadius: 25,
@@ -43,7 +43,7 @@ export default function ShiftModal({
         justifyContent: 'center',
         backgroundColor: '#fff',
         position: 'absolute',
-        left: 25,
+        left: '2.5%',
         bottom: 10,
         zIndex: 10,
         // paddingVertical: 50,
@@ -88,7 +88,7 @@ export default function ShiftModal({
             fontWeight: '600',
             letterSpacing: 4,
           }}>
-          Shift To Workspace
+          Shift To External Groups
         </Text>
       </TouchableOpacity>
     </View>

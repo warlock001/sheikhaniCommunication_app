@@ -192,7 +192,10 @@ export default function DirectMessagesScreen({navigation}) {
           </Text>
         </View>
         <View style={{marginTop: 13}}>
-          <KeyboardAvoidingView>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={45}
+            enabled>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);

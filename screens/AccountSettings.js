@@ -179,7 +179,10 @@ const Profile = () => {
         padding: 10,
         position: 'relative',
       }}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={45}
+        enabled>
         <ScrollView>
           <View style={{padding: 10}}>
             <Text

@@ -12,6 +12,9 @@ import {
   Modal,
   TouchableOpacity,
   KeyboardAvoidingView,
+  SafeAreaView,
+  Platform,
+  Dimensions,
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
@@ -37,6 +40,8 @@ const DirectMessaging = ({route, navigation}) => {
   const [seen, setSeen] = useState('');
   const [delivered, setDelivered] = useState('');
   const [image, setImage] = useState('');
+  const windowHeight = Dimensions.get('window').height * 0.1;
+
   const getUsername = async () => {
     try {
       const value = await AsyncStorage.getItem('@username');
@@ -116,7 +121,7 @@ const DirectMessaging = ({route, navigation}) => {
     navigation.setOptions({
       headerTitle: () => (
         <TouchableOpacity
-          style={{flexDirection: 'row', alignItems: 'center'}}
+          style={{flexDirection: 'row', alignItems: 'center', height: 45}}
           onPress={() => {
             handleDetailNavigation(id, image);
           }}>
@@ -432,52 +437,51 @@ const DirectMessaging = ({route, navigation}) => {
   // }
 
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1}}
-      behavior="padding"
-      enabled
-      keyboardVerticalOffset={50}>
-      <View style={styles.messagingscreen}>
-        <View
-          style={[
-            styles.messagingscreen,
-            {paddingVertical: 15, paddingHorizontal: 10},
-          ]}>
-          {chatMessages[0] ? (
-            <FlatList
-              // style={{ display: rendered ? 'flex' : 'none' }}
-              extraData={chatMessages}
-              ref={ref => {
-                flatlistRef = ref;
-              }}
-              initialNumToRender={chatMessages.length}
-              data={chatMessages}
-              renderItem={({item}) => (
-                <DirectMessageComponent
-                  setSeen={setSeen}
-                  setDelivered={setDelivered}
-                  setReceiptsModalVisible={setReceiptsModalVisible}
-                  lastItem={chatMessages[chatMessages.length - 1]._id}
-                  onRendered={() => {
-                    setRendered(true);
-                    console.log(true);
-                  }}
-                  item={item}
-                  user={user}
-                />
-              )}
-              keyExtractor={item => item._id}
-              // inverted
-              // initialScrollIndex={1}
-              onContentSizeChange={() =>
-                flatlistRef.scrollToEnd({animated: false})
-              }
-            />
-          ) : (
-            ''
-          )}
-        </View>
-
+    <SafeAreaView style={styles.messagingscreen}>
+      <View
+        style={[
+          styles.messagingscreen,
+          {paddingVertical: 15, paddingHorizontal: 10},
+        ]}>
+        {chatMessages[0] ? (
+          <FlatList
+            // style={{ display: rendered ? 'flex' : 'none' }}
+            extraData={chatMessages}
+            ref={ref => {
+              flatlistRef = ref;
+            }}
+            initialNumToRender={chatMessages.length}
+            data={chatMessages}
+            renderItem={({item}) => (
+              <DirectMessageComponent
+                setSeen={setSeen}
+                setDelivered={setDelivered}
+                setReceiptsModalVisible={setReceiptsModalVisible}
+                lastItem={chatMessages[chatMessages.length - 1]._id}
+                onRendered={() => {
+                  setRendered(true);
+                  console.log(true);
+                }}
+                item={item}
+                user={user}
+              />
+            )}
+            keyExtractor={item => item._id}
+            // inverted
+            // initialScrollIndex={1}
+            onContentSizeChange={() =>
+              flatlistRef.scrollToEnd({animated: false})
+            }
+          />
+        ) : (
+          ''
+        )}
+      </View>
+      <KeyboardAvoidingView
+        style={{height: 60}}
+        behavior={'position'}
+        enabled
+        keyboardVerticalOffset={windowHeight}>
         <View style={styles.messaginginputContainer}>
           <Pressable onPress={chooseImage}>
             <View>
@@ -499,6 +503,7 @@ const DirectMessaging = ({route, navigation}) => {
             onChangeText={value => setMessage(value)}
             placeholder="Write Message..."
           />
+
           <Pressable
             //   style={styles.messagingbuttonContainer}
             onPress={handleNewMessage}>
@@ -512,17 +517,18 @@ const DirectMessaging = ({route, navigation}) => {
             </View>
           </Pressable>
         </View>
-        {receiptsModalVisible ? (
-          <ReadReceipts
-            setReceiptsModalVisible={setReceiptsModalVisible}
-            seen={seen}
-            delivered={delivered}
-          />
-        ) : (
-          ''
-        )}
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+
+      {receiptsModalVisible ? (
+        <ReadReceipts
+          setReceiptsModalVisible={setReceiptsModalVisible}
+          seen={seen}
+          delivered={delivered}
+        />
+      ) : (
+        ''
+      )}
+    </SafeAreaView>
   );
 };
 

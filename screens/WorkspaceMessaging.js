@@ -12,6 +12,7 @@ import {
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native';
 import socket from '../utils/socket';
 import {ActivityIndicator, MD2Colors} from 'react-native-paper';
@@ -23,6 +24,7 @@ import Modal from '../component/AddMemberModal';
 import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import ReadReceipts from '../component/ReadReceipts';
 import GroupMessageComponent from '../component/GroupMessageComponent';
+import {SafeAreaView} from 'react-native-safe-area-context';
 let flatlistRef;
 let textInputRef; // Define the ref
 const mime = require('mime');
@@ -43,7 +45,7 @@ const WorkspaceMessaging = ({route, navigation}) => {
   const [tagsVisible, setTagsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState([]);
-
+  const windowHeight = Dimensions.get('window').height * 0.1;
   function Item({props, item}) {
     const [image, setImage] = useState(false);
     const navigation = useNavigation();
@@ -480,7 +482,7 @@ const WorkspaceMessaging = ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.messagingscreen}>
+    <SafeAreaView style={styles.messagingscreen}>
       <View
         style={[
           styles.messagingscreen,
@@ -517,82 +519,86 @@ const WorkspaceMessaging = ({route, navigation}) => {
           ''
         )}
       </View>
-
-      <View>
-        {tagsVisible ? (
-          <View
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              position: 'absolute',
-              bottom: 70,
-            }}>
-            <FlatList
-              keyboardShouldPersistTaps="handled"
-              showsVerticalScrollIndicator={true}
-              data={members}
-              renderItem={({item}) => (
-                <Item
-                  props={{
-                    title: item.firstName + ' ' + item.lastName,
-                    id: item._id,
-                    designation: item.designation,
-                    profilePicture: item.profilePicture,
-                  }}
-                />
-              )}
-              keyExtractor={item => item._id}
+      <KeyboardAvoidingView
+        style={{height: 60}}
+        behavior={'position'}
+        enabled
+        keyboardVerticalOffset={windowHeight}>
+        <View>
+          {tagsVisible ? (
+            <View
               style={{
-                width: Dimensions.get('window').width,
-                marginLeft: 20,
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                position: 'absolute',
+                bottom: 70,
+              }}>
+              <FlatList
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={true}
+                data={members}
+                renderItem={({item}) => (
+                  <Item
+                    props={{
+                      title: item.firstName + ' ' + item.lastName,
+                      id: item._id,
+                      designation: item.designation,
+                      profilePicture: item.profilePicture,
+                    }}
+                  />
+                )}
+                keyExtractor={item => item._id}
+                style={{
+                  width: Dimensions.get('window').width,
+                  marginLeft: 20,
+                }}
+              />
+            </View>
+          ) : (
+            ''
+          )}
+          <View style={styles.messaginginputContainer}>
+            <Pressable onPress={chooseImage}>
+              <View>
+                <Image
+                  resizeMode="contain"
+                  style={{width: 25, height: 25, marginRight: 5}}
+                  source={require('../images/attach_file.png')}
+                />
+              </View>
+            </Pressable>
+            <TextInput
+              multiline={true}
+              value={message}
+              ref={inputRef => {
+                textInputRef = inputRef;
               }}
+              style={styles.messaginginput}
+              onChangeText={value => {
+                setMessage(value);
+                if (value.charAt(value.length - 1) == '@') {
+                  setTagsVisible(true);
+                } else {
+                  setTagsVisible(false);
+                }
+              }}
+              placeholder="Write Message..."
+              placeholderTextColor="#000"
             />
+            <Pressable
+              //   style={styles.messagingbuttonContainer}
+              onPress={handleNewMessage}>
+              <View>
+                <Image
+                  resizeMode="contain"
+                  style={{width: 30, height: 30, marginRight: 5}}
+                  source={require('../images/send.png')}
+                />
+                {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
+              </View>
+            </Pressable>
           </View>
-        ) : (
-          ''
-        )}
-        <View style={styles.messaginginputContainer}>
-          <Pressable onPress={chooseImage}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={{width: 25, height: 25, marginRight: 5}}
-                source={require('../images/attach_file.png')}
-              />
-            </View>
-          </Pressable>
-          <TextInput
-            multiline={true}
-            value={message}
-            ref={inputRef => {
-              textInputRef = inputRef;
-            }}
-            style={styles.messaginginput}
-            onChangeText={value => {
-              setMessage(value);
-              if (value.charAt(value.length - 1) == '@') {
-                setTagsVisible(true);
-              } else {
-                setTagsVisible(false);
-              }
-            }}
-            placeholder="Write Message..."
-            placeholderTextColor="#000"
-          />
-          <Pressable
-            //   style={styles.messagingbuttonContainer}
-            onPress={handleNewMessage}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={{width: 30, height: 30, marginRight: 5}}
-                source={require('../images/send.png')}
-              />
-              {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
-            </View>
-          </Pressable>
         </View>
-      </View>
-
+      </KeyboardAvoidingView>
       {receiptsModalVisible ? (
         <ReadReceipts
           setReceiptsModalVisible={setReceiptsModalVisible}
@@ -621,7 +627,7 @@ const WorkspaceMessaging = ({route, navigation}) => {
       )}
 
       {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
-    </View>
+    </SafeAreaView>
   );
 };
 

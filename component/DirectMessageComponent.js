@@ -19,7 +19,7 @@ export default function DirectMessageComponent({
   const [image, setImage] = useState('');
   const [mediaImage, setMediaImage] = useState('');
   const date = new Date(item.createdAt);
-  console.log(mediaImage);
+  // console.log(mediaImage);
   useLayoutEffect(() => {
     async function getStatus() {
       const myId = await AsyncStorage.getItem('@id');
@@ -34,7 +34,7 @@ export default function DirectMessageComponent({
       await axios
         .get(`https://api.sheikhanigroup.com/user?id=${item.senderid}`)
         .then(async result => {
-          console.log('image ->', result.data.user.profilePicture[0]);
+          // console.log('image ->', result.data.user.profilePicture[0]);
           await axios
             .get(
               `https://api.sheikhanigroup.com/files/${result.data.user.profilePicture[0]}/true`,
@@ -82,10 +82,18 @@ export default function DirectMessageComponent({
   const [isModalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
   const toggleModal = () => {
+    console.log('hi the modal is availables');
     setModalVisible(!isModalVisible);
   };
   return (
     <TouchableOpacity
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+      }}
       onLongPress={() => {
         setDelivered(item.createdAt);
         setSeen(item.updatedAt);
@@ -130,7 +138,7 @@ export default function DirectMessageComponent({
               ''
             )}
             {item.isPicture ? (
-              <Pressable onPress={toggleModal}>
+              <TouchableOpacity onPress={toggleModal}>
                 <Image
                   resizeMode="cover"
                   // style={[styles.mavatar, { marginTop: 'auto' }]}
@@ -139,7 +147,7 @@ export default function DirectMessageComponent({
                   height={300}
                   style={{borderRadius: 30}}
                 />
-              </Pressable>
+              </TouchableOpacity>
             ) : (
               <View
                 style={

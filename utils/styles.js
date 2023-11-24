@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {grey100} from 'react-native-paper/lib/typescript/styles/colors';
 
 export const styles = StyleSheet.create({
   loginscreen: {
@@ -83,12 +84,15 @@ export const styles = StyleSheet.create({
   },
   messagingscreen: {
     flex: 1,
+    height: '100%',
     backgroundColor: '#fff',
     paddingBottom: 10,
+    borderTop: 1,
+    borderColor: 'grey',
   },
   messaginginputContainer: {
     width: '100%',
-    // Height: 60,
+    height: 60,
     backgroundColor: 'white',
     paddingBottom: 15,
     paddingVertical: 5,

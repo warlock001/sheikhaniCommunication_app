@@ -37,6 +37,7 @@ const DirectChatComponent = ({item, username}) => {
         roomid: roomid,
       };
       socket.emit('join_room', data);
+      console.log(socket);
     }
     joinroom();
   }, []);

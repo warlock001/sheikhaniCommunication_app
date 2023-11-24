@@ -106,7 +106,10 @@ const CreateNewChat = ({navigation}) => {
     <TouchableWithoutFeedback accessible={false}>
       <SafeAreaView style={styles.chatscreen}>
         <View style={{marginTop: 13}}>
-          <KeyboardAvoidingView>
+          <KeyboardAvoidingView
+            behavior="padding"
+            keyboardVerticalOffset={45}
+            enabled>
             <TextField
               onFocus={() => {
                 setSearchedUsersVisible(true);

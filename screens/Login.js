@@ -195,9 +195,16 @@ export default function SignIn({navigation}) {
                     />
                   }
                 />
-                {/* <TouchableOpacity style={{alignSelf: 'flex-end'}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      '',
+                      'Please contact App administrator to reset your password.',
+                    );
+                  }}
+                  style={{alignSelf: 'flex-end'}}>
                   <Text style={styles.forgotButtonStyle}>Forgot Password?</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
               </View>
 
               <TouchableOpacity

@@ -86,6 +86,13 @@ export default function GroupMessageComponent({
   };
   return (
     <TouchableOpacity
+      style={{
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
+      }}
       onLongPress={() => {
         setDelivered(item.createdAt);
         setSeen(item.updatedAt);
@@ -131,7 +138,7 @@ export default function GroupMessageComponent({
             )}
 
             {item.isPicture ? (
-              <Pressable onPress={toggleModal}>
+              <TouchableOpacity onPress={toggleModal}>
                 <Image
                   resizeMode="cover"
                   // style={[styles.mavatar, { marginTop: 'auto' }]}
@@ -140,7 +147,7 @@ export default function GroupMessageComponent({
                   height={300}
                   style={{borderRadius: 30}}
                 />
-              </Pressable>
+              </TouchableOpacity>
             ) : (
               <View
                 style={

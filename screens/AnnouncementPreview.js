@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, {useState, useLayoutEffect, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,23 +13,32 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import Modal from '../component/GroupCreatingModal';
 import ChatComponent from '../component/ChatComponent';
 import socket from '../utils/socket';
-import { styles } from '../utils/styles';
-import { TextInput } from 'react-native-paper';
+import {styles} from '../utils/styles';
+import {TextInput} from 'react-native-paper';
 import TextField from '../component/inputField';
-const AnnouncementPreview = ({ route }) => {
+const AnnouncementPreview = ({route}) => {
   const navigation = useNavigation();
 
-  const { id, title, description, date, user } = route.params;
-
+  const {id, title, description, date, user} = route.params;
 
   function formatDate(isoDateString) {
     const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
 
     const date = new Date(isoDateString);
@@ -49,9 +58,12 @@ const AnnouncementPreview = ({ route }) => {
         padding: 10,
         position: 'relative',
       }}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior="padding"
+        keyboardVerticalOffset={45}
+        enabled>
         <View>
-          <View style={{ padding: 10 }}>
+          <View style={{padding: 10}}>
             <Text
               style={{
                 fontSize: 19,
@@ -77,7 +89,7 @@ const AnnouncementPreview = ({ route }) => {
               }}>
               <Image
                 resizeMode="contain"
-                style={{ width: 20 }}
+                style={{width: 20}}
                 source={require('../images/close.png')}
               />
             </Pressable>
@@ -97,7 +109,7 @@ const AnnouncementPreview = ({ route }) => {
                 flexDirection: 'row',
                 padding: 16,
                 borderRadius: 10,
-                height: '80%'
+                height: '80%',
               }}>
               <ScrollView>
                 <Text
