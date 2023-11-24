@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -12,23 +12,25 @@ import {
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native';
 import socket from '../utils/socket';
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
-import { styles } from '../utils/styles';
+import {ActivityIndicator, MD2Colors} from 'react-native-paper';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Modal from '../component/AddMemberModal';
-import { useNavigation } from '@react-navigation/native'; // Import the navigation hook
+import {useNavigation} from '@react-navigation/native'; // Import the navigation hook
 import ReadReceipts from '../component/ReadReceipts';
 import GroupMessageComponent from '../component/GroupMessageComponent';
+import {SafeAreaView} from 'react-native-safe-area-context';
 let flatlistRef;
 let textInputRef; // Define the ref
 const mime = require('mime');
-const WorkspaceMessaging = ({ route, navigation }) => {
+const WorkspaceMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -43,8 +45,8 @@ const WorkspaceMessaging = ({ route, navigation }) => {
   const [tagsVisible, setTagsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [tags, setTags] = useState([]);
-
-  function Item({ props, item }) {
+  const windowHeight = Dimensions.get('window').height * 0.1;
+  function Item({props, item}) {
     const [image, setImage] = useState(false);
     const navigation = useNavigation();
 
@@ -52,11 +54,14 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       async function getImage() {
         await axios
           .get(
-            `http://api.sheikhanigroup.com:3001/files/${props.profilePicture[0]}/true`,
+            `https://api.sheikhanigroup.com/files/${props.profilePicture[0]}/true`,
           )
           .then(image => {
             setImage(
-              `data:${image.headers['content-type']};base64,${image.data}`,
+              `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                ' ',
+                '',
+              ),
             );
           })
           .catch(err => {
@@ -82,12 +87,12 @@ const WorkspaceMessaging = ({ route, navigation }) => {
             handleTag(props.id, image, props.title);
           }}>
           <View style={style.item}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {image ? (
                 <Image
                   resizeMode="cover"
-                  style={[styles.mavatar, { marginTop: 'auto' }]}
-                  source={{ uri: image }}
+                  style={[styles.mavatar, {marginTop: 'auto'}]}
+                  source={{uri: image}}
                   width={30}
                 />
               ) : (
@@ -113,11 +118,11 @@ const WorkspaceMessaging = ({ route, navigation }) => {
                   </Text>
                 </View>
               )}
-              <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+              <Text style={{color: '#000', fontSize: 18, fontWeight: 'bold'}}>
                 {props.title}
               </Text>
             </View>
-            <Text style={{ color: '#8f8f8f', marginRight: 40 }}>
+            <Text style={{color: '#8f8f8f', marginRight: 40}}>
               {props.designation}
             </Text>
           </View>
@@ -146,12 +151,9 @@ const WorkspaceMessaging = ({ route, navigation }) => {
   };
 
   const handleNewMessage = async () => {
-
     if (message !== '') {
-
-
       const myId = await AsyncStorage.getItem('@id');
-      var localMessage = message
+      var localMessage = message;
       let tempData = {
         _id: new Date(),
         senderid: myId,
@@ -177,7 +179,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
           ? `0${new Date().getMinutes()}`
           : `${new Date().getMinutes()}`;
       axios
-        .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+        .post('https://api.sheikhanigroup.com/saveMessage', {
           senderid: myId,
           message: localMessage,
           roomid: id,
@@ -211,7 +213,6 @@ const WorkspaceMessaging = ({ route, navigation }) => {
           setMessage('');
         });
     }
-
   };
 
   useLayoutEffect(props => {
@@ -219,7 +220,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       navigation.setOptions({
         headerTitle: () => (
           <TouchableOpacity
-            style={{ flexDirection: 'row', alignItems: 'center' }}
+            style={{flexDirection: 'row', alignItems: 'center'}}
             onPress={() => {
               handleDetailNavigation(id);
             }}>
@@ -254,7 +255,6 @@ const WorkspaceMessaging = ({ route, navigation }) => {
             </Text>
           </TouchableOpacity>
         ),
-
       });
       getUsername();
 
@@ -276,7 +276,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         let roomid = id;
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://api.sheikhanigroup.com:3001/getMessage?roomid=${id}`)
+          .get(`https://api.sheikhanigroup.com/getMessage?roomid=${id}`)
           .then(res => {
             setChatMessages(res.data.messages);
             console.log(res.data.messages);
@@ -354,7 +354,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
       // setLoader(true);
       console.log('first');
       await axios
-        .get(`http://api.sheikhanigroup.com:3001/group?roomid=${id}`)
+        .get(`https://api.sheikhanigroup.com/group?roomid=${id}`)
         .then(async res => {
           console.log(res.data.group.title);
           // setLoader(true);
@@ -368,11 +368,12 @@ const WorkspaceMessaging = ({ route, navigation }) => {
 
           Alert.alert(
             'Failed',
-            `${er.response.data.message
-              ? er.response.data.message
-              : 'Something went wrong'
+            `${
+              er.response.data.message
+                ? er.response.data.message
+                : 'Something went wrong'
             }`,
-            [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
+            [{text: 'OK', onPress: () => console.log('OK Pressed')}],
           );
         });
     }
@@ -432,7 +433,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://api.sheikhanigroup.com:3001/files`,
+          url: `https://api.sheikhanigroup.com/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -441,7 +442,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+              .post('https://api.sheikhanigroup.com/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: id,
@@ -481,11 +482,11 @@ const WorkspaceMessaging = ({ route, navigation }) => {
   };
 
   return (
-    <View style={styles.messagingscreen}>
+    <SafeAreaView style={styles.messagingscreen}>
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -495,7 +496,7 @@ const WorkspaceMessaging = ({ route, navigation }) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <GroupMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -511,89 +512,93 @@ const WorkspaceMessaging = ({ route, navigation }) => {
             )}
             keyExtractor={item => item._id}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
           ''
         )}
       </View>
-
-      <View>
-        {tagsVisible ? (
-          <View
-            style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.95)',
-              position: 'absolute',
-              bottom: 70,
-            }}>
-            <FlatList
-              keyboardShouldPersistTaps="handled"
-              showsVerticalScrollIndicator={true}
-              data={members}
-              renderItem={({ item }) => (
-                <Item
-                  props={{
-                    title: item.firstName + ' ' + item.lastName,
-                    id: item._id,
-                    designation: item.designation,
-                    profilePicture: item.profilePicture,
-                  }}
-                />
-              )}
-              keyExtractor={item => item._id}
+      <KeyboardAvoidingView
+        style={{height: 60}}
+        behavior={'position'}
+        enabled
+        keyboardVerticalOffset={windowHeight}>
+        <View>
+          {tagsVisible ? (
+            <View
               style={{
-                width: Dimensions.get('window').width,
-                marginLeft: 20,
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                position: 'absolute',
+                bottom: 70,
+              }}>
+              <FlatList
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={true}
+                data={members}
+                renderItem={({item}) => (
+                  <Item
+                    props={{
+                      title: item.firstName + ' ' + item.lastName,
+                      id: item._id,
+                      designation: item.designation,
+                      profilePicture: item.profilePicture,
+                    }}
+                  />
+                )}
+                keyExtractor={item => item._id}
+                style={{
+                  width: Dimensions.get('window').width,
+                  marginLeft: 20,
+                }}
+              />
+            </View>
+          ) : (
+            ''
+          )}
+          <View style={styles.messaginginputContainer}>
+            <Pressable onPress={chooseImage}>
+              <View>
+                <Image
+                  resizeMode="contain"
+                  style={{width: 25, height: 25, marginRight: 5}}
+                  source={require('../images/attach_file.png')}
+                />
+              </View>
+            </Pressable>
+            <TextInput
+              multiline={true}
+              value={message}
+              ref={inputRef => {
+                textInputRef = inputRef;
               }}
+              style={styles.messaginginput}
+              onChangeText={value => {
+                setMessage(value);
+                if (value.charAt(value.length - 1) == '@') {
+                  setTagsVisible(true);
+                } else {
+                  setTagsVisible(false);
+                }
+              }}
+              placeholder="Write Message..."
+              placeholderTextColor="#000"
             />
+            <Pressable
+              //   style={styles.messagingbuttonContainer}
+              onPress={handleNewMessage}>
+              <View>
+                <Image
+                  resizeMode="contain"
+                  style={{width: 30, height: 30, marginRight: 5}}
+                  source={require('../images/send.png')}
+                />
+                {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
+              </View>
+            </Pressable>
           </View>
-        ) : (
-          ''
-        )}
-        <View style={styles.messaginginputContainer}>
-          <Pressable onPress={chooseImage}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={{ width: 25, height: 25, marginRight: 5 }}
-                source={require('../images/attach_file.png')}
-              />
-            </View>
-          </Pressable>
-          <TextInput
-            multiline={true}
-            value={message}
-            ref={inputRef => {
-              textInputRef = inputRef;
-            }}
-            style={styles.messaginginput}
-            onChangeText={value => {
-              setMessage(value);
-              if (value.charAt(value.length - 1) == '@') {
-                setTagsVisible(true);
-              } else {
-                setTagsVisible(false);
-              }
-            }}
-            placeholder="Write Message..."
-            placeholderTextColor="#000"
-          />
-          <Pressable
-            //   style={styles.messagingbuttonContainer}
-            onPress={handleNewMessage}>
-            <View>
-              <Image
-                resizeMode="contain"
-                style={{ width: 30, height: 30, marginRight: 5 }}
-                source={require('../images/send.png')}
-              />
-              {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
-            </View>
-          </Pressable>
         </View>
-      </View>
-
+      </KeyboardAvoidingView>
       {receiptsModalVisible ? (
         <ReadReceipts
           setReceiptsModalVisible={setReceiptsModalVisible}
@@ -604,15 +609,25 @@ const WorkspaceMessaging = ({ route, navigation }) => {
         ''
       )}
 
-      {isLoading ?
-        <View style={{ position: 'absolute', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, .2)' }}>
+      {isLoading ? (
+        <View
+          style={{
+            position: 'absolute',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, .2)',
+          }}>
           <ActivityIndicator animating={true} color={'#0000ff'} />
         </View>
-        : ''
-      }
+      ) : (
+        ''
+      )}
 
       {addMember ? <Modal setVisible={setAddMember} roomid={id} /> : ''}
-    </View >
+    </SafeAreaView>
   );
 };
 

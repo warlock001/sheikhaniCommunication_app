@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
 import {
   View,
   TextInput,
@@ -11,22 +11,26 @@ import {
   Alert,
   Modal,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  Platform,
+  Dimensions,
 } from 'react-native';
 import socket from '../utils/socket';
 import DirectMessageComponent from '../component/DirectMessageComponent';
-import { styles } from '../utils/styles';
+import {styles} from '../utils/styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import DirectChatComponent from '../component/DirectChatComponent';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import ReadReceipts from '../component/ReadReceipts';
 const mime = require('mime');
 let flatlistRef;
 let textInputRef; // Define the ref
 
-const DirectMessaging = ({ route, navigation }) => {
+const DirectMessaging = ({route, navigation}) => {
   const [user, setUser] = useState('');
-  const { name, id } = route.params;
+  const {name, id} = route.params;
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [message, setMessage] = useState('');
@@ -36,6 +40,8 @@ const DirectMessaging = ({ route, navigation }) => {
   const [seen, setSeen] = useState('');
   const [delivered, setDelivered] = useState('');
   const [image, setImage] = useState('');
+  const windowHeight = Dimensions.get('window').height * 0.1;
+
   const getUsername = async () => {
     try {
       const value = await AsyncStorage.getItem('@username');
@@ -61,7 +67,7 @@ const DirectMessaging = ({ route, navigation }) => {
 
     const myId = await AsyncStorage.getItem('@id');
     axios
-      .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+      .post('https://api.sheikhanigroup.com/saveMessage', {
         senderid: myId,
         message: message,
         roomid: roomId,
@@ -115,21 +121,21 @@ const DirectMessaging = ({ route, navigation }) => {
     navigation.setOptions({
       headerTitle: () => (
         <TouchableOpacity
-          style={{ flexDirection: 'row', alignItems: 'center' }}
+          style={{flexDirection: 'row', alignItems: 'center', height: 45}}
           onPress={() => {
             handleDetailNavigation(id, image);
           }}>
           {image != '' ? (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
-              source={{ uri: image }}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
+              source={{uri: image}}
               width={30}
             />
           ) : (
             <Image
               resizeMode="cover"
-              style={[styles.mavatar, { marginTop: 'auto' }]}
+              style={[styles.mavatar, {marginTop: 'auto'}]}
               source={require('../images/myaccount.png')}
               width={30}
             />
@@ -151,18 +157,24 @@ const DirectMessaging = ({ route, navigation }) => {
   useLayoutEffect(() => {
     async function setup() {
       await axios
-        .get(`http://api.sheikhanigroup.com:3001/user?id=${id}`)
+        .get(`https://api.sheikhanigroup.com/user?id=${id}`)
         .then(async result => {
           await axios
             .get(
-              `http://api.sheikhanigroup.com:3001/files/${result.data.user.profilePicture[0]}/true`,
+              `https://api.sheikhanigroup.com/files/${result.data.user.profilePicture[0]}/true`,
             )
             .then(image => {
               setImage(
-                `data:${image.headers['content-type']};base64,${image.data}`,
+                `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                  ' ',
+                  '',
+                ),
               );
               setnav(
-                `data:${image.headers['content-type']};base64,${image.data}`,
+                `data:${image.headers['content-type']};base64,${image.data}`.replace(
+                  ' ',
+                  '',
+                ),
               );
             });
         });
@@ -188,7 +200,7 @@ const DirectMessaging = ({ route, navigation }) => {
         let roomid = createRoomId(id, myId);
         console.log('fetching messages for room id -', roomid);
         await axios
-          .get(`http://api.sheikhanigroup.com:3001/getMessage?roomid=${roomid}`)
+          .get(`https://api.sheikhanigroup.com/getMessage?roomid=${roomid}`)
           .then(res => {
             setChatMessages(res.data.messages);
             let data = {
@@ -313,7 +325,7 @@ const DirectMessaging = ({ route, navigation }) => {
         await axios({
           timeout: 20000,
           method: 'POST',
-          url: `http://api.sheikhanigroup.com:3001/files`,
+          url: `https://api.sheikhanigroup.com/files`,
           data: form,
           headers: {
             accept: 'application/json',
@@ -322,7 +334,7 @@ const DirectMessaging = ({ route, navigation }) => {
         })
           .then(async result => {
             await axios
-              .post('http://api.sheikhanigroup.com:3001/saveMessage', {
+              .post('https://api.sheikhanigroup.com/saveMessage', {
                 senderid: myId,
                 message: result.data.id,
                 roomid: roomId,
@@ -382,7 +394,7 @@ const DirectMessaging = ({ route, navigation }) => {
   //     await axios({
   //       timeout: 20000,
   //       method: 'POST',
-  //       url: `http://api.sheikhanigroup.com:3001/`,
+  //       url: `https://api.sheikhanigroup.com/`,
   //       data: form,
   //       headers: {
   //         accept: 'application/json',
@@ -394,7 +406,7 @@ const DirectMessaging = ({ route, navigation }) => {
   //         console.log('response: ', res.data);
   //         await AsyncStorage.setItem('@profilepicture', res.data.id);
   //         await axios
-  //           .get(`http://api.sheikhanigroup.com:3001/files/${res.data.id}/true`)
+  //           .get(`https://api.sheikhanigroup.com/files/${res.data.id}/true`)
   //           .then(res => {
   //             setprofilepictureURL(
   //               `data:${res.headers['content-type']};base64,${res.data}`,
@@ -425,11 +437,11 @@ const DirectMessaging = ({ route, navigation }) => {
   // }
 
   return (
-    <View style={styles.messagingscreen}>
+    <SafeAreaView style={styles.messagingscreen}>
       <View
         style={[
           styles.messagingscreen,
-          { paddingVertical: 15, paddingHorizontal: 10 },
+          {paddingVertical: 15, paddingHorizontal: 10},
         ]}>
         {chatMessages[0] ? (
           <FlatList
@@ -440,7 +452,7 @@ const DirectMessaging = ({ route, navigation }) => {
             }}
             initialNumToRender={chatMessages.length}
             data={chatMessages}
-            renderItem={({ item }) => (
+            renderItem={({item}) => (
               <DirectMessageComponent
                 setSeen={setSeen}
                 setDelivered={setDelivered}
@@ -458,48 +470,55 @@ const DirectMessaging = ({ route, navigation }) => {
             // inverted
             // initialScrollIndex={1}
             onContentSizeChange={() =>
-              flatlistRef.scrollToEnd({ animated: false })
+              flatlistRef.scrollToEnd({animated: false})
             }
           />
         ) : (
           ''
         )}
       </View>
+      <KeyboardAvoidingView
+        style={{height: 60}}
+        behavior={'position'}
+        enabled
+        keyboardVerticalOffset={windowHeight}>
+        <View style={styles.messaginginputContainer}>
+          <Pressable onPress={chooseImage}>
+            <View>
+              <Image
+                resizeMode="contain"
+                style={{width: 25, height: 25, marginRight: 5}}
+                source={require('../images/attach_file.png')}
+              />
+            </View>
+          </Pressable>
+          <TextInput
+            multiline={true}
+            value={message}
+            ref={inputRef => {
+              textInputRef = inputRef;
+            }}
+            placeholderTextColor="#000"
+            style={styles.messaginginput}
+            onChangeText={value => setMessage(value)}
+            placeholder="Write Message..."
+          />
 
-      <View style={styles.messaginginputContainer}>
-        <Pressable onPress={chooseImage}>
-          <View>
-            <Image
-              resizeMode="contain"
-              style={{ width: 25, height: 25, marginRight: 5 }}
-              source={require('../images/attach_file.png')}
-            />
-          </View>
-        </Pressable>
-        <TextInput
-          multiline={true}
-          value={message}
-          ref={inputRef => {
-            textInputRef = inputRef;
-          }}
-          placeholderTextColor="#000"
-          style={styles.messaginginput}
-          onChangeText={value => setMessage(value)}
-          placeholder="Write Message..."
-        />
-        <Pressable
-          //   style={styles.messagingbuttonContainer}
-          onPress={handleNewMessage}>
-          <View>
-            <Image
-              resizeMode="contain"
-              style={{ width: 30, height: 30, marginRight: 5 }}
-              source={require('../images/send.png')}
-            />
-            {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
-          </View>
-        </Pressable>
-      </View>
+          <Pressable
+            //   style={styles.messagingbuttonContainer}
+            onPress={handleNewMessage}>
+            <View>
+              <Image
+                resizeMode="contain"
+                style={{width: 30, height: 30, marginRight: 5}}
+                source={require('../images/send.png')}
+              />
+              {/* <Text style={{ color: "#f2f0f1", fontSize: 20 }}>SEND</Text> */}
+            </View>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
+
       {receiptsModalVisible ? (
         <ReadReceipts
           setReceiptsModalVisible={setReceiptsModalVisible}
@@ -509,7 +528,7 @@ const DirectMessaging = ({ route, navigation }) => {
       ) : (
         ''
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
